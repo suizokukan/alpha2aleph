@@ -13,7 +13,7 @@ def create_rtlreader_regex():
 
     return re.compile(res)
 
-__projectname__ = "MBH2"
+__projectname__ = "alphab2heb"
 __version__ = "0.0.2"
 __license__ = "GPLv3"
 __author__ = "Xavier Faure (suizokukan)"
