@@ -1,3 +1,36 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+################################################################################
+#    alpha2heb Copyright (C) 2018 Suizokukan
+#    Contact: suizokukan _A.T._ orange dot fr
+#
+#    This file is part of alpha2heb.
+#    alpha2heb is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    alpha2heb is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with alpha2heb.  If not, see <http://www.gnu.org/licenses/>.
+################################################################################
+"""
+        alpha2heb by suizokukan (suizokukan AT orange DOT fr)
+
+        A (Python3/GPLv3/Linux/CLI) project, using no additional
+        modules than the ones installed with Python3.
+
+        alphabetic text → translitteration → Hebrew text
+
+        see README.md for more documentation.
+        ________________________________________________________________________
+
+        alphaheb.py : entry point in the project.
+"""
 import argparse
 import configparser
 import logging
@@ -163,7 +196,7 @@ with open("symbols.txt") as symbols:
 
         if line != "":
             if '>' in line:
-                alpha, hebrew = line.split("->")
+                alpha, hebrew = line.split("→")
                 alpha = alpha.strip()
                 hebrew = hebrew.strip()
                 if alpha in alpha2hebrew:
@@ -382,7 +415,7 @@ if not CFGINI_SUCCESS:
 
 if ARGS.showsymbols:
     for key in alpha2hebrew_keys:
-        print(stranalyse(key), "---->", stranalyse(alpha2hebrew[key]))
+        print(stranalyse(key), "---→", stranalyse(alpha2hebrew[key]))
 
 INPUTDATA = ""
 if ARGS.source == "inputfile":
