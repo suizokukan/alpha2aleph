@@ -5,7 +5,7 @@
 * insert hebrew file between '◆' and '■'.
 
 # todo
-* il manque les finales
+* il manque shin avec daghesh
 * TODO en pagaille + "..." dans argparse.
 * tester la cohérence de symbols.txt
 * implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt
@@ -29,5 +29,5 @@
 * a runtimeerror may be raised : see raise RuntimeError in the source code.
 
 # pipe'able ? Yes !
-$ echo "◆m<éléḵ:■" | python3 alpha2heb.py --source=stdin --outputformat=console
-$ echo "“m<éléḵ:”" | python3 alpha2heb.py --source=stdin --outputformat=console
+$ echo "◆m<éléḵ:■" | python3 alpha2heb.py --source=stdin
+$ echo "“m<éléḵ:”" | python3 alpha2heb.py --source=stdin
