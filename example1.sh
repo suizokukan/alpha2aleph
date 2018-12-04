@@ -1,0 +1,1 @@
+echo "“m<éléḵ:”" | python3 alpha2heb/alpha2heb.py --source=stdin --outputformat=console

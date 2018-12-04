@@ -5,8 +5,10 @@
 * insert hebrew file between '◆' and '■'.
 
 # todo
+* il manque les finales
 * TODO en pagaille + "..." dans argparse.
-* projet : alpha2heb
+* tester la cohérence de symbols.txt
+* implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt
 * header GPLv3
 * dans les tests, bien vérifier source={file,stdin} + RTLSYMB ==/!= .
 * exportation > html (https://www.w3.org/International/articles/inline-bidi-markup/) : choisir la police pour hébreu/le reste dans config.ini

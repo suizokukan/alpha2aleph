@@ -1,79 +1,115 @@
 # https://fr.wikipedia.org/wiki/Alphabet_h%C3%A9breu
 
+# ‫א‬ HEBREW LETTER ALEF
 ʔ -> א
 A -> א
 
+# ‫ב‬ HEBREW LETTER BET
 bb -> בּ
 b -> בּ
 β -> ב
 ḇ -> ב
 v -> ב
 
+# ‫ג‬ HEBREW LETTER GIMEL
 ɣ -> ג
 ġ -> ג
 ḡ -> ג
 g -> גּ
 
+# ‫ד‬ HEBREW LETTER DALET
 ð -> ד
 ḍ -> ד
 ḏ -> ד
 d -> דּ
 
+# ‫ה‬ HEBREW LETTER HE
 h -> ה
 
+# ‫ו‬ HEBREW LETTER VAV
 w -> ו
 
+# ‫ז‬ HEBREW LETTER ZAYIN
 z -> ז
-#zz -> $
+zz -> זּ
 
+# ‫ח‬ HEBREW LETTER HET
 ħ -> ח
 ḥ -> ח
 ẖ -> ח
 
+# ‫ט‬ HEBREW LETTER TET
 ṭ -> ט
 
+# ‫י‬ HEBREW LETTER YOD
 j -> י
 jj -> יּ
 y -> י
 yy -> יּ
 
+# ‫ך‬ HEBREW LETTER FINAL KAF
+# 05DA ‫ך‬ HEBREW LETTER FINAL KAF
 ḵ -> כ
 ḵ² -> ‫ך‬
 k -> כּ
 kk -> כּ
 
+# ‫05DC ‫ל‬ HEBREW LETTER LAMED‬
 l -> ל
 ll -> לּ
 
+# 05DE ‫מ‬ HEBREW LETTER MEM
+# 05DD ‫ם‬ HEBREW LETTER FINAL MEM
 m -> מ
 mm -> מּ
+M -> ם
 
+# 05E0 ‫נ‬ HEBREW LETTER NUN
+# 05DF ‫ן‬ HEBREW LETTER FINAL NUN
 n -> נ
+n -> נּ
+N -> ‫ן‬
 
-#$ -> ס
-#$$ ->
+# HEBREW LETTER SAMEKH
+s -> ס
+ss -> סּ
 
+# HEBREW LETTER AYIN
 ʕ -> ע
 ʿ -> ע
 
+# 05E4 HEBREW LETTER PE
+# 05E3 HEBREW LETTER FINAL PE
 ɸ -> פ
 f -> פ
 p -> פּ
+P -> ף
 
-t͡s -> צ
+# 05E6 HEBREW LETTER FINAL TSADI
+# 05E5 HEBREW LETTER FINAL TSADI
+#t͡s -> צ
 ṣ -> צ
 ẓ -> צ
+ṣṣ -> ץ
+ẓẓ -> ץ
 
+# 05E7 ‫ק‬ HEBREW LETTER QOF
 q -> ק
+q -> קּ
 
+# 05E8 ‫ר‬ HEBREW LETTER RESH
 ʁ -> ר
 r -> ר
+
+# 05E9 ‫ש‬ HEBREW LETTER SHIN
+S -> ש
 
 ʃ -> שׁ
 š -> שׁ
 
 ś -> שׂ
 
+# 05EA ‫ת‬ HEBREW LETTER TAV
 θ -> ת
 ṯ -> ת
 t -> תּ
