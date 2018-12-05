@@ -45,6 +45,8 @@ from globals import __projectname__, __name__, __version__, __license__, __autho
 from logger import LOGGER
 import cfgini
 
+import fb1d_fb4f
+
 def stranalyse(src):
     res = []
     for char in src:
@@ -109,7 +111,11 @@ def replace_and_log(pipeline_part, comment, src, before, after):
         LOGGER.pipelinetrace(pipeline_part,
                              "%s : '%s' > '%s' in %s",
                              comment, before, after, extracts(before, src))
-    return src.replace(before, after)
+        return src.replace(before, after)
+
+    LOGGER.debug("[D01] Nothing to do in '%s' for %s : '%s' > '%s' in %s",
+                 src, comment, before, after, extracts(before, src))
+    return src
 
 def sub_and_log(pipeline_part, comment, before, after, src):
     """
@@ -120,6 +126,10 @@ def sub_and_log(pipeline_part, comment, before, after, src):
                              "%s : '%s' > '%s' in '%s'",
                              comment, before, after, extracts(before, src))
         return re.sub(before, after, src)
+
+    LOGGER.debug("[D02] Nothing to do in '%s' for %s : '%s' > '%s' in %s",
+                 src, comment, before, after, extracts(before, src))
+
     return src
 
 
@@ -160,6 +170,11 @@ def read_command_line_arguments():
                         default="input.txt",
                         help="…")
 
+    parser.add_argument('--symbolsfilename',
+                        type=str,
+                        default="symbols.txt",
+                        help='todo')
+
     parser.add_argument('--outputformat',
                         choices=['html', 'console'],
                         default="console",
@@ -183,35 +198,44 @@ def read_command_line_arguments():
 
     return parser.parse_args()
 
+def read_symbols(filename):
+    success = True
+    errors = []
 
-# [1] lecture de symbols.text
-alpha2hebrew = dict()
-with open("symbols.txt") as symbols:
-    for _line in symbols.readlines():
-        line = _line.strip()
+    alpha2hebrew = dict()
+    with open(filename) as symbols:
+        for line_index, _line in enumerate(symbols.readlines()):
+            line = _line.strip()
 
-        if '#' in line:
-            line = line[:line.index('#')]
-            line = line.strip()
+            if '#' in line:
+                line = line[:line.index('#')]
+                line = line.strip()
 
-        if line != "":
-            if '>' in line:
-                alpha, hebrew = line.split("→")
-                alpha = alpha.strip()
-                hebrew = hebrew.strip()
-                if alpha in alpha2hebrew:
-                    print("ERROR", alpha)
-                alpha2hebrew[alpha] = hebrew
+            if line != "":
+                if '→' in line:
+                    alpha, hebrew = line.split("→")
+                    alpha = alpha.strip()
+                    hebrew = hebrew.strip()
+                    if alpha in alpha2hebrew:
+                        errors.append("key '{0}' has alread been defined; new definition in line {1} (line #{2})".format(alpha, line, line_index))
+                        success = False
+                    alpha2hebrew[alpha] = hebrew
 
-alpha2hebrew_keys = sorted(alpha2hebrew.keys(), key=len, reverse=True)
+    keys = sorted(alpha2hebrew.keys(), key=len, reverse=True)
+
+    if not keys:
+        success = False
+        errors.append("empty alpha2hebrew dict")
+
+    return success, errors, alpha2hebrew, keys
 
 def transf__text_alpha2hebrew(_src):
     src = _src.group("rtltext")
 
-    for alphachar in alpha2hebrew_keys:
+    for alphachar in ALPHA2HEBREW_KEYS:
         src = replace_and_log("transf__text_alpha2hebrew",
                               "[transf__text_alpha2hebrew]",
-                              src, alphachar, alpha2hebrew[alphachar])
+                              src, alphachar, ALPHA2HEBREW[alphachar])
 
     LOGGER.pipelinetrace("transf__text_alpha2hebrew",
                          "Adding globals.RTL_SYMBOLS to '%s' : '%s' and '%s'",
@@ -251,7 +275,7 @@ def transf__use_FB1D_FB4F_chars(_src):
     src = _src.group("rtltext")
 
     # ---- 1/2 FB1D-FB4F characters : ----
-    for shortname, (fullname, before, after) in globals.TRANSF_FB1D_FB4F:
+    for shortname, (fullname, before, after) in fb1d_fb4f.TRANSF_FB1D_FB4F:
 
         if cfgini.CFGINI["pipeline.use FB1D-FB4F chars"][fullname].lower() == "true":
             pipeline_part = "transf__use_FB1D_FB4F_chars"
@@ -267,7 +291,7 @@ def transf__use_FB1D_FB4F_chars(_src):
     return globals.RTL_SYMBOLS[0]+src+globals.RTL_SYMBOLS[1]
 
 def output_html(inputdata):
-    LOGGER.debug("[output_html] : data to be read=%s", inputdata)
+    LOGGER.debug("[D03] [output_html] : data to be read=%s", inputdata)
 
     RTL_START = '<span dir="rtl">'
     RTL_END = '</span>'
@@ -315,7 +339,7 @@ def output_html(inputdata):
     return header + inputdata + foot
 
 def output_console(inputdata):
-    LOGGER.debug("[output_console] : data to be read=%s", inputdata)
+    LOGGER.debug("[D04] [output_console] : data to be read=%s", inputdata)
 
     # transformation console.1::text_delimiters
     #    let's add a char at the very beginning and at the very end of the
@@ -391,7 +415,7 @@ def check_inputdata(inputdata):
                         last_symbol = char
                 else:
                     if last_symbol == char:
-                        LOGGER.error("the symbol '{0}' appears two times in a row (context={1})".format(char, context))
+                        LOGGER.error("[E01] the symbol '{0}' appears two times in a row (context={1})".format(char, context))
                         success = False
                     last_symbol = char
 
@@ -409,13 +433,20 @@ ARGS = read_command_line_arguments()
 CFGINI_SUCCESS, CFGERRORS, cfgini.CFGINI = cfgini.read_cfg_file(ARGS.cfgfile)
 
 if not CFGINI_SUCCESS:
-    LOGGER.info("Ill-formed config file '%s' : %s", ARGS.cfgfile, CFGERRORS)
-    LOGGER.info("=== program stops ===")
+    LOGGER.error("[E02] Ill-formed config file '%s' : %s", ARGS.cfgfile, CFGERRORS)
+    LOGGER.error("[E03] === program stops ===")
     sys.exit(-1)
 
+READSYMBOLS_SUCCESS, READSYMBOLS_ERRORS, ALPHA2HEBREW, ALPHA2HEBREW_KEYS = read_symbols(ARGS.symbolsfilename)
+
+if not READSYMBOLS_SUCCESS:
+    LOGGER.error("[E04] ill-formed symbole file '%s' : %s", ARGS.symbolsfilename, READSYMBOLS_ERRORS)
+    LOGGER.error("[E05] === program stops ===")
+    sys.exit(-3)
+
 if ARGS.showsymbols:
-    for key in alpha2hebrew_keys:
-        print(stranalyse(key), "---→", stranalyse(alpha2hebrew[key]))
+    for key in ALPHA2HEBREW_KEYS:
+        print(stranalyse(key), "---→", stranalyse(ALPHA2HEBREW[key]))
 
 INPUTDATA = ""
 if ARGS.source == "inputfile":
@@ -427,8 +458,8 @@ elif ARGS.source == "stdin":
 if ARGS.checkinputdata == 'yes':
     check_success, check_errors = check_inputdata(INPUTDATA)
     if not check_success:
-        LOGGER.info("Ill-formed input data '%s'; error(s)=%s", ARGS.cfgfile, check_errors)
-        LOGGER.info("=== program stops ===")
+        LOGGER.error("[E06] Ill-formed input data '%s'; error(s)=%s", ARGS.cfgfile, check_errors)
+        LOGGER.error("[E07] === program stops ===")
         sys.exit(-2)
 
 # input > output

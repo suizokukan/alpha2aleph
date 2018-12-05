@@ -5,6 +5,7 @@
 * insert hebrew file between '◆' and '■'.
 
 # todo
+* tant qu'à faire, multiplier les .debug()
 * il manque shin avec daghesh
 * TODO en pagaille + "..." dans argparse.
 * tester la cohérence de symbols.txt
@@ -23,6 +24,7 @@
 # exit codes
 -1 : an error occured (ill-formed config file)
 -2 : an error occured (ill-formed input file)
+-3 : an error occured (ill-formed symbol file)
 
 # doc
 * a runtimeerror may be raised : see raise RuntimeError in the source code.

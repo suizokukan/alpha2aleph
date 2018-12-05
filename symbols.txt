@@ -1,178 +1,187 @@
+# ############################################################################
+# symbols file
+#
+# format:
+# * everything after # is a commentary
+# * alpha_key → heb_value
+#
+# ############################################################################
+
 # https://fr.wikipedia.org/wiki/Alphabet_h%C3%A9breu
 
 # ‫א‬ HEBREW LETTER ALEF
-ʔ -> א
-A -> א
+ʔ → א
+A → א
 
 # ‫ב‬ HEBREW LETTER BET
-bb -> בּ
-b -> בּ
-β -> ב
-ḇ -> ב
-v -> ב
+bb → בּ
+b → בּ
+β → ב
+ḇ → ב
+v → ב
 
 # ‫ג‬ HEBREW LETTER GIMEL
-ɣ -> ג
-ġ -> ג
-ḡ -> ג
-g -> גּ
+ɣ → ג
+ġ → ג
+ḡ → ג
+g → גּ
 
 # ‫ד‬ HEBREW LETTER DALET
-ð -> ד
-ḍ -> ד
-ḏ -> ד
-d -> דּ
+ð → ד
+ḍ → ד
+ḏ → ד
+d → דּ
 
 # ‫ה‬ HEBREW LETTER HE
-h -> ה
+h → ה
 
 # ‫ו‬ HEBREW LETTER VAV
-w -> ו
+w → ו
 
 # ‫ז‬ HEBREW LETTER ZAYIN
-z -> ז
-zz -> זּ
+z → ז
+zz → זּ
 
 # ‫ח‬ HEBREW LETTER HET
-ħ -> ח
-ḥ -> ח
-ẖ -> ח
+ħ → ח
+ḥ → ח
+ẖ → ח
 
 # ‫ט‬ HEBREW LETTER TET
-ṭ -> ט
+ṭ → ט
 
 # ‫י‬ HEBREW LETTER YOD
-j -> י
-jj -> יּ
-y -> י
-yy -> יּ
+j → י
+jj → יּ
+y → י
+yy → יּ
 
 # ‫ך‬ HEBREW LETTER FINAL KAF
 # 05DA ‫ך‬ HEBREW LETTER FINAL KAF
-ḵ -> כ
-ḵ² -> ‫ך‬
-k -> כּ
-kk -> כּ
+ḵ → כ
+ḵ² → ‫ך‬
+k → כּ
+kk → כּ
 
 # ‫05DC ‫ל‬ HEBREW LETTER LAMED‬
-l -> ל
-ll -> לּ
+l → ל
+ll → לּ
 
 # 05DE ‫מ‬ HEBREW LETTER MEM
 # 05DD ‫ם‬ HEBREW LETTER FINAL MEM
-m -> מ
-mm -> מּ
-M -> ם
+m → מ
+mm → מּ
+M → ם
 
 # 05E0 ‫נ‬ HEBREW LETTER NUN
 # 05DF ‫ן‬ HEBREW LETTER FINAL NUN
-n -> נ
-n -> נּ
-N -> ‫ן‬
+n → נ
+nn → נּ
+N → ‫ן‬
 
 # HEBREW LETTER SAMEKH
-s -> ס
-ss -> סּ
+s → ס
+ss → סּ
 
 # HEBREW LETTER AYIN
-ʕ -> ע
-ʿ -> ע
+ʕ → ע
+ʿ → ע
 
 # 05E4 HEBREW LETTER PE
 # 05E3 HEBREW LETTER FINAL PE
-ɸ -> פ
-f -> פ
-p -> פּ
-P -> ף
+ɸ → פ
+f → פ
+p → פּ
+P → ף
 
 # 05E6 HEBREW LETTER FINAL TSADI
 # 05E5 HEBREW LETTER FINAL TSADI
-#t͡s -> צ
-ṣ -> צ
-ẓ -> צ
-ṣṣ -> ץ
-ẓẓ -> ץ
+#t͡s → צ
+ṣ → צ
+ẓ → צ
+ṣṣ → ץ
+ẓẓ → ץ
 
 # 05E7 ‫ק‬ HEBREW LETTER QOF
-q -> ק
-q -> קּ
+q → ק
+qq → קּ
 
 # 05E8 ‫ר‬ HEBREW LETTER RESH
-ʁ -> ר
-r -> ר
+ʁ → ר
+r → ר
 
 # 05E9 ‫ש‬ HEBREW LETTER SHIN
-S -> ש
+S → ש
 
-ʃ -> שׁ
-š -> שׁ
+ʃ → שׁ
+š → שׁ
 
-ś -> שׂ
+ś → שׂ
 
 # 05EA ‫ת‬ HEBREW LETTER TAV
-θ -> ת
-ṯ -> ת
-t -> תּ
-tt -> תּ
+θ → ת
+ṯ → ת
+t → תּ
+tt → תּ
 
 # see https://en.wikipedia.org/wiki/Hebrew_alphabetVowels
 
 # 05B4
-i -> ִ
+i → ִ
 
 # 05D9+05B4
-I -> ִי
+I → ִי
 
 # 05B5
-è -> ֵ
+è → ֵ
 
 # 05D9+05B5
-E -> ֵי
+E → ֵי
 
 # 05B6
-é -> ֶ
+é → ֶ
 
 # 05B7
-a -> ַ
+a → ַ
 
 # 05B8
-o -> ָ
+o → ָ
 
 # 05B8
-â -> ָ
+â → ָ
 
 # 05B9
-ô -> ֹ
+ô → ֹ
 
 # 05D5+05B9 (=FB4B)
-O -> וֹ
+O → וֹ
 
 # 05D5+05B9 (=FB4B)
-Ô -> וֹ
+Ô → וֹ
 
 # 05BB
-u -> ֻ
+u → ֻ
 
 # 05D5+05BC (=FB35)
-U -> וּ
+U → וּ
 
 # 05B0
-: -> ְ
+: → ְ
 
 # 05B1
-ë -> ֱ
+ë → ֱ
 
 # 05B2
-ä -> ֲ
+ä → ֲ
 
 # 05B3
-ö -> ֳ
+ö → ֳ
 
 # 05AB
-< -> ֫
+< → ֫
 
 # 0x05C1
-° -> ׁ
+° → ׁ
 
 # 05BD HEBREW POINT METEG
-| -> ֽ
+| → ֽ
