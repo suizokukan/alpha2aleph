@@ -29,34 +29,52 @@
         see README.md for more documentation.
         ________________________________________________________________________
 
-        globals.py : global declarations
+        utils.py : various usefull functions
 """
 import re
-from logger import LOGGER
 
-def create_rtlreader_regex():
+def stranalyse(src):
+    res = []
+    for char in src:
+        name = unicodedata.name(char)
+        res.append('\"{0}\"(#{1})={2}'.format(char,
+                                              hex(ord(char)),
+                                              name))
+    return ";".join(res)
 
-    if RTL_SYMBOLS[0] == RTL_SYMBOLS[1]:
-        res = '{0}(?P<rtltext>[^{0}]*){0}'.format(re.escape(RTL_SYMBOLS[0]))
-    else:
-        res = '{0}(?P<rtltext>[^{0}{1}]*){1}'.format(re.escape(RTL_SYMBOLS[0]),
-                                                     re.escape(RTL_SYMBOLS[1]))
+def match_repr(match):
+    """
+        Return a human readable representation of <match>
+    """
+    return "(indexes {0} to {1}) : '{2}'".format(match.start(), match.end(), match.group())
 
-    LOGGER.debug("[D08] new RTLREADER_REGEX : %s", res)
+def extract_around_index(string, index, amplitude=10):
+    index0 = max(0, index-amplitude)
+    index1 = min(len(string)-1, index+amplitude)
 
-    return re.compile(res)
+    before = "…"
+    if index0 == 0:
+        before = ""
 
-__projectname__ = "alphab2heb"
-__version__ = "0.0.4"
-__license__ = "GPLv3"
-__author__ = "Xavier Faure (suizokukan)"
-__email__ = "suizokukan@orange.fr"
+    after = "…"
+    if index1 == len(string)-1:
+        after = ""
 
-# input file format:
-# symbols used before/after hebrew text
-#   nb : about rtl, see https://en.wikipedia.org/wiki/Bi-directional_text
-#
-# They may be equal
-RTL_SYMBOLS = ("“", "”")
+    return before+string[index0:index1]+after
 
-RTLREADER_REGEX = create_rtlreader_regex()
+def extracts(target, src, amplitude=10):
+    res = []
+    for _res in re.finditer(target, src):
+        index0 = _res.start()
+        _index0 = max(0, index0 - amplitude)
+
+        index1 = _res.end()
+        _index1 = min(len(src)-1, index1 + amplitude)
+
+        res.append("…" + src[_index0:index0] + _res.group() + src[index1:_index1] + "…")
+
+    finalres = []
+    for i, _res in enumerate(res):
+        finalres.append("(#{0}) : \"{1}\"".format(i, _res))
+
+    return " /// ".join(finalres)

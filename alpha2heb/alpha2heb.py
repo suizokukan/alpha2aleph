@@ -31,7 +31,6 @@
 
         alphaheb.py : entry point in the project.
 """
-import argparse
 import configparser
 import logging
 import logging.config
@@ -40,21 +39,14 @@ import sys
 import unicodedata
 
 import globals
-from globals import __projectname__, __name__, __version__, __license__, __author__, __email__,  create_rtlreader_regex
 
 from logger import LOGGER
 import cfgini
 
 import fb1d_fb4f
 
-def stranalyse(src):
-    res = []
-    for char in src:
-        name = unicodedata.name(char)
-        res.append('\"{0}\"(#{1})={2}'.format(char,
-                                              hex(ord(char)),
-                                              name))
-    return ";".join(res)
+from utils import stranalyse, match_repr, extracts, extract_around_index
+from cmdline import read_command_line_arguments
 
 def add_firstlast_marker(src):
     LOGGER.pipelinetrace("add_firstlast_marker",
@@ -65,43 +57,6 @@ def remove_firstlast_marker(src):
     LOGGER.pipelinetrace("remove_firstlast_marker",
                          "remove markers for the first and last characters")
     return src[1:-1]
-
-def match_repr(match):
-    """
-        Return a human readable representation of <match>
-    """
-    return "(indexes {0} to {1}) : '{2}'".format(match.start(), match.end(), match.group())
-
-def extract_around_index(string, index, amplitude=10):
-    index0 = max(0, index-amplitude)
-    index1 = min(len(string)-1, index+amplitude)
-
-    before = "…"
-    if index0 == 0:
-        before = ""
-
-    after = "…"
-    if index1 == len(string)-1:
-        after = ""
-
-    return before+string[index0:index1]+after
-
-def extracts(target, src, amplitude=10):
-    res = []
-    for _res in re.finditer(target, src):
-        index0 = _res.start()
-        _index0 = max(0, index0 - amplitude)
-
-        index1 = _res.end()
-        _index1 = min(len(src)-1, index1 + amplitude)
-
-        res.append("…" + src[_index0:index0] + _res.group() + src[index1:_index1] + "…")
-
-    finalres = []
-    for i, _res in enumerate(res):
-        finalres.append("(#{0}) : \"{1}\"".format(i, _res))
-
-    return " /// ".join(finalres)
 
 def replace_and_log(pipeline_part, comment, src, before, after):
     """
@@ -132,73 +87,9 @@ def sub_and_log(pipeline_part, comment, before, after, src):
 
     return src
 
-
-def read_command_line_arguments():
-    """
-        read_command_line_arguments()
-        ________________________________________________________________________
-
-        Read the command line arguments.
-        ________________________________________________________________________
-
-        no PARAMETER
-
-        RETURNED VALUE
-                return the argparse object.
-    """
-    parser = \
-      argparse.ArgumentParser(description="{0} v. {1}".format(__projectname__, __version__),
-                              epilog="{0} v. {1} ({2}), "
-                                     "a project by {3} "
-                                     "({4})".format(__projectname__,
-                                                    __version__,
-                                                    __license__,
-                                                    __author__,
-                                                    __email__),
-                              formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-
-    parser.add_argument('--showsymbols',
-                        action="store_true",
-                        help="show symbols")
-
-    parser.add_argument('--no_alpha2hebrew',
-                        action="store_true",
-                        help="do not read the input file, do not transform it")
-
-    parser.add_argument('--inputfile',
-                        type=str,
-                        default="input.txt",
-                        help="…")
-
-    parser.add_argument('--symbolsfilename',
-                        type=str,
-                        default="symbols.txt",
-                        help='todo')
-
-    parser.add_argument('--outputformat',
-                        choices=['html', 'console'],
-                        default="console",
-                        help="…")
-
-    parser.add_argument("--cfgfile",
-                        type=str,
-                        default="config.ini",
-                        help="todo")
-
-    parser.add_argument("--checkinputdata",
-                        choices=['yes', 'no'],
-                        default="yes",
-                        help="todo")
-
-    parser.add_argument("--source",
-                        choices=['stdin', 'inputfile'],
-                        default="inputfile",
-                        help="todo")
-
-
-    return parser.parse_args()
-
 def read_symbols(filename):
+    LOGGER.debug("[D03] read_symbols : '%s'", filename)
+
     success = True
     errors = []
 
@@ -244,7 +135,6 @@ def transf__text_alpha2hebrew(_src):
     return globals.RTL_SYMBOLS[0]+src+globals.RTL_SYMBOLS[1]
 
 def transf__improve_rtltext(src):
-
     src = sub_and_log("transf__improve_rtltext",
                       "final kaf:",
                       "ḵ:(?P<ponctuation>)", "ḵ²:\\g<ponctuation>", src)
@@ -269,9 +159,7 @@ def transf__invert_text(src):
 
     return res
 
-
 def transf__use_FB1D_FB4F_chars(_src):
-
     src = _src.group("rtltext")
 
     # ---- 1/2 FB1D-FB4F characters : ----
@@ -291,7 +179,7 @@ def transf__use_FB1D_FB4F_chars(_src):
     return globals.RTL_SYMBOLS[0]+src+globals.RTL_SYMBOLS[1]
 
 def output_html(inputdata):
-    LOGGER.debug("[D03] [output_html] : data to be read=%s", inputdata)
+    LOGGER.debug("[D04] [output_html] : data to be read=%s", inputdata)
 
     RTL_START = '<span dir="rtl">'
     RTL_END = '</span>'
@@ -339,7 +227,7 @@ def output_html(inputdata):
     return header + inputdata + foot
 
 def output_console(inputdata):
-    LOGGER.debug("[D04] [output_console] : data to be read=%s", inputdata)
+    LOGGER.debug("[D05] [output_console] : data to be read=%s", inputdata)
 
     # transformation console.1::text_delimiters
     #    let's add a char at the very beginning and at the very end of the
@@ -365,6 +253,7 @@ def output_console(inputdata):
     return inputdata
 
 def transf__maingroup(src):
+    LOGGER.debug("[D06] transf__maingroup()")
 
     # transformation maingroup.1::improve_rtltext
     src = transf__improve_rtltext(src)
@@ -378,6 +267,8 @@ def transf__maingroup(src):
     return src
 
 def check_inputdata(inputdata):
+    LOGGER.debug("[D07] check_inputdata()")
+
     success = True
     errors = []
 
@@ -420,7 +311,6 @@ def check_inputdata(inputdata):
                     last_symbol = char
 
     return success, errors
-
 
 ##############################################################################
 ##############################################################################
