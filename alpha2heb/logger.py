@@ -34,6 +34,8 @@
 import logging
 import cfgini
 
+LOGGING_LEVEL = logging.INFO
+
 class LoggerPlus(logging.Logger):
     """
         LoggerPlus class
@@ -61,6 +63,6 @@ class LoggerPlus(logging.Logger):
 
 logging.setLoggerClass(LoggerPlus)
 LOGGERFORMAT = '%(levelname)-8s %(message)s'
-logging.basicConfig(format=LOGGERFORMAT, level=logging.DEBUG)
+logging.basicConfig(format=LOGGERFORMAT, level=LOGGING_LEVEL)
 
 LOGGER = logging.getLogger(__name__)

@@ -4,6 +4,9 @@
 * utf-8
 * insert hebrew file between '◆' and '■'.
 
+# logging info.
+Modify logger.py::LOGGING_LEVEL
+
 # todo
 * tant qu'à faire, multiplier les .debug()
 * il manque shin avec daghesh
