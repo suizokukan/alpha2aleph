@@ -8,13 +8,12 @@
 Modify logger.py::LOGGING_LEVEL
 
 # todo
-* tant qu'à faire, multiplier les .debug()
 * il manque shin avec daghesh
-* TODO en pagaille + "..." dans argparse.
 * tester la cohérence de symbols.txt
 * implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt
 * dans les tests, bien vérifier source={file,stdin} + RTLSYMB ==/!= .
 * exportation > html (https://www.w3.org/International/articles/inline-bidi-markup/) : choisir la police pour hébreu/le reste dans config.ini
+* piper : il faut donc un point d'entrée.
 * pylint=10
 * documenter le pipeline
 * incorporer les caractères de U0590...

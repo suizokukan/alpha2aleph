@@ -353,7 +353,7 @@ if ARGS.checkinputdata == 'yes':
         sys.exit(-2)
 
 # input > output
-if not ARGS.no_alpha2hebrew:
+if ARGS.transform_alpha2hebrew == 'yes':
 
     if ARGS.outputformat == 'console':
         print(output_console("".join(INPUTDATA)))

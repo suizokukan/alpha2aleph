@@ -37,12 +37,10 @@
 #    for shortname, (fullname, before, after) in TRANSF_FB1D_FB4F:
 #        ...
 #
-# TODO
-# code mort
+# how read TRANSF_FB1D_FB4F ?
 # for shortname, (fullname, before, after) in TRANSF_FB1D_FB4F:
-#     print(">>>", fullname, " : True")
-#     print(stranalyse(fullname))
-# print()
+#     ...
+#
 TRANSF_FB1D_FB4F = (
     ("0x05d9+0x05b4→0xfb1d" , ("(0x05d9+0x05b4→0xfb1d) hebrew letter yod with hiriq",
                                chr(0x05d9) + chr(0x05b4),

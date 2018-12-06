@@ -30,39 +30,40 @@ def read_command_line_arguments():
                         action="store_true",
                         help="show symbols")
 
-    parser.add_argument('--no_alpha2hebrew',
-                        action="store_true",
-                        help="do not read the input file, do not transform it")
+    parser.add_argument('--transform_alpha2hebrew',
+                        choices=['yes', 'no'],
+                        default="yes",
+                        help="if 'no', do not read the input file, do not transform it")
 
     parser.add_argument('--inputfile',
                         type=str,
                         default="input.txt",
-                        help="…")
+                        help="name of the inputfile to be read and transformed")
 
     parser.add_argument('--symbolsfilename',
                         type=str,
                         default="symbols.txt",
-                        help='todo')
+                        help='name of the symbols file to be read')
 
     parser.add_argument('--outputformat',
                         choices=['html', 'console'],
                         default="console",
-                        help="…")
+                        help="output format")
 
     parser.add_argument("--cfgfile",
                         type=str,
                         default="config.ini",
-                        help="todo")
+                        help="name of the configuration file to be read")
 
     parser.add_argument("--checkinputdata",
                         choices=['yes', 'no'],
                         default="yes",
-                        help="todo")
+                        help="if 'yes', check the coherency of the input data")
 
     parser.add_argument("--source",
                         choices=['stdin', 'inputfile'],
                         default="inputfile",
-                        help="todo")
+                        help="choose 'stdin' to use the script through a pipe")
 
 
     return parser.parse_args()
