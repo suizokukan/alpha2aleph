@@ -237,17 +237,16 @@ def output_console(inputdata):
     # transformation console.2::main
     inputdata = transf__maingroup(inputdata)
 
-    # transformation console.3::rtltext
+    # transformation console.3::invert_rtltext
     if cfgini.CFGINI["output.console"]["invert_rtltext"] == 'True':
-        inputdata = re.sub(globals.RTLREADER_REGEX, transf__invert_text, inputdata)
+        inputdata = re.sub(globals.RTLREADER_REGEX, transf__invert_rtltext, inputdata)
 
-    # transformation console.4::globals.RTL_SYMBOLS
+    # transformation console.4::remove_RTL_SYMBOLS
     # https://en.wikipedia.org/wiki/Bi-directional_text
     inputdata = inputdata.replace(globals.RTL_SYMBOLS[0], "")
     inputdata = inputdata.replace(globals.RTL_SYMBOLS[1], "")
 
-    # transformation console.4::undo_text_delimiters
-    #    see console.1::text_delimiters
+    # transformation console.5::undo_text_delimiters
     inputdata = remove_firstlast_marker(inputdata)
 
     return inputdata
