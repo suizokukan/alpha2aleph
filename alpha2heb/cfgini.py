@@ -60,6 +60,7 @@ def read_cfg_file(filename):
             _ = cfgini["output.console"]
             _ = cfgini["output.console"]["invert_rtltext"]
             _ = cfgini["output.console"]["rtl symbols"]
+            _ = cfgini["output.console"]["use fribidi"]
 
             _ = cfgini["output.html"]
             _ = cfgini["output.html"]["body"]

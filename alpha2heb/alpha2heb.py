@@ -269,6 +269,11 @@ def output_console(inputdata):
     # transformation console.5::undo_text_delimiters
     inputdata = remove_firstlast_marker(inputdata)
 
+    # transformation console.6::use fribidi
+    if cfgini.CFGINI["output.console"]["use fribidi"].lower() == "true":
+        import pyfribidi
+        inputdata = pyfribidi.log2vis(inputdata)
+
     return inputdata
 
 def transf__maingroup(src):

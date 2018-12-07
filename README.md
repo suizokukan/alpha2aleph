@@ -37,6 +37,9 @@ $ echo "“m<éléḵ:”" | python3 alpha2heb.py --source=stdin
 
 ## output: console
 
+How do I correctly display bidirectional text ?
+Either by using the fribidi library (see below), either by using a console like Konsole or mlterm (https://sourceforge.net/projects/mlterm/). Do NOT mix those solutions !
+
 +============================================+===============================+=================================+
 |transformation name                         | where is the code ?           | config.ini                      |
 +============================================+===============================+=================================+
@@ -47,9 +50,14 @@ $ echo "“m<éléḵ:”" | python3 alpha2heb.py --source=stdin
 |  * maingroup.2::transf__text_alpha2hebrew  | transf__text_alpha2hebrew()   | - (modify symbols.txt)          |
 |  * maingroup.3::transf__use_FB1D_FB4F_chars| transf__use_FB1D_FB4F_chars() | [pipeline.use FB1D-FB4F chars]  |
 | console.3::rtltext                         | transf__invert_rtltext        | [output.console][invert_rtltext]|
-| console.4::remove_RTL_SYMBOLS              | output_console()              | -                               |
+| console.4::remove_RTL_SYMBOLS              | output_console()              | [output.console][rtl symbols]   |
 | console.5::undo_text_delimiters            | remove_firstlast_marker()     | -                               |
+| console.6::use fribidi                     | output_console()              | [output.console][use fribidi]   |
 +--------------------------------------------+-------------------------------+---------------------------------+
+
+### about fribidi:
+* about fribidi : http://fribidi.org/
+* about python-fribidi : https://github.com/RevengeComing/python-fribidi/blob/master/test/fribidi.py
 
 # todo
 - affichage correct dans le terminal :
