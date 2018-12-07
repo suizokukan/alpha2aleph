@@ -60,10 +60,6 @@ Either by using the fribidi library (see below), either by using a console like 
 * about python-fribidi : https://github.com/RevengeComing/python-fribidi/blob/master/test/fribidi.py
 
 # todo
-- affichage correct dans le terminal :
-  - https://askubuntu.com/questions/77657/how-to-enable-arabic-support-in-gnome-terminal
-  - ajouter les caractères spécieux RTL/LRT ?
-
 - il manque shin avec daghesh
 - implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt
 - dans les tests, bien vérifier source={file,stdin} + RTLSYMB ==/!= .
