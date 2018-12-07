@@ -68,27 +68,31 @@ def replace_and_log(pipeline_part, comment, src, before, after):
                              comment, before, after, extracts(before, src))
         return src.replace(before, after)
 
-    LOGGER.debug("[D01] Nothing to do in '%s' for %s : '%s' > '%s' in %s",
+    LOGGER.debug("[D01] Nothing to do in '%s' for %s : '%s' > '%s' in \"%s\"",
                  src, comment, before, after, extracts(before, src))
     return src
 
-def sub_and_log(pipeline_part, comment, before, after, src):
+def sub_and_log(cfgini_flag, pipeline_part, comment, before, after, src):
     """
-        simply return re.sub(before, after, src) with a log message
+        simply return re.sub(before, after, src) with a log message if cfgini_flag.lower() == "true"
     """
+    if cfgini_flag.lower() != "true":
+        LOGGER.debug("[D02] Nothing to do in '%s' for %s : '%s' > '%s' in %s",
+                     src, comment, before, after, extracts(before, src))
+
     if before in src:
         LOGGER.pipelinetrace(pipeline_part,
                              "%s : '%s' > '%s' in '%s'",
                              comment, before, after, extracts(before, src))
         return re.sub(before, after, src)
 
-    LOGGER.debug("[D02] Nothing to do in '%s' for %s : '%s' > '%s' in %s",
+    LOGGER.debug("[D03] Nothing to do in '%s' for %s : '%s' > '%s' in %s",
                  src, comment, before, after, extracts(before, src))
 
     return src
 
 def read_symbols(filename):
-    LOGGER.debug("[D03] read_symbols : '%s'", filename)
+    LOGGER.debug("[D04] read_symbols : '%s'", filename)
 
     success = True
     errors = []
@@ -134,26 +138,29 @@ def transf__text_alpha2hebrew(_src):
 
     return globals.RTL_SYMBOLS[0]+src+globals.RTL_SYMBOLS[1]
 
-def transf__improve_rtltext(src):
-    src = sub_and_log("transf__improve_rtltext",
-                      "final kaf:",
+def transf__improve_rtlalphatext(src):
+    src = sub_and_log(cfgini.CFGINI["pipeline.improve rtltext"]["final kaf"],
+                      "transf__improve_rtlalphatext",
+                      "final kaf",
                       "ḵ:(?P<ponctuation>)", "ḵ²:\\g<ponctuation>", src)
 
-    src = sub_and_log("transf__improve_rtltext",
+    src = sub_and_log(cfgini.CFGINI["pipeline.improve rtltext"]["alef + holam > alef + point_on_right"],
+                      "transf__improve_rtlalphatext",
                       "alef + holam > alef + point_on_right",
                       "Aô", "A°", src)
 
-    src = sub_and_log("transf__improve_rtltext",
+    src = sub_and_log(cfgini.CFGINI["pipeline.improve rtltext"]["ḥe + holam + shin > ḥe + shin"],
+                      "transf__improve_rtlalphatext",
                       "ḥe + holam + shin > ḥe + shin",
                       "ḥ(?P<accent>[<])?ôš", "ḥ\\g<accent>š", src)
 
     return src
 
-def transf__invert_text(src):
+def transf__invert_rtltext(src):
     res = src.group("rtltext")[::-1]
     res = globals.RTL_SYMBOLS[0]+res+globals.RTL_SYMBOLS[1]
 
-    LOGGER.pipelinetrace("transf__invert_text",
+    LOGGER.pipelinetrace("transf__invert_rtltext",
                          "inverting the text : '%s' > '%s'",
                          match_repr(src), res)
 
@@ -179,7 +186,7 @@ def transf__use_FB1D_FB4F_chars(_src):
     return globals.RTL_SYMBOLS[0]+src+globals.RTL_SYMBOLS[1]
 
 def output_html(inputdata):
-    LOGGER.debug("[D04] [output_html] : data to be read=%s", inputdata)
+    LOGGER.debug("[D05] [output_html] : data to be read=%s", inputdata)
 
     RTL_START = '<span dir="rtl">'
     RTL_END = '</span>'
@@ -203,17 +210,17 @@ def output_html(inputdata):
     #    source string.
     inputdata = add_firstlast_marker(inputdata)
 
-    # transformation html.2::main
+    # transformation html.2::maingroup
     inputdata = transf__maingroup(inputdata)
 
-    # transformation html.3::\n
+    # transformation html.3::br
     inputdata = inputdata.replace("\n", "<br/>\n")
 
-    # transformation html.4::globals.RTL_SYMBOLS
+    # transformation html.4::RTL_SYMBOLS
     inputdata = inputdata.replace(globals.RTL_SYMBOLS[0], RTL_START)
     inputdata = inputdata.replace(globals.RTL_SYMBOLS[1], RTL_END)
 
-    # transformation console.5::undo_text_delimiters
+    # transformation html.5::undo_text_delimiters
     #    see transformation html.1::text_delimiters
     inputdata = remove_firstlast_marker(inputdata)
 
@@ -227,18 +234,18 @@ def output_html(inputdata):
     return header + inputdata + foot
 
 def output_console(inputdata):
-    LOGGER.debug("[D05] [output_console] : data to be read=%s", inputdata)
+    LOGGER.debug("[D06] [output_console] : data to be read=%s", inputdata)
 
     # transformation console.1::text_delimiters
     #    let's add a char at the very beginning and at the very end of the
     #    source string.
     inputdata = add_firstlast_marker(inputdata)
 
-    # transformation console.2::main
+    # transformation console.2::maingroup
     inputdata = transf__maingroup(inputdata)
 
     # transformation console.3::invert_rtltext
-    if cfgini.CFGINI["output.console"]["invert_rtltext"] == 'True':
+    if cfgini.CFGINI["output.console"]["invert_rtltext"].lower() == 'true':
         inputdata = re.sub(globals.RTLREADER_REGEX, transf__invert_rtltext, inputdata)
 
     # transformation console.4::remove_RTL_SYMBOLS
@@ -252,10 +259,10 @@ def output_console(inputdata):
     return inputdata
 
 def transf__maingroup(src):
-    LOGGER.debug("[D06] transf__maingroup()")
+    LOGGER.debug("[D07] transf__maingroup()")
 
-    # transformation maingroup.1::improve_rtltext
-    src = transf__improve_rtltext(src)
+    # transformation maingroup.1::improve_rtlalphatext
+    src = transf__improve_rtlalphatext(src)
 
     # transformation maingroup.2::transf__text_alpha2hebrew
     src = re.sub(globals.RTLREADER_REGEX, transf__text_alpha2hebrew, src)
@@ -266,7 +273,7 @@ def transf__maingroup(src):
     return src
 
 def check_inputdata(inputdata):
-    LOGGER.debug("[D07] check_inputdata()")
+    LOGGER.debug("[D08] check_inputdata()")
 
     success = True
     errors = []

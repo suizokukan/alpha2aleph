@@ -77,4 +77,8 @@ def extracts(target, src, amplitude=10):
     for i, _res in enumerate(res):
         finalres.append("(#{0}) : \"{1}\"".format(i, _res))
 
-    return " /// ".join(finalres)
+    res = " /// ".join(finalres)
+    if res:
+        return res
+    else:
+        return "(empty extract)"

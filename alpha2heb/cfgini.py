@@ -52,20 +52,28 @@ def read_cfg_file(filename):
         cfgini.read(filename)
     except configparser.DuplicateOptionError as err:
         success = False
-        errors.append("Ill-formed config file '{0}' : {1}".format(filename, err))
+        errors.append("Ill-formed config file '{0}' : duplicate key {1}".format(filename, err))
 
     if success:
         try:
             # let's check the presence of some values :
             _ = cfgini["output.console"]
             _ = cfgini["output.console"]["invert_rtltext"]
+
             _ = cfgini["pipeline.trace"]
             _ = cfgini["pipeline.trace"]["yes"]
             _ = cfgini["pipeline.trace"]["no"]
+
             _ = cfgini["pipeline.use FB1D-FB4F chars"]
+
+            _ = cfgini["pipeline.improve rtltext"]
+            _ = cfgini["pipeline.improve rtltext"]["final kaf"]
+            _ = cfgini["pipeline.improve rtltext"]["alef + holam > alef + point_on_right"]
+            _ = cfgini["pipeline.improve rtltext"]["ḥe + holam + shin > ḥe + shin"]
+
         except KeyError as err:
             success = False
-            errors.append("Ill-formed config file '{0}' : {1}".format(filename, err))
+            errors.append("Ill-formed config file '{0}' : missing key {1}".format(filename, err))
 
     if success:
         globals.RTL_SYMBOLS = (cfgini["inputdata.format"]["RTL_SYMBOL_START"],
