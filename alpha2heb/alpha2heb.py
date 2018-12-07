@@ -31,12 +31,8 @@
 
         alphaheb.py : entry point in the project.
 """
-import configparser
-import logging
-import logging.config
 import re
 import sys
-import unicodedata
 
 import globals
 
@@ -112,7 +108,10 @@ def read_symbols(filename):
                     alpha = alpha.strip()
                     hebrew = hebrew.strip()
                     if alpha in alpha2hebrew:
-                        errors.append("key '{0}' has alread been defined; new definition in line {1} (line #{2})".format(alpha, line, line_index))
+                        errors.append("key '{0}' has alread been defined; "
+                                      "new definition in line {1} (line #{2})".format(alpha,
+                                                                                      line,
+                                                                                      line_index))
                         success = False
                     alpha2hebrew[alpha] = hebrew
 
@@ -188,8 +187,8 @@ def transf__use_FB1D_FB4F_chars(_src):
 def output_html(inputdata):
     LOGGER.debug("[D05] [output_html] : data to be read=%s", inputdata)
 
-    RTL_START = '<span dir="rtl">'
-    RTL_END = '</span>'
+    rtl_start = '<span class="rtltext" dir="rtl">'
+    rtl_end = '</span>'
 
     header = []
     header.append("<!DOCTYPE html>")
@@ -199,6 +198,15 @@ def output_html(inputdata):
     header.append("<head>")
     header.append("    <title>Page Title</title>")
     header.append('    <meta http-equiv="content-type" content="text/html; charset=utf-8" />')
+    header.append("    <style>")
+    header.append("        body {")
+    header.append('          {0}'.format(cfgini.CFGINI["output.html"]["body"]))
+    header.append("          }")
+    header.append("")
+    header.append("        .rtltext {")
+    header.append('          {0}'.format(cfgini.CFGINI["output.html"]["rtltext"]))
+    header.append("        }")
+    header.append("    </style>")
     header.append("</head>")
     header.append("")
     header.append("<body>")
@@ -217,8 +225,8 @@ def output_html(inputdata):
     inputdata = inputdata.replace("\n", "<br/>\n")
 
     # transformation html.4::RTL_SYMBOLS
-    inputdata = inputdata.replace(globals.RTL_SYMBOLS[0], RTL_START)
-    inputdata = inputdata.replace(globals.RTL_SYMBOLS[1], RTL_END)
+    inputdata = inputdata.replace(globals.RTL_SYMBOLS[0], rtl_start)
+    inputdata = inputdata.replace(globals.RTL_SYMBOLS[1], rtl_end)
 
     # transformation html.5::undo_text_delimiters
     #    see transformation html.1::text_delimiters
@@ -312,7 +320,7 @@ def check_inputdata(inputdata):
                         last_symbol = char
                 else:
                     if last_symbol == char:
-                        LOGGER.error("[E01] the symbol '{0}' appears two times in a row (context={1})".format(char, context))
+                        LOGGER.error("[E01] the symbol '%s' appears two times in a row (context=%s)", char, context)
                         success = False
                     last_symbol = char
 
@@ -352,9 +360,9 @@ elif ARGS.source == "stdin":
     INPUTDATA = sys.stdin.read()
 
 if ARGS.checkinputdata == 'yes':
-    check_success, check_errors = check_inputdata(INPUTDATA)
-    if not check_success:
-        LOGGER.error("[E06] Ill-formed input data '%s'; error(s)=%s", ARGS.cfgfile, check_errors)
+    CHECK_SUCCESS, CHECK_ERRORS = check_inputdata(INPUTDATA)
+    if not CHECK_SUCCESS:
+        LOGGER.error("[E06] Ill-formed input data '%s'; error(s)=%s", ARGS.cfgfile, CHECK_ERRORS)
         LOGGER.error("[E07] === program stops ===")
         sys.exit(-2)
 

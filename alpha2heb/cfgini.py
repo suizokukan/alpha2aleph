@@ -72,8 +72,8 @@ def read_cfg_file(filename):
             _ = cfgini["pipeline.improve rtlalphatext"]["ḥe + holam + shin > ḥe + shin"]
 
             _ = cfgini["output.html"]
-            _ = cfgini["output.html"]["rtl font"]
-            _ = cfgini["output.html"]["non rtl font"]
+            _ = cfgini["output.html"]["body"]
+            _ = cfgini["output.html"]["rtltext"]
 
         except KeyError as err:
             success = False
