@@ -59,6 +59,11 @@ def read_cfg_file(filename):
             # let's check the presence of some values :
             _ = cfgini["output.console"]
             _ = cfgini["output.console"]["invert_rtltext"]
+            _ = cfgini["output.console"]["rtl symbols"]
+
+            _ = cfgini["output.html"]
+            _ = cfgini["output.html"]["body"]
+            _ = cfgini["output.html"]["rtltext"]
 
             _ = cfgini["pipeline.trace"]
             _ = cfgini["pipeline.trace"]["yes"]
@@ -70,10 +75,6 @@ def read_cfg_file(filename):
             _ = cfgini["pipeline.improve rtlalphatext"]["final kaf"]
             _ = cfgini["pipeline.improve rtlalphatext"]["alef + holam > alef + point_on_right"]
             _ = cfgini["pipeline.improve rtlalphatext"]["ḥe + holam + shin > ḥe + shin"]
-
-            _ = cfgini["output.html"]
-            _ = cfgini["output.html"]["body"]
-            _ = cfgini["output.html"]["rtltext"]
 
         except KeyError as err:
             success = False

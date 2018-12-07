@@ -258,8 +258,13 @@ def output_console(inputdata):
 
     # transformation console.4::remove_RTL_SYMBOLS
     # https://en.wikipedia.org/wiki/Bi-directional_text
-    inputdata = inputdata.replace(globals.RTL_SYMBOLS[0], "")
-    inputdata = inputdata.replace(globals.RTL_SYMBOLS[1], "")
+    if cfgini.CFGINI["output.console"]["rtl symbols"].lower() == "0x200f_0x200e":
+        inputdata = inputdata.replace(globals.RTL_SYMBOLS[0], chr(0x200F))
+        inputdata = inputdata.replace(globals.RTL_SYMBOLS[1], chr(0x200E))
+
+    elif cfgini.CFGINI["output.console"]["rtl symbols"].lower() == "empty string":
+        inputdata = inputdata.replace(globals.RTL_SYMBOLS[0], "")
+        inputdata = inputdata.replace(globals.RTL_SYMBOLS[1], "")
 
     # transformation console.5::undo_text_delimiters
     inputdata = remove_firstlast_marker(inputdata)
