@@ -52,7 +52,7 @@ $ echo "“m<éléḵ:”" | python3 alpha2heb.py --source=stdin
 +--------------------------------------------+-------------------------------+---------------------------------+
 
 # todo
-- choisir la police pour export html
+> 0.0.7 : choisir la police pour export html
 
 - il manque shin avec daghesh
 - implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt
