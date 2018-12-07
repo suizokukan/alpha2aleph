@@ -66,10 +66,14 @@ def read_cfg_file(filename):
 
             _ = cfgini["pipeline.use FB1D-FB4F chars"]
 
-            _ = cfgini["pipeline.improve rtltext"]
-            _ = cfgini["pipeline.improve rtltext"]["final kaf"]
-            _ = cfgini["pipeline.improve rtltext"]["alef + holam > alef + point_on_right"]
-            _ = cfgini["pipeline.improve rtltext"]["ḥe + holam + shin > ḥe + shin"]
+            _ = cfgini["pipeline.improve rtlalphatext"]
+            _ = cfgini["pipeline.improve rtlalphatext"]["final kaf"]
+            _ = cfgini["pipeline.improve rtlalphatext"]["alef + holam > alef + point_on_right"]
+            _ = cfgini["pipeline.improve rtlalphatext"]["ḥe + holam + shin > ḥe + shin"]
+
+            _ = cfgini["output.html"]
+            _ = cfgini["output.html"]["rtl font"]
+            _ = cfgini["output.html"]["non rtl font"]
 
         except KeyError as err:
             success = False

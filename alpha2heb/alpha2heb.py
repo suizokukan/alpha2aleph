@@ -139,17 +139,17 @@ def transf__text_alpha2hebrew(_src):
     return globals.RTL_SYMBOLS[0]+src+globals.RTL_SYMBOLS[1]
 
 def transf__improve_rtlalphatext(src):
-    src = sub_and_log(cfgini.CFGINI["pipeline.improve rtltext"]["final kaf"],
+    src = sub_and_log(cfgini.CFGINI["pipeline.improve rtlalphatext"]["final kaf"],
                       "transf__improve_rtlalphatext",
                       "final kaf",
                       "ḵ:(?P<ponctuation>)", "ḵ²:\\g<ponctuation>", src)
 
-    src = sub_and_log(cfgini.CFGINI["pipeline.improve rtltext"]["alef + holam > alef + point_on_right"],
+    src = sub_and_log(cfgini.CFGINI["pipeline.improve rtlalphatext"]["alef + holam > alef + point_on_right"],
                       "transf__improve_rtlalphatext",
                       "alef + holam > alef + point_on_right",
                       "Aô", "A°", src)
 
-    src = sub_and_log(cfgini.CFGINI["pipeline.improve rtltext"]["ḥe + holam + shin > ḥe + shin"],
+    src = sub_and_log(cfgini.CFGINI["pipeline.improve rtlalphatext"]["ḥe + holam + shin > ḥe + shin"],
                       "transf__improve_rtlalphatext",
                       "ḥe + holam + shin > ḥe + shin",
                       "ḥ(?P<accent>[<])?ôš", "ḥ\\g<accent>š", src)

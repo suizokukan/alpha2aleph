@@ -27,7 +27,7 @@ $ echo "“m<éléḵ:”" | python3 alpha2heb.py --source=stdin
 | html.1::text_delimiters                    | add_firstlast_marker()        | -                               |
 +--------------------------------------------+-------------------------------+---------------------------------+
 | html.2::main                               |                               |                                 |
-|  * maingroup.1::improve_rtlalphatext       | transf__improve_rtlalphatext()| [pipeline.improve rtltext]      |
+|  * maingroup.1::improve_rtlalphatext       | transf__improve_rtlalphatext()| [pipeline.improve rtlalphatext] |
 |  * maingroup.2::transf__text_alpha2hebrew  | transf__text_alpha2hebrew()   | - (modify symbols.txt)          |
 |  * maingroup.3::transf__use_FB1D_FB4F_chars| transf__use_FB1D_FB4F_chars() | [pipeline.use FB1D-FB4F chars]  |
 | html.3::br                                 | output_html()                 | -                               |
@@ -43,7 +43,7 @@ $ echo "“m<éléḵ:”" | python3 alpha2heb.py --source=stdin
 | console.1::text_delimiters                 | add_firstlast_marker()        | -                               |
 +--------------------------------------------+-------------------------------+---------------------------------+
 | console.2::maingroup                       |                               |                                 |
-|  * maingroup.1::improve_rtlalphatext       | transf__improve_rtlalphatext()| [pipeline.improve rtltext]      |
+|  * maingroup.1::improve_rtlalphatext       | transf__improve_rtlalphatext()| [pipeline.improve rtlalphatext] |
 |  * maingroup.2::transf__text_alpha2hebrew  | transf__text_alpha2hebrew()   | - (modify symbols.txt)          |
 |  * maingroup.3::transf__use_FB1D_FB4F_chars| transf__use_FB1D_FB4F_chars() | [pipeline.use FB1D-FB4F chars]  |
 | console.3::rtltext                         | transf__invert_rtltext        | [output.console][invert_rtltext]|
@@ -52,6 +52,8 @@ $ echo "“m<éléḵ:”" | python3 alpha2heb.py --source=stdin
 +--------------------------------------------+-------------------------------+---------------------------------+
 
 # todo
+- choisir la police pour export html
+
 - il manque shin avec daghesh
 - implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt
 - dans les tests, bien vérifier source={file,stdin} + RTLSYMB ==/!= .
