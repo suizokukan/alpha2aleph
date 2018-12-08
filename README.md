@@ -60,6 +60,8 @@ Either by using the fribidi library (see below), either by using a console like 
 * about python-fribidi : https://github.com/RevengeComing/python-fribidi/blob/master/test/fribidi.py
 
 # todo
+> 0.0.9 : tests unitaires
+
 - il manque shin avec daghesh
 - implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt
 - dans les tests, bien vérifier source={file,stdin} + RTLSYMB ==/!= .

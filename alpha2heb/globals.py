@@ -47,7 +47,7 @@ def create_rtlreader_regex():
     return re.compile(res)
 
 __projectname__ = "alphab2heb"
-__version__ = "0.0.8"
+__version__ = "0.0.9"
 __license__ = "GPLv3"
 __author__ = "Xavier Faure (suizokukan)"
 __email__ = "suizokukan@orange.fr"
