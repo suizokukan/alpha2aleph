@@ -1,1 +1,1 @@
-echo "“m<éléḵ:”" | bin/alpha2heb --source=stdin --outputformat=console
+echo "“m<éléḵ:”" | bin/alpha2aleph --source=stdin --outputformat=console

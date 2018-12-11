@@ -1,7 +1,7 @@
 import unittest
 import os.path
 
-from alpha2heb.main import entrypoint
+from alpha2aleph.main import entrypoint
 
 class Tests(unittest.TestCase):
     def test1(self):

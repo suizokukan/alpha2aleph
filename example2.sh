@@ -1,1 +1,1 @@
-bin/alpha2heb --source=inputfile --outputformat=html
+bin/alpha2aleph --source=inputfile --outputformat=html

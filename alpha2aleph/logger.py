@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 ################################################################################
-#    alpha2heb Copyright (C) 2018 Suizokukan
+#    alpha2aleph Copyright (C) 2018 Suizokukan
 #    Contact: suizokukan _A.T._ orange dot fr
 #
-#    This file is part of alpha2heb.
-#    alpha2heb is free software: you can redistribute it and/or modify
+#    This file is part of alpha2aleph.
+#    alpha2aleph is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
-#    alpha2heb is distributed in the hope that it will be useful,
+#    alpha2aleph is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with alpha2heb.  If not, see <http://www.gnu.org/licenses/>.
+#    along with alpha2aleph.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
 """
-        alpha2heb by suizokukan (suizokukan AT orange DOT fr)
+        alpha2aleph by suizokukan (suizokukan AT orange DOT fr)
 
         A (Python3/GPLv3/Linux/CLI) project, using no additional
         modules than the ones installed with Python3.
@@ -32,8 +32,8 @@
         logger.py : logging facilities
 """
 import logging
-import alpha2heb.cfgini
-import alpha2heb.glob
+import alpha2aleph.cfgini
+import alpha2aleph.glob
 LOGGING_LEVEL = logging.ERROR
 
 class LoggerPlus(logging.Logger):
@@ -53,10 +53,10 @@ class LoggerPlus(logging.Logger):
                 Call Logger.info() only if the flags defined in the cfg file
                 authorize a log message.
         """
-        if pipeline_part in alpha2heb.cfgini.CFGINI["pipeline.trace"]["yes"]:
+        if pipeline_part in alpha2aleph.cfgini.CFGINI["pipeline.trace"]["yes"]:
             return logging.Logger.info(self, "["+pipeline_part+"] "+msg, *args, **kwargs)
 
-        elif not pipeline_part in alpha2heb.cfgini.CFGINI["pipeline.trace"]["no"]:
+        elif not pipeline_part in alpha2aleph.cfgini.CFGINI["pipeline.trace"]["no"]:
             raise RuntimeError("Undefined pipeline part '%s' in the configuration file.", pipeline_part)
 
         return None
@@ -65,4 +65,4 @@ logging.setLoggerClass(LoggerPlus)
 LOGGERFORMAT = '%(levelname)-8s %(message)s'
 logging.basicConfig(format=LOGGERFORMAT, level=LOGGING_LEVEL)
 
-alpha2heb.glob.LOGGER = logging.getLogger(__name__)
+alpha2aleph.glob.LOGGER = logging.getLogger(__name__)

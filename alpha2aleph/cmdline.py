@@ -30,7 +30,7 @@ def read_command_line_arguments():
                         action="store_true",
                         help="show symbols")
 
-    parser.add_argument('--transform_alpha2hebrew',
+    parser.add_argument('--transform_alpha2alephrew',
                         choices=['yes', 'no'],
                         default="yes",
                         help="if 'no', do not read the input file, do not transform it")

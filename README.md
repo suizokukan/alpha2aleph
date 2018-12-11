@@ -1,4 +1,4 @@
-# alpha2heb
+# alpha2aleph
 
 # input file format
 * utf-8
@@ -7,8 +7,8 @@
 # examples
 `$ python3 example0.py`
 
-`$ ./example1.sh` [using bin/alpha2heb pseudo-executable] : console output
-`$ ./example2.sh` [using bin/alpha2heb pseudo-executable] : html output
+`$ ./example1.sh` [using bin/alpha2aleph pseudo-executable] : console output
+`$ ./example2.sh` [using bin/alpha2aleph pseudo-executable] : html output
 
 # tests
 `$ nosetests3`
@@ -28,8 +28,8 @@ Modify `logger.py::LOGGING_LEVEL`
 * a runtimeerror may be raised : see raise RuntimeError in the source code.
 
 # pipe'able ? Yes !
-`$ echo "◆m<éléḵ:■" | python3 alpha2heb.py --source=stdin`
-`$ echo "“m<éléḵ:”" | python3 alpha2heb.py --source=stdin`
+`$ echo "◆m<éléḵ:■" | python3 alpha2aleph.py --source=stdin`
+`$ echo "“m<éléḵ:”" | python3 alpha2aleph.py --source=stdin`
 
 # transformations' pipeline
 ## output: html
@@ -41,7 +41,7 @@ Modify `logger.py::LOGGING_LEVEL`
 +--------------------------------------------+-------------------------------+---------------------------------+
 | html.2::main                               |                               |                                 |
 |  * maingroup.1::improve_rtlalphatext       | transf__improve_rtlalphatext()| [pipeline.improve rtlalphatext] |
-|  * maingroup.2::transf__text_alpha2hebrew  | transf__text_alpha2hebrew()   | - (modify symbols.txt)          |
+|  * maingroup.2::transf__text_alpha2alephrew  | transf__text_alpha2alephrew()   | - (modify symbols.txt)          |
 |  * maingroup.3::transf__use_FB1D_FB4F_chars| transf__use_FB1D_FB4F_chars() | [pipeline.use FB1D-FB4F chars]  |
 | html.3::br                                 | output_html()                 | -                               |
 | html.4::RTL_SYMBOLS                        | output_html()                 | -                               |
@@ -60,7 +60,7 @@ Either by using the fribidi library (see below), either by using a console like 
 +--------------------------------------------+-------------------------------+---------------------------------+
 | console.2::maingroup                       |                               |                                 |
 |  * maingroup.1::improve_rtlalphatext       | transf__improve_rtlalphatext()| [pipeline.improve rtlalphatext] |
-|  * maingroup.2::transf__text_alpha2hebrew  | transf__text_alpha2hebrew()   | - (modify symbols.txt)          |
+|  * maingroup.2::transf__text_alpha2alephrew  | transf__text_alpha2alephrew()   | - (modify symbols.txt)          |
 |  * maingroup.3::transf__use_FB1D_FB4F_chars| transf__use_FB1D_FB4F_chars() | [pipeline.use FB1D-FB4F chars]  |
 | console.3::rtltext                         | transf__invert_rtltext        | [output.console][invert_rtltext]|
 | console.4::remove_RTL_SYMBOLS              | output_console()              | [output.console][rtl symbols]   |
@@ -73,7 +73,9 @@ Either by using the fribidi library (see below), either by using a console like 
 * about python-fribidi : https://github.com/RevengeComing/python-fribidi/blob/master/test/fribidi.py
 
 # todo
-- 0.1 : alpha2aleph & pip
+- 0.1 : alpha2aleph
+- 0.1.1 : pip
+- 0.1.2 : bug : example1.sh renvoie un \n qui n'existe pas dans la chaîne d'entrée
 - vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.
 - bidifri à importer tout de suite avec un flag pour savoir si la lib est disponible ou pas; erreur si bidifi=true dans config.ini
 - il manque shin avec daghesh
