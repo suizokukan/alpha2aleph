@@ -1,4 +1,4 @@
-from globals import __projectname__, __name__, __version__, __license__, __author__, __email__
+from .glob import __projectname__, __name__, __version__, __license__, __author__, __email__
 
 import argparse
 

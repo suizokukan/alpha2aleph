@@ -34,15 +34,21 @@
 import re
 import sys
 
-import globals
+import alpha2heb.logger   # ... initialization of LOGGER
 
-from logger import LOGGER
-import cfgini
+from .glob import LOGGER, ALPHA2HEBREW, ALPHA2HEBREW_KEYS
 
-import fb1d_fb4f
+import alpha2heb.globalsrtl
+from alpha2heb.regex import get_rtlreader_regex
 
-from utils import stranalyse, match_repr, extracts, extract_around_index
-from cmdline import read_command_line_arguments
+alpha2heb.globalsrtl.RTLREADER_REGEX = get_rtlreader_regex()
+
+from alpha2heb.cfgini import CFGINI
+
+from alpha2heb.fb1d_fb4f import TRANSF_FB1D_FB4F
+
+from alpha2heb.utils import stranalyse, match_repr, extracts, extract_around_index
+from alpha2heb.cmdline import read_command_line_arguments
 
 def add_firstlast_marker(src):
     LOGGER.pipelinetrace("add_firstlast_marker",
@@ -126,29 +132,29 @@ def read_symbols(filename):
 def transf__text_alpha2hebrew(_src):
     src = _src.group("rtltext")
 
-    for alphachar in ALPHA2HEBREW_KEYS:
+    for alphachar in alpha2heb.logger.ALPHA2HEBREW_KEYS:
         src = replace_and_log("transf__text_alpha2hebrew",
                               "[transf__text_alpha2hebrew]",
-                              src, alphachar, ALPHA2HEBREW[alphachar])
+                              src, alphachar, alpha2heb.logger.ALPHA2HEBREW[alphachar])
 
     LOGGER.pipelinetrace("transf__text_alpha2hebrew",
                          "Adding globals.RTL_SYMBOLS to '%s' : '%s' and '%s'",
-                         src, globals.RTL_SYMBOLS[0], globals.RTL_SYMBOLS[1])
+                         src, alpha2heb.globalsrtl.RTL_SYMBOLS[0], alpha2heb.globalsrtl.RTL_SYMBOLS[1])
 
-    return globals.RTL_SYMBOLS[0]+src+globals.RTL_SYMBOLS[1]
+    return alpha2heb.globalsrtl.RTL_SYMBOLS[0]+src+alpha2heb.globalsrtl.RTL_SYMBOLS[1]
 
 def transf__improve_rtlalphatext(src):
-    src = sub_and_log(cfgini.CFGINI["pipeline.improve rtlalphatext"]["final kaf"],
+    src = sub_and_log(alpha2heb.cfgini.CFGINI["pipeline.improve rtlalphatext"]["final kaf"],
                       "transf__improve_rtlalphatext",
                       "final kaf",
                       "ḵ:(?P<ponctuation>)", "ḵ²:\\g<ponctuation>", src)
 
-    src = sub_and_log(cfgini.CFGINI["pipeline.improve rtlalphatext"]["alef + holam > alef + point_on_right"],
+    src = sub_and_log(alpha2heb.cfgini.CFGINI["pipeline.improve rtlalphatext"]["alef + holam > alef + point_on_right"],
                       "transf__improve_rtlalphatext",
                       "alef + holam > alef + point_on_right",
                       "Aô", "A°", src)
 
-    src = sub_and_log(cfgini.CFGINI["pipeline.improve rtlalphatext"]["ḥe + holam + shin > ḥe + shin"],
+    src = sub_and_log(alpha2heb.cfgini.CFGINI["pipeline.improve rtlalphatext"]["ḥe + holam + shin > ḥe + shin"],
                       "transf__improve_rtlalphatext",
                       "ḥe + holam + shin > ḥe + shin",
                       "ḥ(?P<accent>[<])?ôš", "ḥ\\g<accent>š", src)
@@ -157,7 +163,7 @@ def transf__improve_rtlalphatext(src):
 
 def transf__invert_rtltext(src):
     res = src.group("rtltext")[::-1]
-    res = globals.RTL_SYMBOLS[0]+res+globals.RTL_SYMBOLS[1]
+    res = alpha2heb.globalsrtl.RTL_SYMBOLS[0]+res+alpha2heb.globalsrtl.RTL_SYMBOLS[1]
 
     LOGGER.pipelinetrace("transf__invert_rtltext",
                          "inverting the text : '%s' > '%s'",
@@ -169,9 +175,9 @@ def transf__use_FB1D_FB4F_chars(_src):
     src = _src.group("rtltext")
 
     # ---- 1/2 FB1D-FB4F characters : ----
-    for shortname, (fullname, before, after) in fb1d_fb4f.TRANSF_FB1D_FB4F:
+    for shortname, (fullname, before, after) in alpha2heb.fb1d_fb4f.TRANSF_FB1D_FB4F:
 
-        if cfgini.CFGINI["pipeline.use FB1D-FB4F chars"][fullname].lower() == "true":
+        if alpha2heb.cfgini.CFGINI["pipeline.use FB1D-FB4F chars"][fullname].lower() == "true":
             pipeline_part = "transf__use_FB1D_FB4F_chars"
             comment = "{0}::{1}".format("transf__use_FB1D_FB4F_chars",
                                         fullname)
@@ -179,10 +185,10 @@ def transf__use_FB1D_FB4F_chars(_src):
 
     # ---- 2/2 let's add the first/last chars removed by calling this function ----
     LOGGER.pipelinetrace("transf__use_FB1D_FB4F_chars",
-                         "Adding globals.RTL_SYMBOLS to '%s' : '%s' and '%s'",
-                         src, globals.RTL_SYMBOLS[0], globals.RTL_SYMBOLS[1])
+                         "Adding alpha2heb.globalsrtl.RTL_SYMBOLS to '%s' : '%s' and '%s'",
+                         src, alpha2heb.globalsrtl.RTL_SYMBOLS[0], alpha2heb.globalsrtl.RTL_SYMBOLS[1])
 
-    return globals.RTL_SYMBOLS[0]+src+globals.RTL_SYMBOLS[1]
+    return alpha2heb.globalsrtl.RTL_SYMBOLS[0]+src+alpha2heb.globalsrtl.RTL_SYMBOLS[1]
 
 def output_html(inputdata):
     LOGGER.debug("[D05] [output_html] : data to be read=%s", inputdata)
@@ -200,11 +206,11 @@ def output_html(inputdata):
     header.append('    <meta http-equiv="content-type" content="text/html; charset=utf-8" />')
     header.append("    <style>")
     header.append("        body {")
-    header.append('          {0}'.format(cfgini.CFGINI["output.html"]["body"]))
+    header.append('          {0}'.format(alpha2heb.cfgini.CFGINI["output.html"]["body"]))
     header.append("          }")
     header.append("")
     header.append("        .rtltext {")
-    header.append('          {0}'.format(cfgini.CFGINI["output.html"]["rtltext"]))
+    header.append('          {0}'.format(alpha2heb.cfgini.CFGINI["output.html"]["rtltext"]))
     header.append("        }")
     header.append("    </style>")
     header.append("</head>")
@@ -216,21 +222,21 @@ def output_html(inputdata):
     # transformation html.1::text_delimiters
     #    let's add a char at the very beginning and at the very end of the
     #    source string.
-    inputdata = add_firstlast_marker(inputdata)
+    outputdata = add_firstlast_marker(inputdata)
 
     # transformation html.2::maingroup
-    inputdata = transf__maingroup(inputdata)
+    outputdata = transf__maingroup(outputdata)
 
     # transformation html.3::br
-    inputdata = inputdata.replace("\n", "<br/>\n")
+    outputdata = outputdata.replace("\n", "<br/>\n")
 
     # transformation html.4::RTL_SYMBOLS
-    inputdata = inputdata.replace(globals.RTL_SYMBOLS[0], rtl_start)
-    inputdata = inputdata.replace(globals.RTL_SYMBOLS[1], rtl_end)
+    outputdata = outputdata.replace(alpha2heb.globalsrtl.RTL_SYMBOLS[0], rtl_start)
+    outputdata = outputdata.replace(alpha2heb.globalsrtl.RTL_SYMBOLS[1], rtl_end)
 
     # transformation html.5::undo_text_delimiters
     #    see transformation html.1::text_delimiters
-    inputdata = remove_firstlast_marker(inputdata)
+    outputdata = remove_firstlast_marker(outputdata)
 
     foot = []
     foot.append("")
@@ -239,7 +245,7 @@ def output_html(inputdata):
     foot.append("</html>")
     foot = "\n".join(foot)
 
-    return header + inputdata + foot
+    return header + outputdata + foot
 
 def output_console(inputdata):
     LOGGER.debug("[D06] [output_console] : data to be read=%s", inputdata)
@@ -247,34 +253,34 @@ def output_console(inputdata):
     # transformation console.1::text_delimiters
     #    let's add a char at the very beginning and at the very end of the
     #    source string.
-    inputdata = add_firstlast_marker(inputdata)
+    outputdata = add_firstlast_marker(inputdata)
 
     # transformation console.2::maingroup
-    inputdata = transf__maingroup(inputdata)
+    outputdata = transf__maingroup(outputdata)
 
     # transformation console.3::invert_rtltext
-    if cfgini.CFGINI["output.console"]["invert_rtltext"].lower() == 'true':
-        inputdata = re.sub(globals.RTLREADER_REGEX, transf__invert_rtltext, inputdata)
+    if alpha2heb.cfgini.CFGINI["output.console"]["invert_rtltext"].lower() == 'true':
+        outputdata = re.sub(alpha2heb.globalsrtl.RTLREADER_REGEX, transf__invert_rtltext, outputdata)
 
     # transformation console.4::remove_RTL_SYMBOLS
     # https://en.wikipedia.org/wiki/Bi-directional_text
-    if cfgini.CFGINI["output.console"]["rtl symbols"].lower() == "0x200f_0x200e":
-        inputdata = inputdata.replace(globals.RTL_SYMBOLS[0], chr(0x200F))
-        inputdata = inputdata.replace(globals.RTL_SYMBOLS[1], chr(0x200E))
+    if alpha2heb.cfgini.CFGINI["output.console"]["rtl symbols"].lower() == "0x200f_0x200e":
+        outputdata = outputdata.replace(alpha2heb.globalsrtl.RTL_SYMBOLS[0], chr(0x200F))
+        outputdata = outputdata.replace(alpha2heb.globalsrtl.RTL_SYMBOLS[1], chr(0x200E))
 
-    elif cfgini.CFGINI["output.console"]["rtl symbols"].lower() == "empty string":
-        inputdata = inputdata.replace(globals.RTL_SYMBOLS[0], "")
-        inputdata = inputdata.replace(globals.RTL_SYMBOLS[1], "")
+    elif alpha2heb.cfgini.CFGINI["output.console"]["rtl symbols"].lower() == "empty string":
+        outputdata = outputdata.replace(alpha2heb.globalsrtl.RTL_SYMBOLS[0], "")
+        outputdata = outputdata.replace(alpha2heb.globalsrtl.RTL_SYMBOLS[1], "")
 
     # transformation console.5::undo_text_delimiters
-    inputdata = remove_firstlast_marker(inputdata)
+    outputdata = remove_firstlast_marker(outputdata)
 
     # transformation console.6::use fribidi
-    if cfgini.CFGINI["output.console"]["use fribidi"].lower() == "true":
+    if alpha2heb.cfgini.CFGINI["output.console"]["use fribidi"].lower() == "true":
         import pyfribidi
-        inputdata = pyfribidi.log2vis(inputdata)
+        outputdata = pyfribidi.log2vis(outputdata)
 
-    return inputdata
+    return outputdata
 
 def transf__maingroup(src):
     LOGGER.debug("[D07] transf__maingroup()")
@@ -283,10 +289,10 @@ def transf__maingroup(src):
     src = transf__improve_rtlalphatext(src)
 
     # transformation maingroup.2::transf__text_alpha2hebrew
-    src = re.sub(globals.RTLREADER_REGEX, transf__text_alpha2hebrew, src)
+    src = re.sub(alpha2heb.globalsrtl.RTLREADER_REGEX, transf__text_alpha2hebrew, src)
 
     # transformation maingroup.3::transf__use_FB1D_FB4F_chars
-    src = re.sub(globals.RTLREADER_REGEX, transf__use_FB1D_FB4F_chars, src)
+    src = re.sub(alpha2heb.globalsrtl.RTLREADER_REGEX, transf__use_FB1D_FB4F_chars, src)
 
     return src
 
@@ -299,17 +305,17 @@ def check_inputdata(inputdata):
     # ------------------------------------------------------------------------
     # ---- a special case : no check if RTL_SYMBOLS[0]==RTL_SYMBOLS[1]
     # ------------------------------------------------------------------------
-    if globals.RTL_SYMBOLS[0] == globals.RTL_SYMBOLS[1]:
+    if alpha2heb.globalsrtl.RTL_SYMBOLS[0] == alpha2heb.globalsrtl.RTL_SYMBOLS[1]:
         return True, []
 
     # ------------------------------------------------------------------------
     # ---- common case : RTL_SYMBOLS[0] != RTL_SYMBOLS[1]
     # ------------------------------------------------------------------------
     # first check : is num_of(globals.RTL_SYMBOLS[0]) equal to num_of(globals.RTL_SYMBOLS[1]) ?
-    if inputdata.count(globals.RTL_SYMBOLS[0]) != inputdata.count(globals.RTL_SYMBOLS[1]):
+    if inputdata.count(alpha2heb.globalsrtl.RTL_SYMBOLS[0]) != inputdata.count(alpha2heb.globalsrtl.RTL_SYMBOLS[1]):
         success = False
-        errors.append("Not even numbers of symbols '{0}' and '{1}'".format(globals.RTL_SYMBOLS[0],
-                                                                           globals.RTL_SYMBOLS[1]))
+        errors.append("Not even numbers of symbols '{0}' and '{1}'".format(alpha2heb.globalsrtl.RTL_SYMBOLS[0],
+                                                                           alpha2heb.globalsrtl.RTL_SYMBOLS[1]))
 
     # second check : no two globals.RTL_SYMBOLS[x] twice in a row
     # third check : first RTL_SYMBOL must be globals.RTL_SYMBOLS[0]
@@ -319,11 +325,11 @@ def check_inputdata(inputdata):
 
             context = 'line #{0}::character {1} (\"{2}\")'.format(line_number+1, char_number+1, extract_around_index(line, char_number))
 
-            if char in globals.RTL_SYMBOLS:
+            if char in alpha2heb.globalsrtl.RTL_SYMBOLS:
                 if last_symbol is None:
-                    if char == globals.RTL_SYMBOLS[1]:
-                        errors.append("first RTL_SYMBOL must be {0}, not {1} (context={2})".format(globals.RTL_SYMBOLS[0],
-                                                                                                   globals.RTL_SYMBOLS[1],
+                    if char == alpha2heb.globalsrtl.RTL_SYMBOLS[1]:
+                        errors.append("first RTL_SYMBOL must be {0}, not {1} (context={2})".format(alpha2heb.globalsrtl.RTL_SYMBOLS[0],
+                                                                                                   alpha2heb.globalsrtl.RTL_SYMBOLS[1],
                                                                                                    context))
                         success = False
                     else:
@@ -336,50 +342,101 @@ def check_inputdata(inputdata):
 
     return success, errors
 
-##############################################################################
-##############################################################################
-##############################################################################
-##############################################################################
-##############################################################################
+def entrypoint(tests=None):
+    """
+        entrypoint()
+        ________________________________________________________________________
 
-ARGS = read_command_line_arguments()
+        main entry point into alpha2heb.
+        ________________________________________________________________________
 
-CFGINI_SUCCESS, CFGERRORS, cfgini.CFGINI = cfgini.read_cfg_file(ARGS.cfgfile)
+        tests : either None either (cfgfile, symbolsfilename, inputdata, "console|html")
 
-if not CFGINI_SUCCESS:
-    LOGGER.error("[E02] Ill-formed config file '%s' : %s", ARGS.cfgfile, CFGERRORS)
-    LOGGER.error("[E03] === program stops ===")
-    sys.exit(-1)
+        returned value : a str if no error occured, None otherwise
+    """
 
-READSYMBOLS_SUCCESS, READSYMBOLS_ERRORS, ALPHA2HEBREW, ALPHA2HEBREW_KEYS = read_symbols(ARGS.symbolsfilename)
+    # --------------------------------------
+    # ---- (0/4) command line arguments ----
+    # --------------------------------------
+    if tests is None:
+        args = read_command_line_arguments()
 
-if not READSYMBOLS_SUCCESS:
-    LOGGER.error("[E04] ill-formed symbole file '%s' : %s", ARGS.symbolsfilename, READSYMBOLS_ERRORS)
-    LOGGER.error("[E05] === program stops ===")
-    sys.exit(-3)
+    # ----------------------------------
+    # ---- (1/4) configuration file ----
+    # ----------------------------------
+    if tests is None:
+        cfgini_success, cfgerrors, alpha2heb.cfgini.CFGINI = alpha2heb.cfgini.read_cfg_file(args.cfgfile)
 
-if ARGS.showsymbols:
-    for key in ALPHA2HEBREW_KEYS:
-        print(stranalyse(key), "---→", stranalyse(ALPHA2HEBREW[key]))
+        if not cfgini_success:
+            LOGGER.error("[E02] Ill-formed config file '%s' : %s", args.cfgfile, cfgerrors)
+            LOGGER.error("[E03] === program stops ===")
+            sys.exit(-1)
 
-INPUTDATA = ""
-if ARGS.source == "inputfile":
-    with open(ARGS.inputfile) as inputfile:
-        INPUTDATA = inputfile.readlines()
-elif ARGS.source == "stdin":
-    INPUTDATA = sys.stdin.read()
+    else:
+        cfgini_success, cfgerrors, alpha2heb.cfgini.CFGINI = alpha2heb.cfgini.read_cfg_file(tests[0])
+        if not cfgini_success:
+            return None
 
-if ARGS.checkinputdata == 'yes':
-    CHECK_SUCCESS, CHECK_ERRORS = check_inputdata(INPUTDATA)
-    if not CHECK_SUCCESS:
-        LOGGER.error("[E06] Ill-formed input data '%s'; error(s)=%s", ARGS.cfgfile, CHECK_ERRORS)
-        LOGGER.error("[E07] === program stops ===")
-        sys.exit(-2)
+    # ----------------------------
+    # ---- (2/4) symbols file ----
+    # ----------------------------
+    if tests is None:
+        readsymbols_success, readsymbols_errors, alpha2heb.logger.ALPHA2HEBREW, alpha2heb.logger.ALPHA2HEBREW_KEYS = read_symbols(args.symbolsfilename)
 
-# input > output
-if ARGS.transform_alpha2hebrew == 'yes':
+        if not readsymbols_success:
+            LOGGER.error("[E04] ill-formed symbole file '%s' : %s", args.symbolsfilename, readsymbols_errors)
+            LOGGER.error("[E05] === program stops ===")
+            sys.exit(-3)
 
-    if ARGS.outputformat == 'console':
-        print(output_console("".join(INPUTDATA)))
-    if ARGS.outputformat == 'html':
-        print(output_html("".join(INPUTDATA)))
+    else:
+        readsymbols_success, readsymbols_errors, alpha2heb.logger.ALPHA2HEBREW, alpha2heb.logger.ALPHA2HEBREW_KEYS = read_symbols(tests[1])
+        if not readsymbols_success:
+            return None
+
+    if tests is None:
+        if args.showsymbols:
+            for key in alpha2heb.logger.ALPHA2HEBREW_KEYS:
+                print(stranalyse(key), "---→", stranalyse(alpha2heb.logger.ALPHA2HEBREW[key]))
+
+    # -----------------------------------
+    # ---- (3/4) input data reading  ----
+    # -----------------------------------
+    inputdata = ""
+    if tests is None:
+        if args.source == "inputfile":
+            with open(args.inputfile) as inputfile:
+                inputdata = inputfile.readlines()
+        elif args.source == "stdin":
+            inputdata = sys.stdin.read()
+    else:
+        inputdata = tests[2]
+
+    if tests is None:
+        if args.checkinputdata == 'yes':
+            check_success, check_errors = check_inputdata(inputdata)
+            if not check_success:
+                LOGGER.error("[E06] Ill-formed input data '%s'; error(s)=%s", args.cfgfile, check_errors)
+                LOGGER.error("[E07] === program stops ===")
+                sys.exit(-2)
+
+    # ----------------------------------------
+    # ---- (4/4) input data > output data ----
+    # ----------------------------------------
+    if tests is None:
+        if args.transform_alpha2hebrew == 'yes':
+            if args.outputformat == 'console':
+                res = output_console("".join(inputdata))
+                print(res)
+                return res
+            if args.outputformat == 'html':
+                res = output_html("".join(inputdata))
+                print(res)
+                return res
+    else:
+        if tests[3] == "console":
+            return output_console("".join(inputdata))
+        elif tests[3] == "html":
+            return output_html("".join(inputdata))
+
+if __name__ == '__main__':
+    entrypoint()

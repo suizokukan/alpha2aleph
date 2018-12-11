@@ -4,8 +4,21 @@
 * utf-8
 * insert hebrew file between '◆' and '■'.
 
+# examples
+`$ python3 example0.py`
+
+`$ ./example1.sh` [using bin/alpha2heb pseudo-executable] : console output
+`$ ./example2.sh` [using bin/alpha2heb pseudo-executable] : html output
+
+# tests
+`$ nosetests3`
+
+or
+
+`$ python3 -m unittest tests/tests.py`
+
 # logging info.
-Modify logger.py::LOGGING_LEVEL
+Modify `logger.py::LOGGING_LEVEL`
 
 # exit codes, exceptions
 -1 : an error occured (ill-formed config file)
@@ -15,8 +28,8 @@ Modify logger.py::LOGGING_LEVEL
 * a runtimeerror may be raised : see raise RuntimeError in the source code.
 
 # pipe'able ? Yes !
-$ echo "◆m<éléḵ:■" | python3 alpha2heb.py --source=stdin
-$ echo "“m<éléḵ:”" | python3 alpha2heb.py --source=stdin
+`$ echo "◆m<éléḵ:■" | python3 alpha2heb.py --source=stdin`
+`$ echo "“m<éléḵ:”" | python3 alpha2heb.py --source=stdin`
 
 # transformations' pipeline
 ## output: html
@@ -60,8 +73,9 @@ Either by using the fribidi library (see below), either by using a console like 
 * about python-fribidi : https://github.com/RevengeComing/python-fribidi/blob/master/test/fribidi.py
 
 # todo
-> 0.0.9 : tests unitaires
-
+- 0.1 : alpha2aleph & pip
+- vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.
+- bidifri à importer tout de suite avec un flag pour savoir si la lib est disponible ou pas; erreur si bidifi=true dans config.ini
 - il manque shin avec daghesh
 - implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt
 - dans les tests, bien vérifier source={file,stdin} + RTLSYMB ==/!= .

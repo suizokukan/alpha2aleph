@@ -29,34 +29,14 @@
         see README.md for more documentation.
         ________________________________________________________________________
 
-        globals.py : global declarations
+        glob.py : global declarations
 """
-import re
-from logger import LOGGER
-
-def create_rtlreader_regex():
-
-    if RTL_SYMBOLS[0] == RTL_SYMBOLS[1]:
-        res = '{0}(?P<rtltext>[^{0}]*){0}'.format(re.escape(RTL_SYMBOLS[0]))
-    else:
-        res = '{0}(?P<rtltext>[^{0}{1}]*){1}'.format(re.escape(RTL_SYMBOLS[0]),
-                                                     re.escape(RTL_SYMBOLS[1]))
-
-    LOGGER.debug("[D08] new RTLREADER_REGEX : %s", res)
-
-    return re.compile(res)
-
 __projectname__ = "alphab2heb"
 __version__ = "0.0.9"
 __license__ = "GPLv3"
 __author__ = "Xavier Faure (suizokukan)"
 __email__ = "suizokukan@orange.fr"
 
-# input file format:
-# symbols used before/after hebrew text
-#   nb : about rtl, see https://en.wikipedia.org/wiki/Bi-directional_text
-#
-# They may be equal
-RTL_SYMBOLS = ("“", "”")
-
-RTLREADER_REGEX = create_rtlreader_regex()
+LOGGER = None
+ALPHA2HEBREW = None
+ALPHA2HEBREW_KEYS = None

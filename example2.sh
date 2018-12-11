@@ -1,1 +1,1 @@
-python3 alpha2heb/alpha2heb.py --source=inputfile --outputformat=html > output.html
+bin/alpha2heb --source=inputfile --outputformat=html

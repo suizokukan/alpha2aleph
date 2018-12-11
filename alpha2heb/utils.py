@@ -64,6 +64,7 @@ def extract_around_index(string, index, amplitude=10):
 
 def extracts(target, src, amplitude=10):
     res = []
+
     for _res in re.finditer(target, src):
         index0 = _res.start()
         _index0 = max(0, index0 - amplitude)

@@ -32,9 +32,9 @@
         logger.py : logging facilities
 """
 import logging
-import cfgini
-
-LOGGING_LEVEL = logging.INFO
+import alpha2heb.cfgini
+import alpha2heb.glob
+LOGGING_LEVEL = logging.ERROR
 
 class LoggerPlus(logging.Logger):
     """
@@ -53,10 +53,10 @@ class LoggerPlus(logging.Logger):
                 Call Logger.info() only if the flags defined in the cfg file
                 authorize a log message.
         """
-        if pipeline_part in cfgini.CFGINI["pipeline.trace"]["yes"]:
+        if pipeline_part in alpha2heb.cfgini.CFGINI["pipeline.trace"]["yes"]:
             return logging.Logger.info(self, "["+pipeline_part+"] "+msg, *args, **kwargs)
 
-        elif not pipeline_part in cfgini.CFGINI["pipeline.trace"]["no"]:
+        elif not pipeline_part in alpha2heb.cfgini.CFGINI["pipeline.trace"]["no"]:
             raise RuntimeError("Undefined pipeline part '%s' in the configuration file.", pipeline_part)
 
         return None
@@ -65,4 +65,4 @@ logging.setLoggerClass(LoggerPlus)
 LOGGERFORMAT = '%(levelname)-8s %(message)s'
 logging.basicConfig(format=LOGGERFORMAT, level=LOGGING_LEVEL)
 
-LOGGER = logging.getLogger(__name__)
+alpha2heb.glob.LOGGER = logging.getLogger(__name__)

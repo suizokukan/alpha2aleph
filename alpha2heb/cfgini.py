@@ -32,7 +32,8 @@
         cfgini.py : read the configuration file.
 """
 import configparser
-import globals
+import alpha2heb.glob
+from .regex import get_rtlreader_regex
 
 def read_cfg_file(filename):
     """
@@ -82,9 +83,9 @@ def read_cfg_file(filename):
             errors.append("Ill-formed config file '{0}' : missing key {1}".format(filename, err))
 
     if success:
-        globals.RTL_SYMBOLS = (cfgini["inputdata.format"]["RTL_SYMBOL_START"],
-                               cfgini["inputdata.format"]["RTL_SYMBOL_END"])
-        globals.RTLREADER_REGEX = globals.create_rtlreader_regex()
+        alpha2heb.glob.RTL_SYMBOLS = (cfgini["inputdata.format"]["RTL_SYMBOL_START"],
+                                      cfgini["inputdata.format"]["RTL_SYMBOL_END"])
+        alpha2heb.glob.RTLREADER_REGEX = get_rtlreader_regex()
 
     return success, errors, cfgini
 
