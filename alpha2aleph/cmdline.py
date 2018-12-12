@@ -34,6 +34,10 @@ def read_command_line_arguments():
                         action="store_true",
                         help="show informations about the version, license, author and exit")
 
+    parser.add_argument('--downloadbasics',
+                        action="store_true",
+                        help="download basic files like default symbols.txt and config.ini, and exit")
+
     parser.add_argument('--showsymbols',
                         action="store_true",
                         help="show symbols")
@@ -48,7 +52,7 @@ def read_command_line_arguments():
                         default="input.txt",
                         help="name of the inputfile to be read and transformed")
 
-    parser.add_argument('--symbolsfilename',
+    parser.add_argument('--symbolsfile',
                         type=str,
                         default="symbols.txt",
                         help='name of the symbols file to be read')

@@ -34,7 +34,7 @@
 import logging
 import alpha2aleph.cfgini
 import alpha2aleph.glob
-LOGGING_LEVEL = logging.ERROR
+LOGGING_LEVEL = logging.INFO
 
 class LoggerPlus(logging.Logger):
     """

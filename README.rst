@@ -7,7 +7,7 @@ Note : this Python3 project can't be used with python2.
 
 project's purpose
 =================
-GPLv3/Python3/CLI script to convert something like 'mlḵ' in 'כלמ'
+A GPLv3/Python3/CLI project to convert something like 'mlḵ' in 'כלמ'.
 
 installation
 ============

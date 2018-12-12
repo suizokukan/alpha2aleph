@@ -35,7 +35,8 @@ import re
 import sys
 import os
 import os.path
-
+import urllib.request
+import shutil
 import alpha2aleph.logger   # ... initialization of LOGGER
 
 from .glob import LOGGER, ALPHA2HEBREW, ALPHA2HEBREW_KEYS
@@ -348,6 +349,36 @@ def check_inputdata(inputdata):
 
     return success, errors
 
+def downloadbasics():
+    """
+        downloadbasics()
+        ________________________________________________________________________
+
+        Download the default configuration file and save them in the current
+        directory.
+        ________________________________________________________________________
+
+        no PARAMETER
+
+        RETURNED VALUE :
+            (bool) success
+    """
+    success = True
+
+    for filename, url in (('config.ini', 'https://raw.githubusercontent.com/suizokukan/alpha2aleph/master/examples/config.ini'),
+                          ('symbols.txt', 'https://raw.githubusercontent.com/suizokukan/alpha2aleph/master/examples/symbols.txt')):
+        try:
+            with urllib.request.urlopen(url) as response, \
+                 open(filename, 'wb') as out_file:
+                 shutil.copyfileobj(response, out_file)
+
+                 LOGGER.info("Downloaded '%s' as '%s'", filename, normpath(filename))
+
+        except urllib.error.URLError as exception:
+            success = False
+
+    return success
+
 def entrypoint(tests=None):
     """
         entrypoint()
@@ -356,7 +387,7 @@ def entrypoint(tests=None):
         main entry point into alpha2aleph.
         ________________________________________________________________________
 
-        tests : either None either (cfgfile, symbolsfilename, inputdata, "console|html")
+        tests : either None either (cfgfile, symbolsfile, inputdata, "console|html")
 
         returned value : a str if no error occured, None otherwise
     """
@@ -366,9 +397,9 @@ def entrypoint(tests=None):
     if tests is None:
         args = read_command_line_arguments()
 
-    # ----------------------------------
-    # ---- (1/4) --version, --about ----
-    # ----------------------------------
+    # ----------------------------------------------------
+    # ---- (1/4) --version, --about, --downloadbasics ----
+    # ----------------------------------------------------
     if tests is None:
         if args.version:
             print(__version__)
@@ -381,6 +412,10 @@ def entrypoint(tests=None):
                                                                       __author__,
                                                                       __location__,
                                                                       __license__))
+            sys.exit(0)
+
+        if args.downloadbasics:
+            downloadbasics()
             sys.exit(0)
 
     # ----------------------------------
@@ -403,10 +438,10 @@ def entrypoint(tests=None):
     # ---- (2/4) symbols file ----
     # ----------------------------
     if tests is None:
-        readsymbols_success, readsymbols_errors, alpha2aleph.logger.ALPHA2HEBREW, alpha2aleph.logger.ALPHA2HEBREW_KEYS = read_symbols(args.symbolsfilename)
+        readsymbols_success, readsymbols_errors, alpha2aleph.logger.ALPHA2HEBREW, alpha2aleph.logger.ALPHA2HEBREW_KEYS = read_symbols(args.symbolsfile)
 
         if not readsymbols_success:
-            LOGGER.error("[E04] problem with the symbols file '%s' : %s", args.symbolsfilename, readsymbols_errors)
+            LOGGER.error("[E04] problem with the symbols file '%s' : %s", args.symbolsfile, readsymbols_errors)
             LOGGER.error("[E05] === program stops ===")
             sys.exit(-3)
 
