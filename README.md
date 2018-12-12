@@ -5,7 +5,14 @@ A GPLv3/Python3/CLI project to convert something like 'mlḵ' into 'כלמ'.
 * By default, options are stored in `config.ini` (see --cfgfile).
 
 # installation
+
+## pip:
 `$ sudo pip3 install alpha2aleph`
+
+→ https://pypi.org/project/alpha2aleph/
+
+## directly from the github repository:
+→ https://github.com/suizokukan/alpha2aleph
 
 # how to use it ?
 ## through a pipe :
@@ -90,8 +97,6 @@ Either by using the fribidi library (see below), either by using a console like 
 * about python-fribidi : https://github.com/RevengeComing/python-fribidi/blob/master/test/fribidi.py
 
 ## todo
-> 0.1.3 : --download_defaultfiles
-
 - 0.1.4 : faire en sorte que le programme soit accessible via CLI et via un import dans un autre projet
 - 0.1.5 : bug : example1.sh renvoie un \n qui n'existe pas dans la chaîne d'entrée
 - header dans tous les .py
