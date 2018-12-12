@@ -27,9 +27,14 @@ You'll need `symbols.txt` and `config.ini`; just download them :
 `$ alpha2aleph --downloadbasics`
 
 # examples
+
+## you want to use the project inside another .py file:
 `$ python3 example0.py`
 
+## you want to create a simple (console) output:
 `$ ./example1.sh` : console output
+
+## you want to create an html output:
 `$ ./example2.sh` : html output
 
 # tests
@@ -97,11 +102,10 @@ Either by using the fribidi library (see below), either by using a console like 
 * about python-fribidi : https://github.com/RevengeComing/python-fribidi/blob/master/test/fribidi.py
 
 ## todo
-> 0.1.4 : faire en sorte que le programme soit accessible via CLI et via un import dans un autre projet
-
 - 0.1.5 : bug : example1.sh renvoie un \n qui n'existe pas dans la chaîne d'entrée
 - 0.1.6 : bug : un appel à bin/alpha2aleph appelle d'abord la commande alpha2aleph.
 
+- c'est vraiment dommage que n'existe pas --loglevel=ERROR.
 - header dans tous les .py
 - vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.
 - bidifri à importer tout de suite avec un flag pour savoir si la lib est disponible ou pas; erreur si bidifi=true dans config.ini

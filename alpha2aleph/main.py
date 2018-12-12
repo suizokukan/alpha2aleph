@@ -379,7 +379,7 @@ def downloadbasics():
 
     return success
 
-def entrypoint(tests=None):
+def entrypoint(paramaters=None):
     """
         entrypoint()
         ________________________________________________________________________
@@ -387,20 +387,21 @@ def entrypoint(tests=None):
         main entry point into alpha2aleph.
         ________________________________________________________________________
 
-        tests : either None either (cfgfile, symbolsfile, inputdata, "console|html")
+        paramaters : either None (cfgfile, ... will be read from the command line)
+                     either a list of strings (cfgfile, symbolsfile, inputdata, "console|html").
 
         returned value : a str if no error occured, None otherwise
     """
     # --------------------------------------
     # ---- (0/4) command line arguments ----
     # --------------------------------------
-    if tests is None:
+    if paramaters is None:
         args = read_command_line_arguments()
 
     # ----------------------------------------------------
     # ---- (1/4) --version, --about, --downloadbasics ----
     # ----------------------------------------------------
-    if tests is None:
+    if paramaters is None:
         if args.version:
             print(__version__)
             sys.exit(0)
@@ -421,7 +422,7 @@ def entrypoint(tests=None):
     # ----------------------------------
     # ---- (1/4) configuration file ----
     # ----------------------------------
-    if tests is None:
+    if paramaters is None:
         cfgini_success, cfgerrors, alpha2aleph.cfgini.CFGINI = alpha2aleph.cfgini.read_cfg_file(args.cfgfile)
 
         if not cfgini_success:
@@ -430,14 +431,14 @@ def entrypoint(tests=None):
             sys.exit(-1)
 
     else:
-        cfgini_success, cfgerrors, alpha2aleph.cfgini.CFGINI = alpha2aleph.cfgini.read_cfg_file(tests[0])
+        cfgini_success, cfgerrors, alpha2aleph.cfgini.CFGINI = alpha2aleph.cfgini.read_cfg_file(paramaters[0])
         if not cfgini_success:
             return None
 
     # ----------------------------
     # ---- (2/4) symbols file ----
     # ----------------------------
-    if tests is None:
+    if paramaters is None:
         readsymbols_success, readsymbols_errors, alpha2aleph.logger.ALPHA2HEBREW, alpha2aleph.logger.ALPHA2HEBREW_KEYS = read_symbols(args.symbolsfile)
 
         if not readsymbols_success:
@@ -446,11 +447,11 @@ def entrypoint(tests=None):
             sys.exit(-3)
 
     else:
-        readsymbols_success, readsymbols_errors, alpha2aleph.logger.ALPHA2HEBREW, alpha2aleph.logger.ALPHA2HEBREW_KEYS = read_symbols(tests[1])
+        readsymbols_success, readsymbols_errors, alpha2aleph.logger.ALPHA2HEBREW, alpha2aleph.logger.ALPHA2HEBREW_KEYS = read_symbols(paramaters[1])
         if not readsymbols_success:
             return None
 
-    if tests is None:
+    if paramaters is None:
         if args.showsymbols:
             for key in alpha2aleph.logger.ALPHA2HEBREW_KEYS:
                 print(stranalyse(key), "---→", stranalyse(alpha2aleph.logger.ALPHA2HEBREW[key]))
@@ -459,16 +460,16 @@ def entrypoint(tests=None):
     # ---- (3/4) input data reading  ----
     # -----------------------------------
     inputdata = ""
-    if tests is None:
+    if paramaters is None:
         if args.source == "inputfile":
             with open(args.inputfile) as inputfile:
                 inputdata = inputfile.readlines()
         elif args.source == "stdin":
             inputdata = sys.stdin.read()
     else:
-        inputdata = tests[2]
+        inputdata = paramaters[2]
 
-    if tests is None:
+    if paramaters is None:
         if args.checkinputdata == 'yes':
             check_success, check_errors = check_inputdata(inputdata)
             if not check_success:
@@ -479,7 +480,7 @@ def entrypoint(tests=None):
     # ----------------------------------------
     # ---- (4/4) input data > output data ----
     # ----------------------------------------
-    if tests is None:
+    if paramaters is None:
         if args.transform_alpha2alephrew == 'yes':
             if args.outputformat == 'console':
                 res = output_console("".join(inputdata))
@@ -490,9 +491,9 @@ def entrypoint(tests=None):
                 print(res)
                 return res
     else:
-        if tests[3] == "console":
+        if paramaters[3] == "console":
             return output_console("".join(inputdata))
-        elif tests[3] == "html":
+        elif paramaters[3] == "html":
             return output_html("".join(inputdata))
 
 #if __name__ == '__main__':
