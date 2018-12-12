@@ -462,8 +462,13 @@ def entrypoint(paramaters=None):
     inputdata = ""
     if paramaters is None:
         if args.source == "inputfile":
-            with open(args.inputfile) as inputfile:
-                inputdata = inputfile.readlines()
+            if not os.path.exists(args.inputfile):
+                LOGGER.error("[E99] Where is input file '%s', namely '%s' ?", args.inputfile, normpath(args.inputfile))
+                LOGGER.error("[E98] === program stops ===")
+                sys.exit(-4)
+            else:
+                with open(args.inputfile) as inputfile:
+                    inputdata = inputfile.readlines()
         elif args.source == "stdin":
             #
             inputdata = sys.stdin.read()

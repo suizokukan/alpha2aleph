@@ -55,8 +55,9 @@ Modify `logger.py::LOGGING_LEVEL`
 
 ## exit codes, exceptions
 -1 : an error occured : can't read config file
--2 : an error occured (ill-formed input file)
--3 : an error occured (ill-formed symbol file)
+-2 : an error occured : ill-formed input file
+-3 : an error occured : can't read symbols file
+-4 : an error occured : missing input file
 
 * a runtimeerror may be raised : see raise RuntimeError in the source code.
 
@@ -102,9 +103,8 @@ Either by using the fribidi library (see below), either by using a console like 
 * about python-fribidi : https://github.com/RevengeComing/python-fribidi/blob/master/test/fribidi.py
 
 ## todo
-- 0.1.6 : bug : example2.sh : où définir le fichier à lire ?
 - 0.1.7 : bug : un appel à bin/alpha2aleph appelle d'abord la commande alpha2aleph.
-
+- renuméroter .ERRORS()
 - c'est vraiment dommage que n'existe pas --loglevel=ERROR.
 - header dans tous les .py
 - vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.
