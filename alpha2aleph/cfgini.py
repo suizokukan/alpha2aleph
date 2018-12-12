@@ -35,6 +35,7 @@ import os.path
 import configparser
 import alpha2aleph.glob
 from .regex import get_rtlreader_regex
+from .utils import normpath
 
 def read_cfg_file(filename):
     """
@@ -47,7 +48,7 @@ def read_cfg_file(filename):
         RETURNED VALUE : (bool_success, errors, configparser.ConfigParser object)
     """
     if not os.path.exists(filename):
-        return False, ["Can't open '{0}' file.".format(filename)], None
+        return False, ["Where is '{0}' file, namely '{1}'' ?".format(filename, normpath(filename))], None
 
     success = True
     errors = []

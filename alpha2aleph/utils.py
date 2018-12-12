@@ -32,6 +32,8 @@
         utils.py : various usefull functions
 """
 import re
+import os
+import os.path
 
 def stranalyse(src):
     res = []
@@ -83,3 +85,26 @@ def extracts(target, src, amplitude=10):
         return res
     else:
         return "(empty extract)"
+
+def normpath(path):
+    """
+        normpath()
+        ________________________________________________________________________
+
+        Return a human-readable (e.g. "~" -> "/home/myhome/" on Linux systems),
+        normalized version of a path.
+
+        The returned string may be used as a parameter given to by
+        os.path.exists() .
+        ________________________________________________________________________
+
+        PARAMETER : (str)path
+
+        RETURNED VALUE : the expected string
+    """
+    res = os.path.normpath(os.path.abspath(os.path.expanduser(path)))
+
+    if res == ".":
+        res = os.getcwd()
+
+    return res
