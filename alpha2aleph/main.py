@@ -465,7 +465,10 @@ def entrypoint(paramaters=None):
             with open(args.inputfile) as inputfile:
                 inputdata = inputfile.readlines()
         elif args.source == "stdin":
+            #
             inputdata = sys.stdin.read()
+            if inputdata[-1] == "\n":
+                inputdata = inputdata[:-1]
     else:
         inputdata = paramaters[2]
 
