@@ -1,1 +1,1 @@
-bin/alpha2aleph --source=inputfile --outputformat=html
+bin/alpha2aleph --cfgfile=examples/config.ini --symbolsfile=examples/symbols.txt --source=inputfile --outputformat=html

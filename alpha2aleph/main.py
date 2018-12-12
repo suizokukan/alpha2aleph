@@ -33,6 +33,8 @@
 """
 import re
 import sys
+import os
+import os.path
 
 import alpha2aleph.logger   # ... initialization of LOGGER
 
@@ -48,7 +50,7 @@ from alpha2aleph.cfgini import CFGINI
 
 from alpha2aleph.fb1d_fb4f import TRANSF_FB1D_FB4F
 
-from alpha2aleph.utils import stranalyse, match_repr, extracts, extract_around_index
+from alpha2aleph.utils import stranalyse, match_repr, extracts, extract_around_index, normpath
 from alpha2aleph.cmdline import read_command_line_arguments
 
 def add_firstlast_marker(src):
@@ -96,6 +98,9 @@ def sub_and_log(cfgini_flag, pipeline_part, comment, before, after, src):
 
 def read_symbols(filename):
     LOGGER.debug("[D04] read_symbols : '%s'", filename)
+
+    if not os.path.exists(filename):
+        return False, ["Where is symbols file '{0}', namely '{1}' ?".format(filename, normpath(filename))], None, None
 
     success = True
     errors = []
@@ -401,7 +406,7 @@ def entrypoint(tests=None):
         readsymbols_success, readsymbols_errors, alpha2aleph.logger.ALPHA2HEBREW, alpha2aleph.logger.ALPHA2HEBREW_KEYS = read_symbols(args.symbolsfilename)
 
         if not readsymbols_success:
-            LOGGER.error("[E04] ill-formed symbole file '%s' : %s", args.symbolsfilename, readsymbols_errors)
+            LOGGER.error("[E04] problem with the symbols file '%s' : %s", args.symbolsfilename, readsymbols_errors)
             LOGGER.error("[E05] === program stops ===")
             sys.exit(-3)
 

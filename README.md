@@ -73,7 +73,6 @@ Either by using the fribidi library (see below), either by using a console like 
 * about python-fribidi : https://github.com/RevengeComing/python-fribidi/blob/master/test/fribidi.py
 
 # todo
-- 0.1.2 : vérifier ce qui est pip'er, peut-être un nettoyage est-il nécessaire.
 - 0.1.3 : faire en sorte que le programme soit accessible via CLI et via un import dans un autre projet
 - 0.1.4 : bug : example1.sh renvoie un \n qui n'existe pas dans la chaîne d'entrée
 - header dans tous les .py
