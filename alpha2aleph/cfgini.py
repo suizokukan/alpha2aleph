@@ -31,6 +31,7 @@
 
         cfgini.py : read the configuration file.
 """
+import os.path
 import configparser
 import alpha2aleph.glob
 from .regex import get_rtlreader_regex
@@ -43,8 +44,11 @@ def read_cfg_file(filename):
 
         PARAMETER : (str)filename
 
-        RETURNED VALUE : (bool_success, configparser.ConfigParser object)
+        RETURNED VALUE : (bool_success, errors, configparser.ConfigParser object)
     """
+    if not os.path.exists(filename):
+        return False, ["Can't open '{0}' file.".format(filename)], None
+
     success = True
     errors = []
     cfgini = configparser.ConfigParser()

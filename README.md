@@ -21,7 +21,7 @@ or
 Modify `logger.py::LOGGING_LEVEL`
 
 # exit codes, exceptions
--1 : an error occured (ill-formed config file)
+-1 : an error occured : can't read config file
 -2 : an error occured (ill-formed input file)
 -3 : an error occured (ill-formed symbol file)
 
@@ -41,7 +41,7 @@ Modify `logger.py::LOGGING_LEVEL`
 +--------------------------------------------+-------------------------------+---------------------------------+
 | html.2::main                               |                               |                                 |
 |  * maingroup.1::improve_rtlalphatext       | transf__improve_rtlalphatext()| [pipeline.improve rtlalphatext] |
-|  * maingroup.2::transf__text_alpha2alephrew  | transf__text_alpha2alephrew()   | - (modify symbols.txt)          |
+|  * maingroup.2::transf__text_alpha2alephrew| transf__text_alpha2alephrew() | - (modify symbols.txt)          |
 |  * maingroup.3::transf__use_FB1D_FB4F_chars| transf__use_FB1D_FB4F_chars() | [pipeline.use FB1D-FB4F chars]  |
 | html.3::br                                 | output_html()                 | -                               |
 | html.4::RTL_SYMBOLS                        | output_html()                 | -                               |

@@ -29,7 +29,7 @@
         see README.md for more documentation.
         ________________________________________________________________________
 
-        alphaheb.py : entry point in the project.
+        main.py : entry point in the project.
 """
 import re
 import sys
@@ -355,7 +355,6 @@ def entrypoint(tests=None):
 
         returned value : a str if no error occured, None otherwise
     """
-
     # --------------------------------------
     # ---- (0/4) command line arguments ----
     # --------------------------------------
@@ -386,7 +385,7 @@ def entrypoint(tests=None):
         cfgini_success, cfgerrors, alpha2aleph.cfgini.CFGINI = alpha2aleph.cfgini.read_cfg_file(args.cfgfile)
 
         if not cfgini_success:
-            LOGGER.error("[E02] Ill-formed config file '%s' : %s", args.cfgfile, cfgerrors)
+            LOGGER.error("[E02] problem with the config file '%s' : %s", args.cfgfile, cfgerrors)
             LOGGER.error("[E03] === program stops ===")
             sys.exit(-1)
 
@@ -456,5 +455,5 @@ def entrypoint(tests=None):
         elif tests[3] == "html":
             return output_html("".join(inputdata))
 
-if __name__ == '__main__':
-    entrypoint()
+#if __name__ == '__main__':
+#    entrypoint()
