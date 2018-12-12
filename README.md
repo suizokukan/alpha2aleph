@@ -73,10 +73,9 @@ Either by using the fribidi library (see below), either by using a console like 
 * about python-fribidi : https://github.com/RevengeComing/python-fribidi/blob/master/test/fribidi.py
 
 # todo
-- 0.1 : alpha2aleph
-- 0.1.1 : pip
-- 0.1.2 : faire en sorte que le programme soit accessible via CLI et via un import dans un autre projet
-- 0.1.3 : bug : example1.sh renvoie un \n qui n'existe pas dans la chaîne d'entrée
+- 0.1.2 : vérifier ce qui est pip'er, peut-être un nettoyage est-il nécessaire.
+- 0.1.3 : faire en sorte que le programme soit accessible via CLI et via un import dans un autre projet
+- 0.1.4 : bug : example1.sh renvoie un \n qui n'existe pas dans la chaîne d'entrée
 - header dans tous les .py
 - vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.
 - bidifri à importer tout de suite avec un flag pour savoir si la lib est disponible ou pas; erreur si bidifi=true dans config.ini
