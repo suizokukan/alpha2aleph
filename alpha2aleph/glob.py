@@ -31,11 +31,18 @@
 
         glob.py : global declarations
 """
-__projectname__ = "alphab2heb"
-__version__ = "0.1"
+__projectname__ = "alpha2aleph"
+__version__ = "0.1.1-9"
 __license__ = "GPLv3"
-__author__ = "Xavier Faure (suizokukan)"
+__author__ = "Xavier Faure (suizokukan / 94.23.197.37)"
 __email__ = "suizokukan@orange.fr"
+__copyright__ = "Copyright 2018, suizokukan"
+__license__ = "GPL-3.0"
+__licensepypi__ = 'License :: OSI Approved :: GNU General Public License v3 (GPLv3)'
+__maintainer__ = "Xavier Faure (suizokukan)"
+__status__ = "Pre-Alpha"
+__statuspypi__ = 'Development Status :: 2 - Pre-Alpha'
+__location__ = "github.com/suizokukan/alpha2aleph"
 
 LOGGER = None
 ALPHA2HEBREW = None

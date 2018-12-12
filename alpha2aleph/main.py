@@ -37,6 +37,7 @@ import sys
 import alpha2aleph.logger   # ... initialization of LOGGER
 
 from .glob import LOGGER, ALPHA2HEBREW, ALPHA2HEBREW_KEYS
+from .glob import __projectname__, __version__, __license__, __author__, __location__
 
 import alpha2aleph.globalsrtl
 from alpha2aleph.regex import get_rtlreader_regex
@@ -360,6 +361,23 @@ def entrypoint(tests=None):
     # --------------------------------------
     if tests is None:
         args = read_command_line_arguments()
+
+    # ----------------------------------
+    # ---- (1/4) --version, --about ----
+    # ----------------------------------
+    if tests is None:
+        if args.version:
+            print(__version__)
+            sys.exit(0)
+
+        if args.about:
+            __projectname__, __license__, __author__, __location__
+            print("{0} v. {1} by {2} : see {3}; a {4} project".format(__projectname__,
+                                                                      __version__,
+                                                                      __author__,
+                                                                      __location__,
+                                                                      __license__))
+            sys.exit(0)
 
     # ----------------------------------
     # ---- (1/4) configuration file ----

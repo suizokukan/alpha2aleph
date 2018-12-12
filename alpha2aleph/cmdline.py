@@ -26,6 +26,14 @@ def read_command_line_arguments():
                                                     __email__),
                               formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
+    parser.add_argument('--version',
+                        action="store_true",
+                        help="show version number and exit")
+
+    parser.add_argument('--about',
+                        action="store_true",
+                        help="show informations about the version, license, author and exit")
+
     parser.add_argument('--showsymbols',
                         action="store_true",
                         help="show symbols")
