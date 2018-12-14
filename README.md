@@ -58,6 +58,7 @@ Modify `logger.py::LOGGING_LEVEL`
 -2 : an error occured : ill-formed input file
 -3 : an error occured : can't read symbols file
 -4 : an error occured : missing input file
+-5 : an error occured : unexpected end
 
 * a runtimeerror may be raised : see raise RuntimeError in the source code.
 

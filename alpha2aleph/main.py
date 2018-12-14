@@ -37,38 +37,78 @@ import os
 import os.path
 import urllib.request
 import shutil
-import alpha2aleph.logger   # ... initialization of LOGGER
 
-from .glob import LOGGER, ALPHA2HEBREW, ALPHA2HEBREW_KEYS
-from .glob import __projectname__, __version__, __license__, __author__, __location__
+import alpha2aleph.logger   # ... initialization of LOGGER
 
 import alpha2aleph.globalsrtl
 from alpha2aleph.regex import get_rtlreader_regex
 
-alpha2aleph.globalsrtl.RTLREADER_REGEX = get_rtlreader_regex()
-
-from alpha2aleph.cfgini import CFGINI
-
 from alpha2aleph.fb1d_fb4f import TRANSF_FB1D_FB4F
-
 from alpha2aleph.utils import stranalyse, match_repr, extracts, extract_around_index, normpath
 from alpha2aleph.cmdline import read_command_line_arguments
+from alpha2aleph.improve_rtlalphatext import IMPROVE_RTLALPHATEXT
 
-def add_firstlast_marker(src):
+from .glob import LOGGER
+from .glob import __projectname__, __version__, __license__, __author__, __location__
+
+
+alpha2aleph.globalsrtl.RTLREADER_REGEX = get_rtlreader_regex()
+
+
+def add_firstlast_markers(src):
+    """
+       add_firstlast_markers()
+       ________________________________________________________________________
+
+       Add to (str)src a first and a last character.
+
+       see remove_firstlast_markers()
+       ________________________________________________________________________
+
+       PARAMETER      : (str)src
+
+       RETURNED VALUE : (str)the resulting string
+    """
     # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
-    LOGGER.pipelinetrace("add_firstlast_marker",
+    LOGGER.pipelinetrace("add_firstlast_markers",
                          "add markers for the first and last characters")
     return "$"+src+"$"
 
-def remove_firstlast_marker(src):
+
+def remove_firstlast_markers(src):
+    """
+       remove_firstlast_markers()
+       ________________________________________________________________________
+
+       Remove from (str)src its first last character, normally the characters
+       added by a call to add_firstlast_markers().
+       ________________________________________________________________________
+
+       PARAMETER      : (str)src
+
+       RETURNED VALUE : (str)the resulting string
+    """
     # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
-    LOGGER.pipelinetrace("remove_firstlast_marker",
+    LOGGER.pipelinetrace("remove_firstlast_markers",
                          "remove markers for the first and last characters")
     return src[1:-1]
 
+
 def replace_and_log(pipeline_part, comment, src, before, after):
     """
-        simply return src.replace(before, after) but with a log message
+       replace_and_log()
+       ________________________________________________________________________
+
+       simply return src.replace(before, after) but with a log message
+       ________________________________________________________________________
+
+       PARAMETERS     : (str)pipeline_part
+                        (str)comment
+                        (str)src
+                        (str)before
+                        (str)after
+
+       RETURNED VALUE : (str)the resulting string, namely src.replace(before, after)
     """
     if before in src:
         # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
@@ -81,9 +121,25 @@ def replace_and_log(pipeline_part, comment, src, before, after):
                  src, comment, before, after, extracts(before, src))
     return src
 
+
 def sub_and_log(cfgini_flag, pipeline_part, comment, before, after, src):
     """
-        simply return re.sub(before, after, src) with a log message if cfgini_flag.lower() == "true"
+       sub_and_log()
+       ________________________________________________________________________
+
+       simply return re.sub(before, after, src) with a log message if
+       cfgini_flag.lower() == "true".
+       ________________________________________________________________________
+
+       PARAMETERS     : (str)cfgini_flag
+                        (str)pipeline_part
+                        (str)comment
+                        (str)src
+                        (str)before
+                        (str)after
+                        (str)src
+
+       RETURNED VALUE : (str)the resulting string, namely src.replace(before, after)
     """
     if cfgini_flag.lower() != "true":
         LOGGER.debug("[D03] Nothing to do in '%s' for %s : '%s' > '%s' in %s",
@@ -101,11 +157,30 @@ def sub_and_log(cfgini_flag, pipeline_part, comment, before, after, src):
 
     return src
 
+
 def read_symbols(filename):
+    """
+       read_symbols()
+       ________________________________________________________________________
+
+       Read the symbol file <filename> and return the dict of keys → value
+       ________________________________________________________________________
+
+       PARAMETERS     : (str)filename
+
+       RETURNED VALUE : (success,
+                         errors,
+                         alpha2alephrew,
+                         sorted(keys_in_alpha2alephrew))
+    """
     LOGGER.debug("[D05] read_symbols : '%s'", filename)
 
     if not os.path.exists(filename):
-        return False, ["Where is symbols file '{0}', namely '{1}' ?".format(filename, normpath(filename))], None, None
+        return (False,
+                ["Where is symbols file '{0}', namely '{1}' ?".format(filename,
+                                                                      normpath(filename))],
+                None,
+                None)
 
     success = True
     errors = []
@@ -140,7 +215,23 @@ def read_symbols(filename):
 
     return success, errors, alpha2alephrew, keys
 
+
 def transf__text_alpha2alephrew(_src):
+    """
+       transf__text_alpha2alephrew()
+       ________________________________________________________________________
+
+       Convert the text <_src>, written using some alphabetic symbols, in
+       a translitterated text written in hebrew.
+       ________________________________________________________________________
+
+       PARAMETERS     : (str)_src, the text to be translitterated.
+                        _src is a string so that rtl_begin+_src+rtl_end
+                        is the original string.
+
+       RETURNED VALUE : (str)the translitterated text with RTL symbols added
+                        at the beginning and at the end.
+    """
     src = _src.group("rtltext")
 
     for alphachar in alpha2aleph.logger.ALPHA2HEBREW_KEYS:
@@ -151,29 +242,51 @@ def transf__text_alpha2alephrew(_src):
     # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
     LOGGER.pipelinetrace("transf__text_alpha2alephrew",
                          "Adding globals.RTL_SYMBOLS to '%s' : '%s' and '%s'",
-                         src, alpha2aleph.globalsrtl.RTL_SYMBOLS[0], alpha2aleph.globalsrtl.RTL_SYMBOLS[1])
+                         src,
+                         alpha2aleph.globalsrtl.RTL_SYMBOLS[0],
+                         alpha2aleph.globalsrtl.RTL_SYMBOLS[1])
 
     return alpha2aleph.globalsrtl.RTL_SYMBOLS[0]+src+alpha2aleph.globalsrtl.RTL_SYMBOLS[1]
 
+
 def transf__improve_rtlalphatext(src):
-    src = sub_and_log(alpha2aleph.cfgini.CFGINI["pipeline.improve rtlalphatext"]["final kaf"],
-                      "transf__improve_rtlalphatext",
-                      "final kaf",
-                      "ḵ:(?P<ponctuation>)", "ḵ²:\\g<ponctuation>", src)
+    """
+       transf__improve_rtlalphatext()
+       ________________________________________________________________________
 
-    src = sub_and_log(alpha2aleph.cfgini.CFGINI["pipeline.improve rtlalphatext"]["alef + holam > alef + point_on_right"],
-                      "transf__improve_rtlalphatext",
-                      "alef + holam > alef + point_on_right",
-                      "Aô", "A°", src)
+       Modify the source string <src> using different calls to sub_and_log().
+       The calls are defined by IMPROVE_RTLALPHATEXT.
+       ________________________________________________________________________
 
-    src = sub_and_log(alpha2aleph.cfgini.CFGINI["pipeline.improve rtlalphatext"]["ḥe + holam + shin > ḥe + shin"],
-                      "transf__improve_rtlalphatext",
-                      "ḥe + holam + shin > ḥe + shin",
-                      "ḥ(?P<accent>[<])?ôš", "ḥ\\g<accent>š", src)
+       PARAMETERS     : (str)_src
+
+       RETURNED VALUE : (str) _src through several calls to sub_and_log().
+    """
+
+    for (_cfgini_flag,
+         pipeline_part,
+         comment,
+         before,
+         after) in IMPROVE_RTLALPHATEXT:
+
+        cfgini_flag = alpha2aleph.cfgini.CFGINI["pipeline.improve rtlalphatext"][_cfgini_flag]
+        src = sub_and_log(cfgini_flag, pipeline_part, comment, before, after, src)
 
     return src
 
+
 def transf__invert_rtltext(src):
+    """
+       transf__invert_rtltext()
+       ________________________________________________________________________
+
+       Invert src : "abc" becoming "cba"
+       ________________________________________________________________________
+
+       PARAMETERS     : (str)src
+
+       RETURNED VALUE : (str)_src[::-1]
+    """
     res = src.group("rtltext")[::-1]
     res = alpha2aleph.globalsrtl.RTL_SYMBOLS[0]+res+alpha2aleph.globalsrtl.RTL_SYMBOLS[1]
 
@@ -184,25 +297,44 @@ def transf__invert_rtltext(src):
 
     return res
 
-def transf__use_FB1D_FB4F_chars(_src):
+
+def transf__use_fb1d_fb4f_chars(_src):
+    """
+       transf__use_fb1d_fb4f_chars()
+       ________________________________________________________________________
+
+       Modify the source string <_src> using different calls to replace_and_log()
+       in order to replace some characters by those defined in the Unicode range
+       0xFB1D to 0xFB4F.
+       The calls are defined by fb1d_fb4f.TRANSF_FB1D_FB4F .
+       The calls are controlled by the configuration file, section "pipeline.use FB1D-FB4F chars".
+       ________________________________________________________________________
+
+       PARAMETERS     : (str)_src, the source string
+
+       RETURNED VALUE : (str)the resulting string.
+    """
     src = _src.group("rtltext")
 
     # ---- 1/2 FB1D-FB4F characters : ----
     for shortname, (fullname, before, after) in alpha2aleph.fb1d_fb4f.TRANSF_FB1D_FB4F:
 
         if alpha2aleph.cfgini.CFGINI["pipeline.use FB1D-FB4F chars"][fullname].lower() == "true":
-            pipeline_part = "transf__use_FB1D_FB4F_chars"
-            comment = "{0}::{1}".format("transf__use_FB1D_FB4F_chars",
+            pipeline_part = "transf__use_fb1d_fb4f_chars"
+            comment = "{0}::{1}".format("transf__use_fb1d_fb4f_chars",
                                         fullname)
             src = replace_and_log(pipeline_part, comment, src, before, after)
 
     # ---- 2/2 let's add the first/last chars removed by calling this function ----
     # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
-    LOGGER.pipelinetrace("transf__use_FB1D_FB4F_chars",
+    LOGGER.pipelinetrace("transf__use_fb1d_fb4f_chars",
                          "Adding alpha2aleph.globalsrtl.RTL_SYMBOLS to '%s' : '%s' and '%s'",
-                         src, alpha2aleph.globalsrtl.RTL_SYMBOLS[0], alpha2aleph.globalsrtl.RTL_SYMBOLS[1])
+                         src,
+                         alpha2aleph.globalsrtl.RTL_SYMBOLS[0],
+                         alpha2aleph.globalsrtl.RTL_SYMBOLS[1])
 
     return alpha2aleph.globalsrtl.RTL_SYMBOLS[0]+src+alpha2aleph.globalsrtl.RTL_SYMBOLS[1]
+
 
 def output_html(inputdata):
     LOGGER.debug("[D06] [output_html] : data to be read=%s", inputdata)
@@ -236,7 +368,7 @@ def output_html(inputdata):
     # transformation html.1::text_delimiters
     #    let's add a char at the very beginning and at the very end of the
     #    source string.
-    outputdata = add_firstlast_marker(inputdata)
+    outputdata = add_firstlast_markers(inputdata)
 
     # transformation html.2::maingroup
     outputdata = transf__maingroup(outputdata)
@@ -250,7 +382,7 @@ def output_html(inputdata):
 
     # transformation html.5::undo_text_delimiters
     #    see transformation html.1::text_delimiters
-    outputdata = remove_firstlast_marker(outputdata)
+    outputdata = remove_firstlast_markers(outputdata)
 
     foot = []
     foot.append("")
@@ -261,20 +393,23 @@ def output_html(inputdata):
 
     return header + outputdata + foot
 
+
 def output_console(inputdata):
     LOGGER.debug("[D07] [output_console] : data to be read=%s", inputdata)
 
     # transformation console.1::text_delimiters
     #    let's add a char at the very beginning and at the very end of the
     #    source string.
-    outputdata = add_firstlast_marker(inputdata)
+    outputdata = add_firstlast_markers(inputdata)
 
     # transformation console.2::maingroup
     outputdata = transf__maingroup(outputdata)
 
     # transformation console.3::invert_rtltext
     if alpha2aleph.cfgini.CFGINI["output.console"]["invert_rtltext"].lower() == 'true':
-        outputdata = re.sub(alpha2aleph.globalsrtl.RTLREADER_REGEX, transf__invert_rtltext, outputdata)
+        outputdata = re.sub(alpha2aleph.globalsrtl.RTLREADER_REGEX,
+                            transf__invert_rtltext,
+                            outputdata)
 
     # transformation console.4::remove_RTL_SYMBOLS
     # https://en.wikipedia.org/wiki/Bi-directional_text
@@ -287,7 +422,7 @@ def output_console(inputdata):
         outputdata = outputdata.replace(alpha2aleph.globalsrtl.RTL_SYMBOLS[1], "")
 
     # transformation console.5::undo_text_delimiters
-    outputdata = remove_firstlast_marker(outputdata)
+    outputdata = remove_firstlast_markers(outputdata)
 
     # transformation console.6::use fribidi
     if alpha2aleph.cfgini.CFGINI["output.console"]["use fribidi"].lower() == "true":
@@ -295,6 +430,7 @@ def output_console(inputdata):
         outputdata = pyfribidi.log2vis(outputdata)
 
     return outputdata
+
 
 def transf__maingroup(src):
     LOGGER.debug("[D08] transf__maingroup()")
@@ -305,13 +441,16 @@ def transf__maingroup(src):
     # transformation maingroup.2::transf__text_alpha2alephrew
     src = re.sub(alpha2aleph.globalsrtl.RTLREADER_REGEX, transf__text_alpha2alephrew, src)
 
-    # transformation maingroup.3::transf__use_FB1D_FB4F_chars
-    src = re.sub(alpha2aleph.globalsrtl.RTLREADER_REGEX, transf__use_FB1D_FB4F_chars, src)
+    # transformation maingroup.3::transf__use_fb1d_fb4f_chars
+    src = re.sub(alpha2aleph.globalsrtl.RTLREADER_REGEX, transf__use_fb1d_fb4f_chars, src)
 
     return src
 
+
 def check_inputdata(inputdata):
     LOGGER.debug("[D09] check_inputdata()")
+
+    rtl_start, rtl_end = alpha2aleph.globalsrtl.RTL_SYMBOLS
 
     success = True
     errors = []
@@ -319,42 +458,46 @@ def check_inputdata(inputdata):
     # ------------------------------------------------------------------------
     # ---- a special case : no check if RTL_SYMBOLS[0]==RTL_SYMBOLS[1]
     # ------------------------------------------------------------------------
-    if alpha2aleph.globalsrtl.RTL_SYMBOLS[0] == alpha2aleph.globalsrtl.RTL_SYMBOLS[1]:
+    if rtl_start == rtl_end:
         return True, []
 
     # ------------------------------------------------------------------------
     # ---- common case : RTL_SYMBOLS[0] != RTL_SYMBOLS[1]
     # ------------------------------------------------------------------------
     # first check : is num_of(globals.RTL_SYMBOLS[0]) equal to num_of(globals.RTL_SYMBOLS[1]) ?
-    if inputdata.count(alpha2aleph.globalsrtl.RTL_SYMBOLS[0]) != inputdata.count(alpha2aleph.globalsrtl.RTL_SYMBOLS[1]):
+    if inputdata.count(rtl_start) != inputdata.count(rtl_end):
         success = False
-        errors.append("Not even numbers of symbols '{0}' and '{1}'".format(alpha2aleph.globalsrtl.RTL_SYMBOLS[0],
-                                                                           alpha2aleph.globalsrtl.RTL_SYMBOLS[1]))
+        errors.append("Not even numbers of symbols '{0}' and '{1}'".format(rtl_start, rtl_end))
 
     # second check : no two globals.RTL_SYMBOLS[x] twice in a row
     # third check : first RTL_SYMBOL must be globals.RTL_SYMBOLS[0]
     last_symbol = None
     for line_number, line in enumerate(inputdata):
         for char_number, char in enumerate(line):
-
-            context = 'line #{0}::character {1} (\"{2}\")'.format(line_number+1, char_number+1, extract_around_index(line, char_number))
+            _extract = extract_around_index(line,
+                                            char_number)
+            context = 'line #{0}::character {1} (\"{2}\")'.format(line_number+1,
+                                                                  char_number+1,
+                                                                  _extract)
 
             if char in alpha2aleph.globalsrtl.RTL_SYMBOLS:
                 if last_symbol is None:
                     if char == alpha2aleph.globalsrtl.RTL_SYMBOLS[1]:
-                        errors.append("first RTL_SYMBOL must be {0}, not {1} (context={2})".format(alpha2aleph.globalsrtl.RTL_SYMBOLS[0],
-                                                                                                   alpha2aleph.globalsrtl.RTL_SYMBOLS[1],
-                                                                                                   context))
+                        errors.append("first RTL_SYMBOL must be {0}, "
+                                      "not {1} (context={2})".format(rtl_start, rtl_end, context))
                         success = False
                     else:
                         last_symbol = char
                 else:
                     if last_symbol == char:
-                        LOGGER.error("[E01] the symbol '%s' appears two times in a row (context=%s)", char, context)
+                        LOGGER.error("[E01] the symbol '%s' appears two times in a row "
+                                     "(context=%s)",
+                                     char, context)
                         success = False
                     last_symbol = char
 
     return success, errors
+
 
 def downloadbasics():
     """
@@ -372,20 +515,25 @@ def downloadbasics():
     """
     success = True
 
-    for filename, url in (('config.ini', 'https://raw.githubusercontent.com/suizokukan/alpha2aleph/master/examples/config.ini'),
-                          ('symbols.txt', 'https://raw.githubusercontent.com/suizokukan/alpha2aleph/master/examples/symbols.txt')):
+    for filename, url in (('config.ini', 'https://raw.githubusercontent.com/'
+                                         'suizokukan/alpha2aleph/master/examples/config.ini'),
+                          ('symbols.txt', 'https://raw.githubusercontent.com/'
+                                          'suizokukan/alpha2aleph/master/examples/symbols.txt')):
         try:
             with urllib.request.urlopen(url) as response, \
                  open(filename, 'wb') as out_file:
-                 shutil.copyfileobj(response, out_file)
+                shutil.copyfileobj(response, out_file)
 
-                 # no id number (e.g. no [I01])
-                 LOGGER.info("Downloaded '%s' as '%s'", filename, normpath(filename))
+                # no id number (e.g. no [I01])
+                LOGGER.info("Downloaded '%s' as '%s'", filename, normpath(filename))
 
         except urllib.error.URLError as exception:
+            LOGGER.error("[E02] An error occured while downloading '%s' (url: '%s') : %s",
+                         filename, url, exception)
             success = False
 
     return success
+
 
 def entrypoint(paramaters=None):
     """
@@ -415,7 +563,6 @@ def entrypoint(paramaters=None):
             sys.exit(0)
 
         if args.about:
-            __projectname__, __license__, __author__, __location__
             print("{0} v. {1} by {2} : see {3}; a {4} project".format(__projectname__,
                                                                       __version__,
                                                                       __author__,
@@ -431,15 +578,19 @@ def entrypoint(paramaters=None):
     # ---- (1/4) configuration file ----
     # ----------------------------------
     if paramaters is None:
-        cfgini_success, cfgerrors, alpha2aleph.cfgini.CFGINI = alpha2aleph.cfgini.read_cfg_file(args.cfgfile)
+        (cfgini_success,
+         cfgerrors,
+         alpha2aleph.cfgini.CFGINI) = alpha2aleph.cfgini.read_cfg_file(args.cfgfile)
 
         if not cfgini_success:
-            LOGGER.error("[E02] problem with the config file '%s' : %s", args.cfgfile, cfgerrors)
-            LOGGER.error("[E03] === program stops ===")
+            LOGGER.error("[E03] problem with the config file '%s' : %s", args.cfgfile, cfgerrors)
+            LOGGER.error("[E04] === program stops ===")
             sys.exit(-1)
 
     else:
-        cfgini_success, cfgerrors, alpha2aleph.cfgini.CFGINI = alpha2aleph.cfgini.read_cfg_file(paramaters[0])
+        (cfgini_success,
+         cfgerrors,
+         alpha2aleph.cfgini.CFGINI) = alpha2aleph.cfgini.read_cfg_file(paramaters[0])
         if not cfgini_success:
             return None
 
@@ -447,15 +598,22 @@ def entrypoint(paramaters=None):
     # ---- (2/4) symbols file ----
     # ----------------------------
     if paramaters is None:
-        readsymbols_success, readsymbols_errors, alpha2aleph.logger.ALPHA2HEBREW, alpha2aleph.logger.ALPHA2HEBREW_KEYS = read_symbols(args.symbolsfile)
+        (readsymbols_success,
+         readsymbols_errors,
+         alpha2aleph.logger.ALPHA2HEBREW,
+         alpha2aleph.logger.ALPHA2HEBREW_KEYS) = read_symbols(args.symbolsfile)
 
         if not readsymbols_success:
-            LOGGER.error("[E04] problem with the symbols file '%s' : %s", args.symbolsfile, readsymbols_errors)
-            LOGGER.error("[E05] === program stops ===")
+            LOGGER.error("[E05] problem with the symbols file '%s' : %s",
+                         args.symbolsfile, readsymbols_errors)
+            LOGGER.error("[E06] === program stops ===")
             sys.exit(-3)
 
     else:
-        readsymbols_success, readsymbols_errors, alpha2aleph.logger.ALPHA2HEBREW, alpha2aleph.logger.ALPHA2HEBREW_KEYS = read_symbols(paramaters[1])
+        (readsymbols_success,
+         readsymbols_errors,
+         alpha2aleph.logger.ALPHA2HEBREW,
+         alpha2aleph.logger.ALPHA2HEBREW_KEYS) = read_symbols(paramaters[1])
         if not readsymbols_success:
             return None
 
@@ -471,8 +629,9 @@ def entrypoint(paramaters=None):
     if paramaters is None:
         if args.source == "inputfile":
             if not os.path.exists(args.inputfile):
-                LOGGER.error("[E06] Where is input file '%s', namely '%s' ?", args.inputfile, normpath(args.inputfile))
-                LOGGER.error("[E07] === program stops ===")
+                LOGGER.error("[E07] Where is input file '%s', namely '%s' ?",
+                             args.inputfile, normpath(args.inputfile))
+                LOGGER.error("[E08] === program stops ===")
                 sys.exit(-4)
             else:
                 with open(args.inputfile) as inputfile:
@@ -489,8 +648,9 @@ def entrypoint(paramaters=None):
         if args.checkinputdata == 'yes':
             check_success, check_errors = check_inputdata(inputdata)
             if not check_success:
-                LOGGER.error("[E08] Ill-formed input data '%s'; error(s)=%s", args.cfgfile, check_errors)
-                LOGGER.error("[E09] === program stops ===")
+                LOGGER.error("[E09] Ill-formed input data '%s'; error(s)=%s",
+                             args.cfgfile, check_errors)
+                LOGGER.error("[E10] === program stops ===")
                 sys.exit(-2)
 
     # ----------------------------------------
@@ -512,5 +672,12 @@ def entrypoint(paramaters=None):
         elif paramaters[3] == "html":
             return output_html("".join(inputdata))
 
-#if __name__ == '__main__':
-#    entrypoint()
+    LOGGER.error("[E11] unexpected end")
+    LOGGER.error("[E12] === program stops ===")
+    sys.exit(-5)
+
+    return None
+
+
+if __name__ == '__main__':
+    entrypoint()
