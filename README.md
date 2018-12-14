@@ -103,8 +103,10 @@ Either by using the fribidi library (see below), either by using a console like 
 * about python-fribidi : https://github.com/RevengeComing/python-fribidi/blob/master/test/fribidi.py
 
 ## todo
-- 0.1.7 : bug : un appel à bin/alpha2aleph appelle d'abord la commande alpha2aleph.
-- renuméroter .ERRORS()
+- 0.1.8 : bug : un appel à bin/alpha2aleph appelle d'abord la commande alpha2aleph.
+
+- utiliser pimydoc poyr :
+      # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
 - c'est vraiment dommage que n'existe pas --loglevel=ERROR.
 - header dans tous les .py
 - vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.

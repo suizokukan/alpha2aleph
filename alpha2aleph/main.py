@@ -55,11 +55,13 @@ from alpha2aleph.utils import stranalyse, match_repr, extracts, extract_around_i
 from alpha2aleph.cmdline import read_command_line_arguments
 
 def add_firstlast_marker(src):
+    # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
     LOGGER.pipelinetrace("add_firstlast_marker",
                          "add markers for the first and last characters")
     return "$"+src+"$"
 
 def remove_firstlast_marker(src):
+    # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
     LOGGER.pipelinetrace("remove_firstlast_marker",
                          "remove markers for the first and last characters")
     return src[1:-1]
@@ -69,12 +71,13 @@ def replace_and_log(pipeline_part, comment, src, before, after):
         simply return src.replace(before, after) but with a log message
     """
     if before in src:
+        # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
         LOGGER.pipelinetrace(pipeline_part,
                              "%s : '%s' > '%s' in %s",
                              comment, before, after, extracts(before, src))
         return src.replace(before, after)
 
-    LOGGER.debug("[D01] Nothing to do in '%s' for %s : '%s' > '%s' in \"%s\"",
+    LOGGER.debug("[D02] Nothing to do in '%s' for %s : '%s' > '%s' in \"%s\"",
                  src, comment, before, after, extracts(before, src))
     return src
 
@@ -83,22 +86,23 @@ def sub_and_log(cfgini_flag, pipeline_part, comment, before, after, src):
         simply return re.sub(before, after, src) with a log message if cfgini_flag.lower() == "true"
     """
     if cfgini_flag.lower() != "true":
-        LOGGER.debug("[D02] Nothing to do in '%s' for %s : '%s' > '%s' in %s",
+        LOGGER.debug("[D03] Nothing to do in '%s' for %s : '%s' > '%s' in %s",
                      src, comment, before, after, extracts(before, src))
 
     if before in src:
+        # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
         LOGGER.pipelinetrace(pipeline_part,
                              "%s : '%s' > '%s' in '%s'",
                              comment, before, after, extracts(before, src))
         return re.sub(before, after, src)
 
-    LOGGER.debug("[D03] Nothing to do in '%s' for %s : '%s' > '%s' in %s",
+    LOGGER.debug("[D04] Nothing to do in '%s' for %s : '%s' > '%s' in %s",
                  src, comment, before, after, extracts(before, src))
 
     return src
 
 def read_symbols(filename):
-    LOGGER.debug("[D04] read_symbols : '%s'", filename)
+    LOGGER.debug("[D05] read_symbols : '%s'", filename)
 
     if not os.path.exists(filename):
         return False, ["Where is symbols file '{0}', namely '{1}' ?".format(filename, normpath(filename))], None, None
@@ -144,6 +148,7 @@ def transf__text_alpha2alephrew(_src):
                               "[transf__text_alpha2alephrew]",
                               src, alphachar, alpha2aleph.logger.ALPHA2HEBREW[alphachar])
 
+    # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
     LOGGER.pipelinetrace("transf__text_alpha2alephrew",
                          "Adding globals.RTL_SYMBOLS to '%s' : '%s' and '%s'",
                          src, alpha2aleph.globalsrtl.RTL_SYMBOLS[0], alpha2aleph.globalsrtl.RTL_SYMBOLS[1])
@@ -172,6 +177,7 @@ def transf__invert_rtltext(src):
     res = src.group("rtltext")[::-1]
     res = alpha2aleph.globalsrtl.RTL_SYMBOLS[0]+res+alpha2aleph.globalsrtl.RTL_SYMBOLS[1]
 
+    # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
     LOGGER.pipelinetrace("transf__invert_rtltext",
                          "inverting the text : '%s' > '%s'",
                          match_repr(src), res)
@@ -191,6 +197,7 @@ def transf__use_FB1D_FB4F_chars(_src):
             src = replace_and_log(pipeline_part, comment, src, before, after)
 
     # ---- 2/2 let's add the first/last chars removed by calling this function ----
+    # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
     LOGGER.pipelinetrace("transf__use_FB1D_FB4F_chars",
                          "Adding alpha2aleph.globalsrtl.RTL_SYMBOLS to '%s' : '%s' and '%s'",
                          src, alpha2aleph.globalsrtl.RTL_SYMBOLS[0], alpha2aleph.globalsrtl.RTL_SYMBOLS[1])
@@ -198,7 +205,7 @@ def transf__use_FB1D_FB4F_chars(_src):
     return alpha2aleph.globalsrtl.RTL_SYMBOLS[0]+src+alpha2aleph.globalsrtl.RTL_SYMBOLS[1]
 
 def output_html(inputdata):
-    LOGGER.debug("[D05] [output_html] : data to be read=%s", inputdata)
+    LOGGER.debug("[D06] [output_html] : data to be read=%s", inputdata)
 
     rtl_start = '<span class="rtltext" dir="rtl">'
     rtl_end = '</span>'
@@ -255,7 +262,7 @@ def output_html(inputdata):
     return header + outputdata + foot
 
 def output_console(inputdata):
-    LOGGER.debug("[D06] [output_console] : data to be read=%s", inputdata)
+    LOGGER.debug("[D07] [output_console] : data to be read=%s", inputdata)
 
     # transformation console.1::text_delimiters
     #    let's add a char at the very beginning and at the very end of the
@@ -290,7 +297,7 @@ def output_console(inputdata):
     return outputdata
 
 def transf__maingroup(src):
-    LOGGER.debug("[D07] transf__maingroup()")
+    LOGGER.debug("[D08] transf__maingroup()")
 
     # transformation maingroup.1::improve_rtlalphatext
     src = transf__improve_rtlalphatext(src)
@@ -304,7 +311,7 @@ def transf__maingroup(src):
     return src
 
 def check_inputdata(inputdata):
-    LOGGER.debug("[D08] check_inputdata()")
+    LOGGER.debug("[D09] check_inputdata()")
 
     success = True
     errors = []
@@ -372,6 +379,7 @@ def downloadbasics():
                  open(filename, 'wb') as out_file:
                  shutil.copyfileobj(response, out_file)
 
+                 # no id number (e.g. no [I01])
                  LOGGER.info("Downloaded '%s' as '%s'", filename, normpath(filename))
 
         except urllib.error.URLError as exception:
@@ -463,8 +471,8 @@ def entrypoint(paramaters=None):
     if paramaters is None:
         if args.source == "inputfile":
             if not os.path.exists(args.inputfile):
-                LOGGER.error("[E99] Where is input file '%s', namely '%s' ?", args.inputfile, normpath(args.inputfile))
-                LOGGER.error("[E98] === program stops ===")
+                LOGGER.error("[E06] Where is input file '%s', namely '%s' ?", args.inputfile, normpath(args.inputfile))
+                LOGGER.error("[E07] === program stops ===")
                 sys.exit(-4)
             else:
                 with open(args.inputfile) as inputfile:
@@ -481,8 +489,8 @@ def entrypoint(paramaters=None):
         if args.checkinputdata == 'yes':
             check_success, check_errors = check_inputdata(inputdata)
             if not check_success:
-                LOGGER.error("[E06] Ill-formed input data '%s'; error(s)=%s", args.cfgfile, check_errors)
-                LOGGER.error("[E07] === program stops ===")
+                LOGGER.error("[E08] Ill-formed input data '%s'; error(s)=%s", args.cfgfile, check_errors)
+                LOGGER.error("[E09] === program stops ===")
                 sys.exit(-2)
 
     # ----------------------------------------

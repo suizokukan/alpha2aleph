@@ -10,6 +10,6 @@ def get_rtlreader_regex():
         res = '{0}(?P<rtltext>[^{0}{1}]*){1}'.format(re.escape(alpha2aleph.globalsrtl.RTL_SYMBOLS[0]),
                                                      re.escape(alpha2aleph.globalsrtl.RTL_SYMBOLS[1]))
 
-    alpha2aleph.glob.LOGGER.debug("[D08] new RTLREADER_REGEX : %s", res)
+    alpha2aleph.glob.LOGGER.debug("[D01] new RTLREADER_REGEX : %s", res)
 
     return re.compile(res)
