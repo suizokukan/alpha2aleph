@@ -58,7 +58,6 @@ Modify `logger.py::LOGGING_LEVEL`
 -2 : an error occured : ill-formed input file
 -3 : an error occured : can't read symbols file
 -4 : an error occured : missing input file
--5 : an error occured : unexpected end
 
 * a runtimeerror may be raised : see raise RuntimeError in the source code.
 
@@ -107,7 +106,9 @@ Either by using the fribidi library (see below), either by using a console like 
 - 0.1.8 : bug : un appel à bin/alpha2aleph appelle d'abord la commande alpha2aleph.
 
 - utiliser pimydoc poyr :
-      # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
+  - # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
+  - paramaters, args
+
 - c'est vraiment dommage que n'existe pas --loglevel=ERROR.
 - header dans tous les .py
 - vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.

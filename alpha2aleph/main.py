@@ -43,7 +43,7 @@ import alpha2aleph.logger   # ... initialization of LOGGER
 import alpha2aleph.globalsrtl
 from alpha2aleph.regex import get_rtlreader_regex
 
-from alpha2aleph.fb1d_fb4f import TRANSF_FB1D_FB4F
+#from alpha2aleph.fb1d_fb4f import TRANSF_FB1D_FB4F
 from alpha2aleph.utils import stranalyse, match_repr, extracts, extract_around_index, normpath
 from alpha2aleph.cmdline import read_command_line_arguments
 from alpha2aleph.improve_rtlalphatext import IMPROVE_RTLALPHATEXT
@@ -94,7 +94,7 @@ def remove_firstlast_markers(src):
     return src[1:-1]
 
 
-def replace_and_log(pipeline_part, comment, src, before, after):
+def replace_and_log(pipeline_part, comment, src, before_after):
     """
        replace_and_log()
        ________________________________________________________________________
@@ -105,11 +105,12 @@ def replace_and_log(pipeline_part, comment, src, before, after):
        PARAMETERS     : (str)pipeline_part
                         (str)comment
                         (str)src
-                        (str)before
-                        (str)after
+                        (str, str)before_after
 
        RETURNED VALUE : (str)the resulting string, namely src.replace(before, after)
     """
+    before, after = before_after
+
     if before in src:
         # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
         LOGGER.pipelinetrace(pipeline_part,
@@ -122,7 +123,7 @@ def replace_and_log(pipeline_part, comment, src, before, after):
     return src
 
 
-def sub_and_log(cfgini_flag, pipeline_part, comment, before, after, src):
+def sub_and_log(cfgini_flag, pipeline_part, comment, before_after, src):
     """
        sub_and_log()
        ________________________________________________________________________
@@ -135,12 +136,13 @@ def sub_and_log(cfgini_flag, pipeline_part, comment, before, after, src):
                         (str)pipeline_part
                         (str)comment
                         (str)src
-                        (str)before
-                        (str)after
+                        (str, str)before_after
                         (str)src
 
        RETURNED VALUE : (str)the resulting string, namely src.replace(before, after)
     """
+    before, after = before_after
+
     if cfgini_flag.lower() != "true":
         LOGGER.debug("[D03] Nothing to do in '%s' for %s : '%s' > '%s' in %s",
                      src, comment, before, after, extracts(before, src))
@@ -237,7 +239,7 @@ def transf__text_alpha2alephrew(_src):
     for alphachar in alpha2aleph.logger.ALPHA2HEBREW_KEYS:
         src = replace_and_log("transf__text_alpha2alephrew",
                               "[transf__text_alpha2alephrew]",
-                              src, alphachar, alpha2aleph.logger.ALPHA2HEBREW[alphachar])
+                              src, (alphachar, alpha2aleph.logger.ALPHA2HEBREW[alphachar]))
 
     # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
     LOGGER.pipelinetrace("transf__text_alpha2alephrew",
@@ -270,7 +272,7 @@ def transf__improve_rtlalphatext(src):
          after) in IMPROVE_RTLALPHATEXT:
 
         cfgini_flag = alpha2aleph.cfgini.CFGINI["pipeline.improve rtlalphatext"][_cfgini_flag]
-        src = sub_and_log(cfgini_flag, pipeline_part, comment, before, after, src)
+        src = sub_and_log(cfgini_flag, pipeline_part, comment, (before, after), src)
 
     return src
 
@@ -317,13 +319,13 @@ def transf__use_fb1d_fb4f_chars(_src):
     src = _src.group("rtltext")
 
     # ---- 1/2 FB1D-FB4F characters : ----
-    for shortname, (fullname, before, after) in alpha2aleph.fb1d_fb4f.TRANSF_FB1D_FB4F:
+    for _, (fullname, before, after) in alpha2aleph.fb1d_fb4f.TRANSF_FB1D_FB4F:
 
         if alpha2aleph.cfgini.CFGINI["pipeline.use FB1D-FB4F chars"][fullname].lower() == "true":
             pipeline_part = "transf__use_fb1d_fb4f_chars"
             comment = "{0}::{1}".format("transf__use_fb1d_fb4f_chars",
                                         fullname)
-            src = replace_and_log(pipeline_part, comment, src, before, after)
+            src = replace_and_log(pipeline_part, comment, src, (before, after))
 
     # ---- 2/2 let's add the first/last chars removed by calling this function ----
     # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
@@ -337,6 +339,17 @@ def transf__use_fb1d_fb4f_chars(_src):
 
 
 def output_html(inputdata):
+    """
+       output_html()
+       ________________________________________________________________________
+
+       Make an html output from the <inputdata>.
+       ________________________________________________________________________
+
+       PARAMETERS     : (str)inputdata, the source string.
+
+       RETURNED VALUE : (str)the result string.
+    """
     LOGGER.debug("[D06] [output_html] : data to be read=%s", inputdata)
 
     rtl_start = '<span class="rtltext" dir="rtl">'
@@ -395,6 +408,17 @@ def output_html(inputdata):
 
 
 def output_console(inputdata):
+    """
+       output_html()
+       ________________________________________________________________________
+
+       Make a console output from the <inputdata>.
+       ________________________________________________________________________
+
+       PARAMETERS     : (str)inputdata, the source string.
+
+       RETURNED VALUE : (str)the result string.
+    """
     LOGGER.debug("[D07] [output_console] : data to be read=%s", inputdata)
 
     # transformation console.1::text_delimiters
@@ -433,6 +457,18 @@ def output_console(inputdata):
 
 
 def transf__maingroup(src):
+    """
+       output_html()
+       ________________________________________________________________________
+
+       Modify the source string <src> using different calls to various
+       functions.
+       ________________________________________________________________________
+
+       PARAMETERS     : (str)src, the source string.
+
+       RETURNED VALUE : (str)the result string.
+    """
     LOGGER.debug("[D08] transf__maingroup()")
 
     # transformation maingroup.1::improve_rtlalphatext
@@ -448,6 +484,17 @@ def transf__maingroup(src):
 
 
 def check_inputdata(inputdata):
+    """
+       check_inputdata()
+       ________________________________________________________________________
+
+       Check the coherency of <inputdata>.
+       ________________________________________________________________________
+
+       PARAMETERS     : (str)inputdata, the source string.
+
+       RETURNED VALUE : (bool)ok, (list of str)errors
+    """
     LOGGER.debug("[D09] check_inputdata()")
 
     rtl_start, rtl_end = alpha2aleph.globalsrtl.RTL_SYMBOLS
@@ -535,48 +582,22 @@ def downloadbasics():
     return success
 
 
-def entrypoint(paramaters=None):
+def action__read_cfg_file(paramaters, args):
     """
-        entrypoint()
+        action__read_cfg_file()
         ________________________________________________________________________
 
-        main entry point into alpha2aleph.
+        Read the configuration file and initialize alpha2aleph.cfgini.CFGINI
         ________________________________________________________________________
 
-        paramaters : either None (cfgfile, ... will be read from the command line)
-                     either a list of strings (cfgfile, symbolsfile, inputdata, "console|html").
+        PARAMETER: - <paramaters> may be None or something else
+                     (see entrypoint() for more details.)
+                   - args : command line arguments
+                     (see entrypoint() for more details.)
 
-        returned value : a str if no error occured, None otherwise
+        RETURNED VALUE :
+            (bool) success
     """
-    # --------------------------------------
-    # ---- (0/4) command line arguments ----
-    # --------------------------------------
-    if paramaters is None:
-        args = read_command_line_arguments()
-
-    # ----------------------------------------------------
-    # ---- (1/4) --version, --about, --downloadbasics ----
-    # ----------------------------------------------------
-    if paramaters is None:
-        if args.version:
-            print(__version__)
-            sys.exit(0)
-
-        if args.about:
-            print("{0} v. {1} by {2} : see {3}; a {4} project".format(__projectname__,
-                                                                      __version__,
-                                                                      __author__,
-                                                                      __location__,
-                                                                      __license__))
-            sys.exit(0)
-
-        if args.downloadbasics:
-            downloadbasics()
-            sys.exit(0)
-
-    # ----------------------------------
-    # ---- (1/4) configuration file ----
-    # ----------------------------------
     if paramaters is None:
         (cfgini_success,
          cfgerrors,
@@ -592,11 +613,63 @@ def entrypoint(paramaters=None):
          cfgerrors,
          alpha2aleph.cfgini.CFGINI) = alpha2aleph.cfgini.read_cfg_file(paramaters[0])
         if not cfgini_success:
-            return None
+            return False
 
-    # ----------------------------
-    # ---- (2/4) symbols file ----
-    # ----------------------------
+    return True
+
+
+def action__misceallenous(paramaters, args):
+    """
+        action__misceallenous()
+        ________________________________________________________________________
+
+        --version, --about, --downloadbasics
+        ________________________________________________________________________
+
+        PARAMETER: - <paramaters> may be None or something else
+                     (see entrypoint() for more details.)
+                   - args : command line arguments
+                     (see entrypoint() for more details.)
+
+        RETURNED VALUE : True if something has been done, False otherwise.
+    """
+    if paramaters is None:
+        if args.version:
+            print(__version__)
+            return True
+
+        if args.about:
+            print("{0} v. {1} by {2} : see {3}; a {4} project".format(__projectname__,
+                                                                      __version__,
+                                                                      __author__,
+                                                                      __location__,
+                                                                      __license__))
+            return True
+
+        if args.downloadbasics:
+            downloadbasics()
+            return True
+
+    return False
+
+
+def action__read_symbols_file(paramaters, args):
+    """
+        action__read_symbols_file()
+        ________________________________________________________________________
+
+        Read the symbols file and initialize alpha2aleph.logger.ALPHA2HEBREW and
+        alpha2aleph.logger.ALPHA2HEBREW_KEYS .
+        ________________________________________________________________________
+
+        PARAMETER: - <paramaters> may be None or something else
+                     (see entrypoint() for more details.)
+                   - args : command line arguments
+                     (see entrypoint() for more details.)
+
+        RETURNED VALUE :
+            (bool) success
+    """
     if paramaters is None:
         (readsymbols_success,
          readsymbols_errors,
@@ -615,17 +688,36 @@ def entrypoint(paramaters=None):
          alpha2aleph.logger.ALPHA2HEBREW,
          alpha2aleph.logger.ALPHA2HEBREW_KEYS) = read_symbols(paramaters[1])
         if not readsymbols_success:
-            return None
+            return False
 
     if paramaters is None:
         if args.showsymbols:
             for key in alpha2aleph.logger.ALPHA2HEBREW_KEYS:
                 print(stranalyse(key), "---→", stranalyse(alpha2aleph.logger.ALPHA2HEBREW[key]))
 
-    # -----------------------------------
-    # ---- (3/4) input data reading  ----
-    # -----------------------------------
+    return True
+
+
+def action__read_inputdata(paramaters, args):
+    """
+        action__read_inputdata()
+        ________________________________________________________________________
+
+        Read the input data, either from a file, either from the command
+        line.
+        ________________________________________________________________________
+
+        PARAMETER: - <paramaters> may be None or something else
+                     (see entrypoint() for more details.)
+                   - args : command line arguments
+                     (see entrypoint() for more details.)
+
+        RETURNED VALUE :
+            (bool) success, (str)inputdata
+    """
     inputdata = ""
+    success = True
+
     if paramaters is None:
         if args.source == "inputfile":
             if not os.path.exists(args.inputfile):
@@ -637,7 +729,6 @@ def entrypoint(paramaters=None):
                 with open(args.inputfile) as inputfile:
                     inputdata = inputfile.readlines()
         elif args.source == "stdin":
-            #
             inputdata = sys.stdin.read()
             if inputdata[-1] == "\n":
                 inputdata = inputdata[:-1]
@@ -652,31 +743,75 @@ def entrypoint(paramaters=None):
                              args.cfgfile, check_errors)
                 LOGGER.error("[E10] === program stops ===")
                 sys.exit(-2)
+            success = success and check_success
+
+    return success, inputdata
+
+def entrypoint(paramaters=None):
+    """
+        entrypoint()
+        ________________________________________________________________________
+
+        main entry point into alpha2aleph.
+        ________________________________________________________________________
+
+        paramaters : either None (cfgfile, ... will be read from the command line)
+                     either a list of strings (cfgfile, symbolsfile, inputdata, "console|html").
+
+        returned value : a str if no error occured, None otherwise
+    """
+    # --------------------------------------
+    # ---- (0/5) command line arguments ----
+    # --------------------------------------
+    if paramaters is None:
+        args = read_command_line_arguments()
+    else:
+        args = None
+
+    # ----------------------------------------------------
+    # ---- (1/5) --version, --about, --downloadbasics ----
+    # ----------------------------------------------------
+    if action__misceallenous(paramaters, args):
+        sys.exit(0)
+
+    # ----------------------------------
+    # ---- (2/5) configuration file ----
+    # ----------------------------------
+    if not action__read_cfg_file(paramaters, args):
+        return None
+
+    # ----------------------------
+    # ---- (3/5) symbols file ----
+    # ----------------------------
+    if not action__read_symbols_file(paramaters, args):
+        return None
+
+    # -----------------------------------
+    # ---- (4/5) input data reading  ----
+    # -----------------------------------
+    success, inputdata = action__read_inputdata(paramaters, args)
+    if not success:
+        return None
 
     # ----------------------------------------
-    # ---- (4/4) input data > output data ----
+    # ---- (5/5) input data > output data ----
     # ----------------------------------------
+    res = None
     if paramaters is None:
         if args.transform_alpha2alephrew == 'yes':
             if args.outputformat == 'console':
                 res = output_console("".join(inputdata))
                 print(res)
-                return res
             if args.outputformat == 'html':
                 res = output_html("".join(inputdata))
                 print(res)
-                return res
     else:
         if paramaters[3] == "console":
-            return output_console("".join(inputdata))
+            res = output_console("".join(inputdata))
         elif paramaters[3] == "html":
-            return output_html("".join(inputdata))
+            res = output_html("".join(inputdata))
 
-    LOGGER.error("[E11] unexpected end")
-    LOGGER.error("[E12] === program stops ===")
-    sys.exit(-5)
-
-    return None
+    return res
 
 
 if __name__ == '__main__':
