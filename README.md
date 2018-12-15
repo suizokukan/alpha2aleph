@@ -102,16 +102,15 @@ Either by using the fribidi library (see below), either by using a console like 
 * about python-fribidi : https://github.com/RevengeComing/python-fribidi/blob/master/test/fribidi.py
 
 ## todo
-- 0.1.9 : bug : un appel à bin/alpha2aleph appelle d'abord la commande alpha2aleph.
+- 0.2.x : bug : un appel à bin/alpha2aleph appelle d'abord la commande alpha2aleph.
 
 - utiliser pimydoc pour :
   - # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
   - paramaters, args
 
 - c'est vraiment dommage que n'existe pas --loglevel=ERROR.
-- header dans tous les .py
 - vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.
-- bidifri à importer tout de suite avec un flag pour savoir si la lib est disponible ou pas; erreur si bidifi=true dans config.ini
+
 - il manque shin avec daghesh
 - implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt
 - dans les tests, bien vérifier source={file,stdin} + RTLSYMB ==/!= .

@@ -51,6 +51,13 @@ from alpha2aleph.improve_rtlalphatext import IMPROVE_RTLALPHATEXT
 from .glob import LOGGER
 from .glob import __projectname__, __version__, __license__, __author__, __location__
 
+# let's try to import pyfribidi :
+PYFRIBIDI_AVAILABLE = True
+try:
+    import pyfribidi
+except ModuleNotFoundError as err:
+    PYFRIBIDI_AVAILABLE = False
+
 
 alpha2aleph.globalsrtl.RTLREADER_REGEX = get_rtlreader_regex()
 
@@ -451,8 +458,10 @@ def output_console(inputdata):
 
     # transformation console.6::use fribidi
     if alpha2aleph.cfgini.CFGINI["output.console"]["use fribidi"].lower() == "true":
-        import pyfribidi
-        outputdata = pyfribidi.log2vis(outputdata)
+        if PYFRIBIDI_AVAILABLE:
+            outputdata = pyfribidi.log2vis(outputdata)
+        else:
+            LOGGER.error("[E01] You can't use fribidi : this library seems not to be installed.")
 
     return outputdata
 
@@ -538,7 +547,7 @@ def check_inputdata(inputdata):
                         last_symbol = char
                 else:
                     if last_symbol == char:
-                        LOGGER.error("[E01] the symbol '%s' appears two times in a row "
+                        LOGGER.error("[E02] the symbol '%s' appears two times in a row "
                                      "(context=%s)",
                                      char, context)
                         success = False
@@ -576,7 +585,7 @@ def downloadbasics():
                 LOGGER.info("Downloaded '%s' as '%s'", filename, normpath(filename))
 
         except urllib.error.URLError as exception:
-            LOGGER.error("[E02] An error occured while downloading '%s' (url: '%s') : %s",
+            LOGGER.error("[E03] An error occured while downloading '%s' (url: '%s') : %s",
                          filename, url, exception)
             success = False
 
@@ -605,8 +614,8 @@ def action__read_cfg_file(paramaters, args):
          alpha2aleph.cfgini.CFGINI) = alpha2aleph.cfgini.read_cfg_file(args.cfgfile)
 
         if not cfgini_success:
-            LOGGER.error("[E03] problem with the config file '%s' : %s", args.cfgfile, cfgerrors)
-            LOGGER.error("[E04] === program stops ===")
+            LOGGER.error("[E04] problem with the config file '%s' : %s", args.cfgfile, cfgerrors)
+            LOGGER.error("[E05] === program stops ===")
             sys.exit(-1)
 
     else:
@@ -678,9 +687,9 @@ def action__read_symbols_file(paramaters, args):
          alpha2aleph.logger.ALPHA2HEBREW_KEYS) = read_symbols(args.symbolsfile)
 
         if not readsymbols_success:
-            LOGGER.error("[E05] problem with the symbols file '%s' : %s",
+            LOGGER.error("[E06] problem with the symbols file '%s' : %s",
                          args.symbolsfile, readsymbols_errors)
-            LOGGER.error("[E06] === program stops ===")
+            LOGGER.error("[E07] === program stops ===")
             sys.exit(-3)
 
     else:
@@ -722,9 +731,9 @@ def action__read_inputdata(paramaters, args):
     if paramaters is None:
         if args.source == "inputfile":
             if not os.path.exists(args.inputfile):
-                LOGGER.error("[E07] Where is input file '%s', namely '%s' ?",
+                LOGGER.error("[E08] Where is input file '%s', namely '%s' ?",
                              args.inputfile, normpath(args.inputfile))
-                LOGGER.error("[E08] === program stops ===")
+                LOGGER.error("[E09] === program stops ===")
                 sys.exit(-4)
             else:
                 with open(args.inputfile) as inputfile:
@@ -740,9 +749,9 @@ def action__read_inputdata(paramaters, args):
         if args.checkinputdata == 'yes':
             check_success, check_errors = check_inputdata(inputdata)
             if not check_success:
-                LOGGER.error("[E09] Ill-formed input data '%s'; error(s)=%s",
+                LOGGER.error("[E10] Ill-formed input data '%s'; error(s)=%s",
                              args.cfgfile, check_errors)
-                LOGGER.error("[E10] === program stops ===")
+                LOGGER.error("[E11] === program stops ===")
                 sys.exit(-2)
             success = success and check_success
 
