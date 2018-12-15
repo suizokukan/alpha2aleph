@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+import os
+import sys
+import subprocess
+
+with open(os.devnull, 'wb') as devnull:
+    try:
+        res = subprocess.check_call(['alpha2aleph', '--version'], stdout=devnull, stderr=subprocess.STDOUT)
+    except FileNotFoundError:
+        res = -1
+
+    if res == 0:
+        print("\nError !\n"
+              "alpha2aleph being already installed on this system, you CAN'T call bin/alpha2aleph_bin; "
+              "please uninstall alpha2aleph before launching such a script; "
+              "\ntry :"
+              "\n  $sudo pip3 uninstall alpha2aleph")
+        sys.exit(-999)
+
+sys.path.append(os.path.join("..", "alpha2aleph"))
+
+from alpha2aleph.main import entrypoint
+entrypoint()

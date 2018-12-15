@@ -20,7 +20,7 @@ echo "“m<éléḵ:”" | alpha2aleph --source=stdin --outputformat=console
 
 or if alpha2aleph has not been installed through pip:
 
-echo "“m<éléḵ:”" | bin/alpha2aleph --source=stdin --outputformat=console
+echo "“m<éléḵ:”" | bin/alpha2aleph_bin --source=stdin --outputformat=console
 
 # where may I find default files to give a try ?
 You'll need `symbols.txt` and `config.ini`; just download them :
@@ -114,9 +114,7 @@ Either by using the fribidi library (see below), either by using a console like 
 - il manque shin avec daghesh
 - implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt
 - dans les tests, bien vérifier source={file,stdin} + RTLSYMB ==/!= .
-- exportation > html (https://www.w3.org/International/articles/inline-bidi-markup/) : choisir la police pour hébreu/le reste dans config.ini
 - piper : il faut donc un point d'entrée.
-- pylint=10
 - incorporer les caractères de U0590...
 - tests unitaires
 - todo : export vers .odt
