@@ -43,7 +43,7 @@ import alpha2aleph.logger   # ... initialization of LOGGER
 import alpha2aleph.globalsrtl
 from alpha2aleph.regex import get_rtlreader_regex
 
-#from alpha2aleph.fb1d_fb4f import TRANSF_FB1D_FB4F
+from alpha2aleph.fb1d_fb4f import TRANSF_FB1D_FB4F
 from alpha2aleph.utils import stranalyse, match_repr, extracts, extract_around_index, normpath
 from alpha2aleph.cmdline import read_command_line_arguments
 from alpha2aleph.improve_rtlalphatext import IMPROVE_RTLALPHATEXT

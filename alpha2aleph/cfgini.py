@@ -48,7 +48,10 @@ def read_cfg_file(filename):
         RETURNED VALUE : (bool_success, errors, configparser.ConfigParser object)
     """
     if not os.path.exists(filename):
-        return False, ["Where is config file '{0}', namely '{1}' ?".format(filename, normpath(filename))], None
+        return (False,
+                ["Where is config file '{0}', namely '{1}' ?".format(filename,
+                                                                     normpath(filename))],
+                None)
 
     success = True
     errors = []
@@ -89,7 +92,7 @@ def read_cfg_file(filename):
 
     if success:
         alpha2aleph.glob.RTL_SYMBOLS = (cfgini["inputdata.format"]["RTL_SYMBOL_START"],
-                                      cfgini["inputdata.format"]["RTL_SYMBOL_END"])
+                                        cfgini["inputdata.format"]["RTL_SYMBOL_END"])
         alpha2aleph.glob.RTLREADER_REGEX = get_rtlreader_regex()
 
     return success, errors, cfgini

@@ -47,8 +47,7 @@ or
 # to go further
 ## input file format
 * utf-8
-* insert hebrew file between '◆' and '■'.
-
+* insert hebrew file between globalsrtl.py::RTL_SYMBOLS (e.g. '“' and '”').
 
 ## logging info.
 Modify `logger.py::LOGGING_LEVEL`

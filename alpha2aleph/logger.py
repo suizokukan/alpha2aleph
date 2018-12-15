@@ -57,7 +57,8 @@ class LoggerPlus(logging.Logger):
             return logging.Logger.info(self, "["+pipeline_part+"] "+msg, *args, **kwargs)
 
         elif not pipeline_part in alpha2aleph.cfgini.CFGINI["pipeline.trace"]["no"]:
-            raise RuntimeError("Undefined pipeline part '%s' in the configuration file.", pipeline_part)
+            raise RuntimeError("Undefined pipeline part '{0}' "
+                               "in the configuration file.".format(pipeline_part))
 
         return None
 
