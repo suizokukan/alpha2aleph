@@ -36,6 +36,7 @@ import alpha2aleph.cfgini
 import alpha2aleph.glob
 LOGGING_LEVEL = logging.INFO
 
+
 class LoggerPlus(logging.Logger):
     """
         LoggerPlus class
@@ -56,11 +57,12 @@ class LoggerPlus(logging.Logger):
         if pipeline_part in alpha2aleph.cfgini.CFGINI["pipeline.trace"]["yes"]:
             return logging.Logger.info(self, "["+pipeline_part+"] "+msg, *args, **kwargs)
 
-        elif not pipeline_part in alpha2aleph.cfgini.CFGINI["pipeline.trace"]["no"]:
+        elif pipeline_part not in alpha2aleph.cfgini.CFGINI["pipeline.trace"]["no"]:
             raise RuntimeError("Undefined pipeline part '{0}' "
                                "in the configuration file.".format(pipeline_part))
 
         return None
+
 
 logging.setLoggerClass(LoggerPlus)
 LOGGERFORMAT = '%(levelname)-8s %(message)s'

@@ -285,9 +285,10 @@ def transf__invert_rtltext(src):
        Invert src : "abc" becoming "cba"
        ________________________________________________________________________
 
-       PARAMETERS     : (str)src
+       PARAMETERS     : (_sre.SRE_Match)src, the source match object.
 
-       RETURNED VALUE : (str)_src[::-1]
+       RETURNED VALUE : (str)_src.group("rtltext")[::-1] with RTL symbols
+                        before/after.
     """
     res = src.group("rtltext")[::-1]
     res = alpha2aleph.globalsrtl.RTL_SYMBOLS[0]+res+alpha2aleph.globalsrtl.RTL_SYMBOLS[1]
@@ -319,7 +320,7 @@ def transf__use_fb1d_fb4f_chars(_src):
     src = _src.group("rtltext")
 
     # ---- 1/2 FB1D-FB4F characters : ----
-    for _, (fullname, before, after) in alpha2aleph.fb1d_fb4f.TRANSF_FB1D_FB4F:
+    for _, (fullname, before, after) in TRANSF_FB1D_FB4F:
 
         if alpha2aleph.cfgini.CFGINI["pipeline.use FB1D-FB4F chars"][fullname].lower() == "true":
             pipeline_part = "transf__use_fb1d_fb4f_chars"
@@ -746,6 +747,7 @@ def action__read_inputdata(paramaters, args):
             success = success and check_success
 
     return success, inputdata
+
 
 def entrypoint(paramaters=None):
     """

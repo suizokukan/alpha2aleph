@@ -37,6 +37,7 @@ import alpha2aleph.glob
 from .regex import get_rtlreader_regex
 from .utils import normpath
 
+
 def read_cfg_file(filename):
     """
         read_cfg_file()
@@ -96,6 +97,7 @@ def read_cfg_file(filename):
         alpha2aleph.glob.RTLREADER_REGEX = get_rtlreader_regex()
 
     return success, errors, cfgini
+
 
 # should be initialized by read_cfg_file()
 CFGINI = None

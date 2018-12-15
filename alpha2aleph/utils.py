@@ -34,8 +34,22 @@
 import re
 import os
 import os.path
+import unicodedata
+
 
 def stranalyse(src):
+    """
+       stranalyse()
+       ________________________________________________________________________
+
+       Analyse the string <src> and return a lot of informations about each
+       character.
+       ________________________________________________________________________
+
+       PARAMETER      : (str)src, the source string.
+
+       RETURNED VALUE : (str)the result of <src>.
+    """
     res = []
     for char in src:
         name = unicodedata.name(char)
@@ -44,13 +58,36 @@ def stranalyse(src):
                                               name))
     return ";".join(res)
 
+
 def match_repr(match):
     """
-        Return a human readable representation of <match>
+       match_repr()
+       ________________________________________________________________________
+
+       Return a human readable representation of <match>
+       ________________________________________________________________________
+
+       PARAMETER      : (_sre.SRE_Match)the source match object.
+
+       RETURNED VALUE : (str)a human readable representation of <match>
     """
     return "(indexes {0} to {1}) : '{2}'".format(match.start(), match.end(), match.group())
 
+
 def extract_around_index(string, index, amplitude=10):
+    """
+       extract_around_index()
+       ________________________________________________________________________
+
+       Return the extract centered around string[index] +/- amplitude.
+       ________________________________________________________________________
+
+       PARAMETER      : (str)string, the source string
+                        (int)index, index in string
+                        (int)amplitude
+
+       RETURNED VALUE : (str)the expected extract around string[index]
+    """
     index0 = max(0, index-amplitude)
     index1 = min(len(string)-1, index+amplitude)
 
@@ -64,7 +101,21 @@ def extract_around_index(string, index, amplitude=10):
 
     return before+string[index0:index1]+after
 
+
 def extracts(target, src, amplitude=10):
+    """
+       extracts()
+       ________________________________________________________________________
+
+       Return all occurences of <target> in <src> using +/- <amplitude>.
+       ________________________________________________________________________
+
+       PARAMETER      : (str)target, the string to be find in <target>
+                        (str)src, the source string
+                        (int)amplitude
+
+       RETURNED VALUE : (str)the resulting string
+    """
     res = []
 
     for _res in re.finditer(target, src):
@@ -83,8 +134,8 @@ def extracts(target, src, amplitude=10):
     res = " /// ".join(finalres)
     if res:
         return res
-    else:
-        return "(empty extract)"
+    return "(empty extract)"
+
 
 def normpath(path):
     """
