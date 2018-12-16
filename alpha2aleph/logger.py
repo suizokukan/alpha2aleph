@@ -33,8 +33,6 @@
 """
 import logging
 import alpha2aleph.cfgini
-import alpha2aleph.glob
-LOGGING_LEVEL = logging.INFO
 
 
 class LoggerPlus(logging.Logger):
@@ -62,10 +60,3 @@ class LoggerPlus(logging.Logger):
                                "in the configuration file.".format(pipeline_part))
 
         return None
-
-
-logging.setLoggerClass(LoggerPlus)
-LOGGERFORMAT = '%(levelname)-8s %(message)s'
-logging.basicConfig(format=LOGGERFORMAT, level=LOGGING_LEVEL)
-
-alpha2aleph.glob.LOGGER = logging.getLogger(__name__)

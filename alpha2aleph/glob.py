@@ -31,6 +31,8 @@
 
         glob.py : global declarations
 """
+import logging
+
 __projectname__ = "alpha2aleph"
 __version__ = "0.2"
 __license__ = "GPLv3"
@@ -45,5 +47,7 @@ __statuspypi__ = 'Development Status :: 2 - Pre-Alpha'
 __location__ = "github.com/suizokukan/alpha2aleph"
 
 LOGGER = None
+LOGGING_LEVEL = logging.INFO
+
 ALPHA2HEBREW = None
 ALPHA2HEBREW_KEYS = None

@@ -31,6 +31,7 @@
 
         main.py : entry point in the project.
 """
+import logging
 import re
 import sys
 import os
@@ -38,7 +39,7 @@ import os.path
 import urllib.request
 import shutil
 
-import alpha2aleph.logger   # ... initialization of LOGGER
+import alpha2aleph.logger
 
 import alpha2aleph.globalsrtl
 from alpha2aleph.regex import get_rtlreader_regex
@@ -48,8 +49,10 @@ from alpha2aleph.utils import stranalyse, match_repr, extracts, extract_around_i
 from alpha2aleph.cmdline import read_command_line_arguments
 from alpha2aleph.improve_rtlalphatext import IMPROVE_RTLALPHATEXT
 
-from .glob import LOGGER
-from .glob import __projectname__, __version__, __license__, __author__, __location__
+from .glob import __projectname__, __version__, __license__, __author__, __location__, LOGGING_LEVEL
+
+from .logger import LoggerPlus
+
 
 # let's try to import pyfribidi :
 PYFRIBIDI_AVAILABLE = True
@@ -57,9 +60,6 @@ try:
     import pyfribidi
 except ModuleNotFoundError as err:
     PYFRIBIDI_AVAILABLE = False
-
-
-alpha2aleph.globalsrtl.RTLREADER_REGEX = get_rtlreader_regex()
 
 
 def add_firstlast_markers(src):
@@ -76,6 +76,8 @@ def add_firstlast_markers(src):
 
        RETURNED VALUE : (str)the resulting string
     """
+    LOGGER = alpha2aleph.glob.LOGGER
+
     # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
     LOGGER.pipelinetrace("add_firstlast_markers",
                          "add markers for the first and last characters")
@@ -95,6 +97,8 @@ def remove_firstlast_markers(src):
 
        RETURNED VALUE : (str)the resulting string
     """
+    LOGGER = alpha2aleph.glob.LOGGER
+
     # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
     LOGGER.pipelinetrace("remove_firstlast_markers",
                          "remove markers for the first and last characters")
@@ -116,6 +120,8 @@ def replace_and_log(pipeline_part, comment, src, before_after):
 
        RETURNED VALUE : (str)the resulting string, namely src.replace(before, after)
     """
+    LOGGER = alpha2aleph.glob.LOGGER
+
     before, after = before_after
 
     if before in src:
@@ -148,6 +154,8 @@ def sub_and_log(cfgini_flag, pipeline_part, comment, before_after, src):
 
        RETURNED VALUE : (str)the resulting string, namely src.replace(before, after)
     """
+    LOGGER = alpha2aleph.glob.LOGGER
+
     before, after = before_after
 
     if cfgini_flag.lower() != "true":
@@ -182,6 +190,8 @@ def read_symbols(filename):
                          alpha2alephrew,
                          sorted(keys_in_alpha2alephrew))
     """
+    LOGGER = alpha2aleph.glob.LOGGER
+
     LOGGER.debug("[D05] read_symbols : '%s'", filename)
 
     if not os.path.exists(filename):
@@ -241,6 +251,8 @@ def transf__text_alpha2alephrew(_src):
        RETURNED VALUE : (str)the translitterated text with RTL symbols added
                         at the beginning and at the end.
     """
+    LOGGER = alpha2aleph.glob.LOGGER
+
     src = _src.group("rtltext")
 
     for alphachar in alpha2aleph.logger.ALPHA2HEBREW_KEYS:
@@ -271,7 +283,6 @@ def transf__improve_rtlalphatext(src):
 
        RETURNED VALUE : (str) _src through several calls to sub_and_log().
     """
-
     for (_cfgini_flag,
          pipeline_part,
          comment,
@@ -297,6 +308,8 @@ def transf__invert_rtltext(src):
        RETURNED VALUE : (str)_src.group("rtltext")[::-1] with RTL symbols
                         before/after.
     """
+    LOGGER = alpha2aleph.glob.LOGGER
+
     res = src.group("rtltext")[::-1]
     res = alpha2aleph.globalsrtl.RTL_SYMBOLS[0]+res+alpha2aleph.globalsrtl.RTL_SYMBOLS[1]
 
@@ -324,6 +337,8 @@ def transf__use_fb1d_fb4f_chars(_src):
 
        RETURNED VALUE : (str)the resulting string.
     """
+    LOGGER = alpha2aleph.glob.LOGGER
+
     src = _src.group("rtltext")
 
     # ---- 1/2 FB1D-FB4F characters : ----
@@ -358,6 +373,8 @@ def output_html(inputdata):
 
        RETURNED VALUE : (str)the result string.
     """
+    LOGGER = alpha2aleph.glob.LOGGER
+
     LOGGER.debug("[D06] [output_html] : data to be read=%s", inputdata)
 
     rtl_start = '<span class="rtltext" dir="rtl">'
@@ -427,6 +444,8 @@ def output_console(inputdata):
 
        RETURNED VALUE : (str)the result string.
     """
+    LOGGER = alpha2aleph.glob.LOGGER
+
     LOGGER.debug("[D07] [output_console] : data to be read=%s", inputdata)
 
     # transformation console.1::text_delimiters
@@ -479,6 +498,8 @@ def transf__maingroup(src):
 
        RETURNED VALUE : (str)the result string.
     """
+    LOGGER = alpha2aleph.glob.LOGGER
+
     LOGGER.debug("[D08] transf__maingroup()")
 
     # transformation maingroup.1::improve_rtlalphatext
@@ -505,6 +526,8 @@ def check_inputdata(inputdata):
 
        RETURNED VALUE : (bool)ok, (list of str)errors
     """
+    LOGGER = alpha2aleph.glob.LOGGER
+
     LOGGER.debug("[D09] check_inputdata()")
 
     rtl_start, rtl_end = alpha2aleph.globalsrtl.RTL_SYMBOLS
@@ -570,6 +593,8 @@ def downloadbasics():
         RETURNED VALUE :
             (bool) success
     """
+    LOGGER = alpha2aleph.glob.LOGGER
+
     success = True
 
     for filename, url in (('config.ini', 'https://raw.githubusercontent.com/'
@@ -608,6 +633,8 @@ def action__read_cfg_file(paramaters, args):
         RETURNED VALUE :
             (bool) success
     """
+    LOGGER = alpha2aleph.glob.LOGGER
+
     if paramaters is None:
         (cfgini_success,
          cfgerrors,
@@ -680,6 +707,8 @@ def action__read_symbols_file(paramaters, args):
         RETURNED VALUE :
             (bool) success
     """
+    LOGGER = alpha2aleph.glob.LOGGER
+
     if paramaters is None:
         (readsymbols_success,
          readsymbols_errors,
@@ -725,6 +754,8 @@ def action__read_inputdata(paramaters, args):
         RETURNED VALUE :
             (bool) success, (str)inputdata
     """
+    LOGGER = alpha2aleph.glob.LOGGER
+
     inputdata = ""
     success = True
 
@@ -776,14 +807,26 @@ def entrypoint(paramaters=None):
     # --------------------------------------
     if paramaters is None:
         args = read_command_line_arguments()
+
+        logging.setLoggerClass(LoggerPlus)
+        loggerformat = '%(levelname)-8s %(message)s'
+        logging.basicConfig(format=loggerformat, level=args.log)
+        alpha2aleph.glob.LOGGER = logging.getLogger(__name__)
     else:
         args = None
+
+        logging.setLoggerClass(LoggerPlus)
+        loggerformat = '%(levelname)-8s %(message)s'
+        logging.basicConfig(format=loggerformat, level=LOGGING_LEVEL)
+        alpha2aleph.glob.LOGGER = logging.getLogger(__name__)
 
     # ----------------------------------------------------
     # ---- (1/5) --version, --about, --downloadbasics ----
     # ----------------------------------------------------
     if action__misceallenous(paramaters, args):
         sys.exit(0)
+
+    alpha2aleph.globalsrtl.RTLREADER_REGEX = get_rtlreader_regex()
 
     # ----------------------------------
     # ---- (2/5) configuration file ----

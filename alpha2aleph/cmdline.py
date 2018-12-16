@@ -59,6 +59,11 @@ def read_command_line_arguments():
                                                            __email__),
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
+    parser.add_argument('--log',
+                        choices=['DEBUG', 'INFO', 'ERROR', 'CRITICAL'],
+                        default="INFO",
+                        help="set log level")
+
     parser.add_argument('--version',
                         action="store_true",
                         help="show version number and exit")
