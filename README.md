@@ -106,7 +106,6 @@ Either by using the fribidi library (see below), either by using a console like 
   - # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
   - paramaters, args
 
-- c'est vraiment dommage que n'existe pas --loglevel=ERROR.
 - vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.
 
 - il manque shin avec daghesh
