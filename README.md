@@ -108,7 +108,6 @@ Either by using the fribidi library (see below), either by using a console like 
 
 - vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.
 
-- il manque shin avec daghesh
 - implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt
 - dans les tests, bien vérifier source={file,stdin} + RTLSYMB ==/!= .
 - piper : il faut donc un point d'entrée.
