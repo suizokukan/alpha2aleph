@@ -112,7 +112,8 @@ Either by using the fribidi library (see below), either by using a console like 
 # 7] todo & roadmap
 
 ## 7.1] todo
-- 0.2.5 : entrypoint(parameter) > entrypoint(forcedparameters)
+> 0.2.5 : entrypoint(parameter) > entrypoint(forcedparameters)
+
 - 0.2.6 : improve README.md
 - 0.2.7 utiliser pimydoc pour :
   - # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".

@@ -619,7 +619,7 @@ def cmdline__downloadbasics():
     return success
 
 
-def cmdline__check_symbols(paramaters, args):
+def cmdline__check_symbols(forcedparameters, args):
     """
         cmdline__check_symbols()
         ________________________________________________________________________
@@ -629,7 +629,7 @@ def cmdline__check_symbols(paramaters, args):
         This function is what execute the --checksymbols command line option.
         ________________________________________________________________________
 
-        PARAMETER: - <paramaters> may be None or something else
+        PARAMETER: - <forcedparameters> may be None or something else
                      (see entrypoint() for more details.)
                    - args : command line arguments
                      (see entrypoint() for more details.)
@@ -637,10 +637,10 @@ def cmdline__check_symbols(paramaters, args):
         RETURNED VALUE :
             (bool) success
     """
-    return cmdline__read_symbols_file(paramaters, args)
+    return cmdline__read_symbols_file(forcedparameters, args)
 
 
-def cmdline__read_cfg_file(paramaters, args):
+def cmdline__read_cfg_file(forcedparameters, args):
     """
         cmdline__read_cfg_file()
         ________________________________________________________________________
@@ -650,7 +650,7 @@ def cmdline__read_cfg_file(paramaters, args):
         This function is what execute the --cfgfile command line option.
         ________________________________________________________________________
 
-        PARAMETER: - <paramaters> may be None or something else
+        PARAMETER: - <forcedparameters> may be None or something else
                      (see entrypoint() for more details.)
                    - args : command line arguments
                      (see entrypoint() for more details.)
@@ -660,7 +660,7 @@ def cmdline__read_cfg_file(paramaters, args):
     """
     logger = alpha2aleph.glob.LOGGER
 
-    if paramaters is None:
+    if forcedparameters is None:
         (cfgini_success,
          cfgerrors,
          alpha2aleph.cfgini.CFGINI) = alpha2aleph.cfgini.read_cfg_file(args.cfgfile)
@@ -673,14 +673,14 @@ def cmdline__read_cfg_file(paramaters, args):
     else:
         (cfgini_success,
          cfgerrors,
-         alpha2aleph.cfgini.CFGINI) = alpha2aleph.cfgini.read_cfg_file(paramaters[0])
+         alpha2aleph.cfgini.CFGINI) = alpha2aleph.cfgini.read_cfg_file(forcedparameters[0])
         if not cfgini_success:
             return False
 
     return True
 
 
-def cmdline__misceallenous(paramaters, args):
+def cmdline__misceallenous(forcedparameters, args):
     """
         cmdline__misceallenous()
         ________________________________________________________________________
@@ -690,14 +690,14 @@ def cmdline__misceallenous(paramaters, args):
         --version, --about, --downloadbasics, --checksymbols
         ________________________________________________________________________
 
-        PARAMETER: - <paramaters> may be None or something else
+        PARAMETER: - <forcedparameters> may be None or something else
                      (see entrypoint() for more details.)
                    - args : command line arguments
                      (see entrypoint() for more details.)
 
         RETURNED VALUE : True if something has been done, False otherwise.
     """
-    if paramaters is None:
+    if forcedparameters is None:
         if args.version:
             print(__version__)
             return True
@@ -715,13 +715,13 @@ def cmdline__misceallenous(paramaters, args):
             return True
 
         if args.checksymbols:
-            cmdline__check_symbols(paramaters, args)
+            cmdline__check_symbols(forcedparameters, args)
             return True
 
     return False
 
 
-def cmdline__read_symbols_file(paramaters, args):
+def cmdline__read_symbols_file(forcedparameters, args):
     """
         cmdline__read_symbols_file()
         ________________________________________________________________________
@@ -732,7 +732,7 @@ def cmdline__read_symbols_file(paramaters, args):
         This function is what execute the --symbolsfile command line option.
         ________________________________________________________________________
 
-        PARAMETER: - <paramaters> may be None or something else
+        PARAMETER: - <forcedparameters> may be None or something else
                      (see entrypoint() for more details.)
                    - args : command line arguments
                      (see entrypoint() for more details.)
@@ -742,7 +742,7 @@ def cmdline__read_symbols_file(paramaters, args):
     """
     logger = alpha2aleph.glob.LOGGER
 
-    if paramaters is None:
+    if forcedparameters is None:
         (readsymbols_success,
          readsymbols_errors,
          alpha2aleph.logger.ALPHA2HEBREW,
@@ -758,11 +758,11 @@ def cmdline__read_symbols_file(paramaters, args):
         (readsymbols_success,
          readsymbols_errors,
          alpha2aleph.logger.ALPHA2HEBREW,
-         alpha2aleph.logger.ALPHA2HEBREW_KEYS) = read_symbols(paramaters[1])
+         alpha2aleph.logger.ALPHA2HEBREW_KEYS) = read_symbols(forcedparameters[1])
         if not readsymbols_success:
             return False
 
-    if paramaters is None:
+    if forcedparameters is None:
         if args.showsymbols:
             for key in alpha2aleph.logger.ALPHA2HEBREW_KEYS:
                 print(stranalyse(key), "---→", stranalyse(alpha2aleph.logger.ALPHA2HEBREW[key]))
@@ -770,7 +770,7 @@ def cmdline__read_symbols_file(paramaters, args):
     return True
 
 
-def cmdline__read_inputdata(paramaters, args):
+def cmdline__read_inputdata(forcedparameters, args):
     """
         cmdline__read_inputdata()
         ________________________________________________________________________
@@ -781,7 +781,7 @@ def cmdline__read_inputdata(paramaters, args):
         This function is what execute the --inputfile/--source command line options.
         ________________________________________________________________________
 
-        PARAMETER: - <paramaters> may be None or something else
+        PARAMETER: - <forcedparameters> may be None or something else
                      (see entrypoint() for more details.)
                    - args : command line arguments
                      (see entrypoint() for more details.)
@@ -794,7 +794,7 @@ def cmdline__read_inputdata(paramaters, args):
     inputdata = ""
     success = True
 
-    if paramaters is None:
+    if forcedparameters is None:
         if args.source == "inputfile":
             if not os.path.exists(args.inputfile):
                 logger.error("[E08] Where is input file '%s', namely '%s' ?",
@@ -809,9 +809,9 @@ def cmdline__read_inputdata(paramaters, args):
             if inputdata[-1] == "\n":
                 inputdata = inputdata[:-1]
     else:
-        inputdata = paramaters[2]
+        inputdata = forcedparameters[2]
 
-    if paramaters is None:
+    if forcedparameters is None:
         if args.checkinputdata == 'yes':
             check_success, check_errors = check_inputdata(inputdata)
             if not check_success:
@@ -824,7 +824,7 @@ def cmdline__read_inputdata(paramaters, args):
     return success, inputdata
 
 
-def entrypoint(paramaters=None):
+def entrypoint(forcedparameters=None):
     """
         entrypoint()
         ________________________________________________________________________
@@ -832,7 +832,7 @@ def entrypoint(paramaters=None):
         main entry point into alpha2aleph.
         ________________________________________________________________________
 
-        paramaters : either None (cfgfile, ... will be read from the command line)
+        forcedparameters : either None (cfgfile, ... will be read from the command line)
                      either a list of strings (cfgfile, symbolsfile, inputdata, "console|html").
 
         returned value : a str if no error occured, None otherwise
@@ -840,7 +840,7 @@ def entrypoint(paramaters=None):
     # --------------------------------------
     # ---- (0/5) command line arguments ----
     # --------------------------------------
-    if paramaters is None:
+    if forcedparameters is None:
         args = read_command_line_arguments()
 
         logging.setLoggerClass(LoggerPlus)
@@ -858,7 +858,7 @@ def entrypoint(paramaters=None):
     # ----------------------------------------------------
     # ---- (1/5) --version, --about, --downloadbasics ----
     # ----------------------------------------------------
-    if cmdline__misceallenous(paramaters, args):
+    if cmdline__misceallenous(forcedparameters, args):
         sys.exit(0)
 
     alpha2aleph.globalsrtl.RTLREADER_REGEX = get_rtlreader_regex()
@@ -866,19 +866,19 @@ def entrypoint(paramaters=None):
     # ----------------------------------
     # ---- (2/5) configuration file ----
     # ----------------------------------
-    if not cmdline__read_cfg_file(paramaters, args):
+    if not cmdline__read_cfg_file(forcedparameters, args):
         return None
 
     # ----------------------------
     # ---- (3/5) symbols file ----
     # ----------------------------
-    if not cmdline__read_symbols_file(paramaters, args):
+    if not cmdline__read_symbols_file(forcedparameters, args):
         return None
 
     # -----------------------------------
     # ---- (4/5) input data reading  ----
     # -----------------------------------
-    success, inputdata = cmdline__read_inputdata(paramaters, args)
+    success, inputdata = cmdline__read_inputdata(forcedparameters, args)
     if not success:
         return None
 
@@ -886,7 +886,7 @@ def entrypoint(paramaters=None):
     # ---- (5/5) input data > output data ----
     # ----------------------------------------
     res = None
-    if paramaters is None:
+    if forcedparameters is None:
         if args.transform_alpha2alephrew == 'yes':
             if args.outputformat == 'console':
                 res = output_console("".join(inputdata))
@@ -895,9 +895,9 @@ def entrypoint(paramaters=None):
                 res = output_html("".join(inputdata))
                 print(res)
     else:
-        if paramaters[3] == "console":
+        if forcedparameters[3] == "console":
             res = output_console("".join(inputdata))
-        elif paramaters[3] == "html":
+        elif forcedparameters[3] == "html":
             res = output_html("".join(inputdata))
 
     return res
