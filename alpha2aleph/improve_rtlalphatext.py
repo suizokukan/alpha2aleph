@@ -34,7 +34,7 @@
 IMPROVE_RTLALPHATEXT = (("final kaf",
                          "transf__improve_rtlalphatext",
                          "final kaf",
-                         "ḵ:(?P<ponctuation>)", "ḵ²:\\g<ponctuation>"),
+                         "ḵ[:|ə](?P<ponctuation>)", "ḵ²:\\g<ponctuation>"),
 
                         ("alef + holam > alef + point_on_right",
                          "transf__improve_rtlalphatext",
@@ -44,4 +44,4 @@ IMPROVE_RTLALPHATEXT = (("final kaf",
                         ("ḥe + holam + shin > ḥe + shin",
                          "transf__improve_rtlalphatext",
                          "ḥe + holam + shin > ḥe + shin",
-                         "ḥ(?P<accent>[<])?ôš", "ḥ\\g<accent>š"),)
+                         "[H|ḥ|ħ|ẖ](?P<accent>[<])?ôš", "ḥ\\g<accent>š"),)

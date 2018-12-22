@@ -77,6 +77,10 @@ def read_command_line_arguments():
                         help="download basic files like default symbols.txt "
                              "and config.ini, and exit")
 
+    parser.add_argument('--checksymbols',
+                        action="store_true",
+                        help="check symbols coherency and exit")
+
     parser.add_argument('--showsymbols',
                         action="store_true",
                         help="show symbols")

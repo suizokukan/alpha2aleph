@@ -617,6 +617,25 @@ def downloadbasics():
     return success
 
 
+def check_symbols(paramaters, args):
+    """
+        check_symbols()
+        ________________________________________________________________________
+
+        Check the content of the symbols file.
+        ________________________________________________________________________
+
+        PARAMETER: - <paramaters> may be None or something else
+                     (see entrypoint() for more details.)
+                   - args : command line arguments
+                     (see entrypoint() for more details.)
+
+        RETURNED VALUE :
+            (bool) success
+    """
+    return action__read_symbols_file(paramaters, args)
+
+
 def action__read_cfg_file(paramaters, args):
     """
         action__read_cfg_file()
@@ -660,7 +679,7 @@ def action__misceallenous(paramaters, args):
         action__misceallenous()
         ________________________________________________________________________
 
-        --version, --about, --downloadbasics
+        --version, --about, --downloadbasics, --checksymbols
         ________________________________________________________________________
 
         PARAMETER: - <paramaters> may be None or something else
@@ -685,6 +704,10 @@ def action__misceallenous(paramaters, args):
 
         if args.downloadbasics:
             downloadbasics()
+            return True
+
+        if args.checksymbols:
+            check_symbols(paramaters, args)
             return True
 
     return False

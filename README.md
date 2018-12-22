@@ -44,7 +44,11 @@ or
 
 `$ python3 -m unittest tests/tests.py`
 
+## test one symbol file:
+$ alpha2aleph --checksymbols --symbolsfile=examples/symbols.txt
+
 # to go further
+
 ## input file format
 * utf-8
 * insert hebrew file between globalsrtl.py::RTL_SYMBOLS (e.g. '“' and '”').
@@ -102,6 +106,10 @@ Either by using the fribidi library (see below), either by using a console like 
 * about python-fribidi : https://github.com/RevengeComing/python-fribidi/blob/master/test/fribidi.py
 
 ## todo
+> 0.2.3 : --checksymbols
+- 0.2.4 : ordre des fonctions dans main.py
+- 0.2.5 : entrypoint(parameter) > entrypoint(forcedparameters)
+
 - utiliser pimydoc pour :
   - # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
   - paramaters, args
