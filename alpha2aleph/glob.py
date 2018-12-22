@@ -34,7 +34,7 @@
 import logging
 
 __projectname__ = "alpha2aleph"
-__version__ = "0.2.5"
+__version__ = "0.2.6"
 __license__ = "GPLv3"
 __author__ = "Xavier Faure (suizokukan / 94.23.197.37)"
 __email__ = "suizokukan@orange.fr"
