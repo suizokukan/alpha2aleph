@@ -49,7 +49,23 @@ or if `alpha2aleph` has not been installed through `pip`:
 
 ## [4.1] input file format
 * utf-8
-* insert hebrew file between globalsrtl.py::RTL_SYMBOLS (e.g. '“' and '”').
+* insert hebrew text between globalsrtl.py::RTL_SYMBOLS (e.g. '“' and '”').
+
+If you write something like:
+`(1) “m<éléḵ:, hamm<éléḵ:” (2)`
+
+The expected output is `(1) מֶ֫לֶכְ, הַמֶּ֫לֶכְ (2)`
+
+## [4.2] symbols file
+* utf-8
+* comments begin after `#`.
+* alphabetic symbol → hebrew symbol like in `ʔ → א`
+  different alphabetic symbols may be used for the same hebrew symbol
+
+## [4.3] configuration file
+* utf-8
+* INI file
+* do not use upper case symbols in keys; not `Ḥe + holam + shin > Ḥe + shin : True` but `ḥe + holam + shin > ḥe + shin : True`
 
 # [5] tests & checks
 
@@ -114,11 +130,9 @@ Either by using the fribidi library (see below), either by using a console like 
 # [7] todo & roadmap
 
 ## [7.1] todo
-> 0.2.8:
-  - doc dans README.md sur format des 3 fichiers de départ : how to write...
-  - doc dans README.md : table des matières : regarder par exemple https://raw.githubusercontent.com/adam-p/markdown-here/master/README.md .
 - 0.2.9 tests unitaires
 
+- incohérence dans symbols.txt: g → גּ mais pas gg → גּ
 - vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.
 - implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt; https://en.wikipedia.org/wiki/ISO_259
 - dans les tests, bien vérifier source={file,stdin} + RTLSYMB ==/!= .
@@ -127,6 +141,7 @@ Either by using the fribidi library (see below), either by using a console like 
 - todo : si hebrew2unicode[x] n'existe pas
 
 ## [7.2] roadmap
+- v. 0.2.8 : table of content in README.md
 - v. 0.2.7 : use pimydoc to control some part of documentation
 - v. 0.2.6 : improved README.md
 - v. 0.2.5
