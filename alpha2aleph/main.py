@@ -579,13 +579,15 @@ def check_inputdata(inputdata):
     return success, errors
 
 
-def downloadbasics():
+def cmdline__downloadbasics():
     """
-        downloadbasics()
+        cmdline__downloadbasics()
         ________________________________________________________________________
 
         Download the default configuration file and save them in the current
         directory.
+
+        This function is what execute the --downloadbasics command line option.
         ________________________________________________________________________
 
         no PARAMETER
@@ -617,12 +619,14 @@ def downloadbasics():
     return success
 
 
-def check_symbols(paramaters, args):
+def cmdline__check_symbols(paramaters, args):
     """
-        check_symbols()
+        cmdline__check_symbols()
         ________________________________________________________________________
 
         Check the content of the symbols file.
+
+        This function is what execute the --checksymbols command line option.
         ________________________________________________________________________
 
         PARAMETER: - <paramaters> may be None or something else
@@ -633,15 +637,17 @@ def check_symbols(paramaters, args):
         RETURNED VALUE :
             (bool) success
     """
-    return action__read_symbols_file(paramaters, args)
+    return cmdline__read_symbols_file(paramaters, args)
 
 
-def action__read_cfg_file(paramaters, args):
+def cmdline__read_cfg_file(paramaters, args):
     """
-        action__read_cfg_file()
+        cmdline__read_cfg_file()
         ________________________________________________________________________
 
         Read the configuration file and initialize alpha2aleph.cfgini.CFGINI
+
+        This function is what execute the --cfgfile command line option.
         ________________________________________________________________________
 
         PARAMETER: - <paramaters> may be None or something else
@@ -674,10 +680,12 @@ def action__read_cfg_file(paramaters, args):
     return True
 
 
-def action__misceallenous(paramaters, args):
+def cmdline__misceallenous(paramaters, args):
     """
-        action__misceallenous()
+        cmdline__misceallenous()
         ________________________________________________________________________
+
+        This function is what execute the following command line options:
 
         --version, --about, --downloadbasics, --checksymbols
         ________________________________________________________________________
@@ -703,23 +711,25 @@ def action__misceallenous(paramaters, args):
             return True
 
         if args.downloadbasics:
-            downloadbasics()
+            cmdline__downloadbasics()
             return True
 
         if args.checksymbols:
-            check_symbols(paramaters, args)
+            cmdline__check_symbols(paramaters, args)
             return True
 
     return False
 
 
-def action__read_symbols_file(paramaters, args):
+def cmdline__read_symbols_file(paramaters, args):
     """
-        action__read_symbols_file()
+        cmdline__read_symbols_file()
         ________________________________________________________________________
 
         Read the symbols file and initialize alpha2aleph.logger.ALPHA2HEBREW and
         alpha2aleph.logger.ALPHA2HEBREW_KEYS .
+
+        This function is what execute the --symbolsfile command line option.
         ________________________________________________________________________
 
         PARAMETER: - <paramaters> may be None or something else
@@ -760,13 +770,15 @@ def action__read_symbols_file(paramaters, args):
     return True
 
 
-def action__read_inputdata(paramaters, args):
+def cmdline__read_inputdata(paramaters, args):
     """
-        action__read_inputdata()
+        cmdline__read_inputdata()
         ________________________________________________________________________
 
         Read the input data, either from a file, either from the command
         line.
+
+        This function is what execute the --inputfile/--source command line options.
         ________________________________________________________________________
 
         PARAMETER: - <paramaters> may be None or something else
@@ -846,7 +858,7 @@ def entrypoint(paramaters=None):
     # ----------------------------------------------------
     # ---- (1/5) --version, --about, --downloadbasics ----
     # ----------------------------------------------------
-    if action__misceallenous(paramaters, args):
+    if cmdline__misceallenous(paramaters, args):
         sys.exit(0)
 
     alpha2aleph.globalsrtl.RTLREADER_REGEX = get_rtlreader_regex()
@@ -854,19 +866,19 @@ def entrypoint(paramaters=None):
     # ----------------------------------
     # ---- (2/5) configuration file ----
     # ----------------------------------
-    if not action__read_cfg_file(paramaters, args):
+    if not cmdline__read_cfg_file(paramaters, args):
         return None
 
     # ----------------------------
     # ---- (3/5) symbols file ----
     # ----------------------------
-    if not action__read_symbols_file(paramaters, args):
+    if not cmdline__read_symbols_file(paramaters, args):
         return None
 
     # -----------------------------------
     # ---- (4/5) input data reading  ----
     # -----------------------------------
-    success, inputdata = action__read_inputdata(paramaters, args)
+    success, inputdata = cmdline__read_inputdata(paramaters, args)
     if not success:
         return None
 
