@@ -90,20 +90,16 @@ Modify `logger.py::LOGGING_LEVEL`
 How do I correctly display bidirectional text ?
 Either by using the fribidi library (see below), either by using a console like Konsole or mlterm (https://sourceforge.net/projects/mlterm/). Do NOT mix those solutions !
 
-+=============================================+===============================+=================================+
-|transformation name                          | where is the code ?           | config.ini                      |
-+=============================================+===============================+=================================+
-| console.1::text_delimiters                  | add_firstlast_marker()        | -                               |
-+---------------------------------------------+-------------------------------+---------------------------------+
+| transformation name                         | where is the code ?           | config.ini                      |
+|---------------------------------------------|-------------------------------|---------------------------------|
+| console.1::text_delimiters                  | add_firstlast_marker()        |                                 |
 | console.2::maingroup                        |                               |                                 |
 |  * maingroup.1::improve_rtlalphatext        | transf__improve_rtlalphatext()| [pipeline.improve rtlalphatext] |
 |  * maingroup.2::transf__text_alpha2alephrew | transf__text_alpha2alephrew() | - (modify symbols.txt)          |
 |  * maingroup.3::transf__use_FB1D_FB4F_chars | transf__use_FB1D_FB4F_chars() | [pipeline.use FB1D-FB4F chars]  |
-| console.3::rtltext                          | transf__invert_rtltext        | [output.console][invert_rtltext]|
 | console.4::remove_RTL_SYMBOLS               | output_console()              | [output.console][rtl symbols]   |
 | console.5::undo_text_delimiters             | remove_firstlast_marker()     | -                               |
 | console.6::use fribidi                      | output_console()              | [output.console][use fribidi]   |
-+---------------------------------------------+-------------------------------+---------------------------------+
 
 #### 6.4.2.1] about fribidi:
 * about fribidi : http://fribidi.org/
@@ -112,8 +108,6 @@ Either by using the fribidi library (see below), either by using a console like 
 # 7] todo & roadmap
 
 ## 7.1] todo
-> 0.2.5 : entrypoint(parameter) > entrypoint(forcedparameters)
-
 - 0.2.6 : improve README.md
 - 0.2.7 utiliser pimydoc pour :
   - # no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
@@ -129,4 +123,11 @@ Either by using the fribidi library (see below), either by using a console like 
 - todo : si hebrew2unicode[x] n'existe pas
 
 ## 7.2] roadmap
-0.2.3 : --checksymbols
+- v. 0.2.5
+     - improved README.md
+     - fixed a typo in main.py : 'paramaters' > 'forcedparameters'
+- v 0.2.4
+     - improved README.md
+     - renamed functions in main.py called to execute command line options:
+       cmdline__*
+- 0.2.3 : --checksymbols
