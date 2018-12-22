@@ -1,8 +1,8 @@
 # 1] alpha2aleph
 A GPLv3/Python3/CLI project to convert something like 'mlḵ' into 'כלמ'.
 
-* By default, symbols (list of definitions like m → מ) are stored in `symbols.txt` (see --symbolsfile).
-* By default, options are stored in `config.ini` (see --cfgfile).
+* By default, symbols (list of definitions like m → מ) are stored in `symbols.txt` (see --symbolsfile command line option).
+* By default, options are stored in `config.ini` (see --cfgfile command line option).
 
 # 2] installation
 
@@ -72,11 +72,9 @@ Modify `logger.py::LOGGING_LEVEL`
 ## 6.4] transformations' pipeline
 ### 6.4.1] output: html
 
-+============================================+===============================+=================================+
 |transformation name                         | where is the code ?           | config.ini                      |
-+============================================+===============================+=================================+
+|--------------------------------------------|-------------------------------|---------------------------------|
 | html.1::text_delimiters                    | add_firstlast_marker()        | -                               |
-+--------------------------------------------+-------------------------------+---------------------------------+
 | html.2::main                               |                               |                                 |
 |  * maingroup.1::improve_rtlalphatext       | transf__improve_rtlalphatext()| [pipeline.improve rtlalphatext] |
 |  * maingroup.2::transf__text_alpha2alephrew| transf__text_alpha2alephrew() | - (modify symbols.txt)          |
@@ -84,7 +82,6 @@ Modify `logger.py::LOGGING_LEVEL`
 | html.3::br                                 | output_html()                 | -                               |
 | html.4::RTL_SYMBOLS                        | output_html()                 | -                               |
 | html.5::undo_text_delimiters               | output_html()                 | -                               |
-+--------------------------------------------+-------------------------------+---------------------------------+
 
 ### 6.4.2] output: console
 
