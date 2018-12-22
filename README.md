@@ -17,11 +17,11 @@ A GPLv3/Python3/CLI project to convert something like 'mlḵ' into 'כלמ'.
 # 3] how to use it ?
 
 ## 3.1] through a pipe :
-echo "“m<éléḵ:”" | alpha2aleph --source=stdin --outputformat=console
+`$ echo "“m<éléḵ:”" | alpha2aleph --source=stdin --outputformat=console`
 
-or if alpha2aleph has not been installed through pip:
+or if `alpha2aleph` has not been installed through `pip`:
 
-echo "“m<éléḵ:”" | bin/alpha2aleph_bin --source=stdin --outputformat=console
+`$ echo "“m<éléḵ:”" | bin/alpha2aleph_bin --source=stdin --outputformat=console`
 
 ## 3.2] examples
 
@@ -36,6 +36,7 @@ echo "“m<éléḵ:”" | bin/alpha2aleph_bin --source=stdin --outputformat=con
 
 # 4] where may I find default files to give a try ?
 You'll need `symbols.txt` and `config.ini`; just download them :
+
 `$ alpha2aleph --downloadbasics`
 
 # 5] tests & checks
@@ -48,7 +49,7 @@ or
 `$ python3 -m unittest tests/tests.py`
 
 ## 5.2] test one symbol file:
-$ alpha2aleph --checksymbols --symbolsfile=examples/symbols.txt
+`$ alpha2aleph --checksymbols --symbolsfile=examples/symbols.txt`
 
 # 6] to go further
 
