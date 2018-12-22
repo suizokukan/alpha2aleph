@@ -1,10 +1,10 @@
-**[[1] alpha2aleph](#1-alpha2aleph)**
-**[[2] installation](#2-installation)**
-**[[3] how to use it](#3-how-to-use-it)**
-**[[4] how to write input text, symbols file and config file ?](#4-how-to-write)**
-**[[5] tests & checks](#5-tests-and-checks)**
-**[[6] to go further](#6-to-go-further)**
-**[[7] todo & roadmap](#7-todo-and-roadmap)**
+**[[1] alpha2aleph](#1-alpha2aleph)**<br/>
+**[[2] installation](#2-installation)**<br/>
+**[[3] how to use it](#3-how-to-use-it)**<br/>
+**[[4] how to write input text, symbols file and config file ?](#4-how-to-write)**<br/>
+**[[5] tests & checks](#5-tests-and-checks)**<br/>
+**[[6] to go further](#6-to-go-further)**<br/>
+**[[7] todo & roadmap](#7-todo-and-roadmap)**<br/>
 
 # [1] alpha2aleph
 A GPLv3/Python3/CLI project to convert something like 'mlḵ' into 'כלמ'.
