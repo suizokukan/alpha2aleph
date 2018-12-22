@@ -1,62 +1,66 @@
-# alpha2aleph
+# 1] alpha2aleph
 A GPLv3/Python3/CLI project to convert something like 'mlḵ' into 'כלמ'.
 
 * By default, symbols (list of definitions like m → מ) are stored in `symbols.txt` (see --symbolsfile).
 * By default, options are stored in `config.ini` (see --cfgfile).
 
-# installation
+# 2] installation
 
-## pip:
+## 2.1] pip:
 `$ sudo pip3 install alpha2aleph`
 
 → https://pypi.org/project/alpha2aleph/
 
-## directly from the github repository:
+## 2.2] directly from the github repository:
 → https://github.com/suizokukan/alpha2aleph
 
-# how to use it ?
-## through a pipe :
+# 3] how to use it ?
+
+## 3.1] through a pipe :
 echo "“m<éléḵ:”" | alpha2aleph --source=stdin --outputformat=console
 
 or if alpha2aleph has not been installed through pip:
 
 echo "“m<éléḵ:”" | bin/alpha2aleph_bin --source=stdin --outputformat=console
 
-# where may I find default files to give a try ?
+## 3.2] examples
+
+### 3.2.1] you want to use the project inside another .py file:
+`$ python3 example0.py`
+
+### 3.2.2] you want to create a simple (console) output:
+`$ ./example1.sh` : console output
+
+### 3.2.2] you want to create an html output:
+`$ ./example2.sh` : html output
+
+# 4] where may I find default files to give a try ?
 You'll need `symbols.txt` and `config.ini`; just download them :
 `$ alpha2aleph --downloadbasics`
 
-# examples
+# 5] tests & checks
 
-## you want to use the project inside another .py file:
-`$ python3 example0.py`
-
-## you want to create a simple (console) output:
-`$ ./example1.sh` : console output
-
-## you want to create an html output:
-`$ ./example2.sh` : html output
-
-# tests
+## 5.1] unit tests
 `$ nosetests3`
 
 or
 
 `$ python3 -m unittest tests/tests.py`
 
-## test one symbol file:
+## 5.2] test one symbol file:
 $ alpha2aleph --checksymbols --symbolsfile=examples/symbols.txt
 
-# to go further
+# 6] to go further
 
-## input file format
+## 6.1] input file format
 * utf-8
 * insert hebrew file between globalsrtl.py::RTL_SYMBOLS (e.g. '“' and '”').
 
-## logging info.
+## 6.2] logging info.
+see `--log` command line option.
 Modify `logger.py::LOGGING_LEVEL`
 
-## exit codes, exceptions
+## 6.3] exit codes, exceptions
 -1 : an error occured : can't read config file
 -2 : an error occured : ill-formed input file
 -3 : an error occured : can't read symbols file
@@ -64,8 +68,8 @@ Modify `logger.py::LOGGING_LEVEL`
 
 * a runtimeerror may be raised : see raise RuntimeError in the source code.
 
-## transformations' pipeline
-### output: html
+## 6.4] transformations' pipeline
+### 6.4.1] output: html
 
 +============================================+===============================+=================================+
 |transformation name                         | where is the code ?           | config.ini                      |
@@ -81,7 +85,7 @@ Modify `logger.py::LOGGING_LEVEL`
 | html.5::undo_text_delimiters               | output_html()                 | -                               |
 +--------------------------------------------+-------------------------------+---------------------------------+
 
-### output: console
+### 6.4.2] output: console
 
 How do I correctly display bidirectional text ?
 Either by using the fribidi library (see below), either by using a console like Konsole or mlterm (https://sourceforge.net/projects/mlterm/). Do NOT mix those solutions !
@@ -101,12 +105,13 @@ Either by using the fribidi library (see below), either by using a console like 
 | console.6::use fribidi                      | output_console()              | [output.console][use fribidi]   |
 +---------------------------------------------+-------------------------------+---------------------------------+
 
-#### about fribidi:
+#### 6.4.2.1] about fribidi:
 * about fribidi : http://fribidi.org/
 * about python-fribidi : https://github.com/RevengeComing/python-fribidi/blob/master/test/fribidi.py
 
-## todo
-> 0.2.3 : --checksymbols
+# 7] todo & roadmap
+
+## 7.1] todo
 - 0.2.4 : ordre des fonctions dans main.py
 - 0.2.5 : entrypoint(parameter) > entrypoint(forcedparameters)
 
@@ -124,3 +129,6 @@ Either by using the fribidi library (see below), either by using a console like 
 - todo : export vers .odt
 - todo : si hebrew2unicode[x] n'existe pas
 - todo : exemples d'utilisation
+
+## 7.2] roadmap
+0.2.3 : --checksymbols
