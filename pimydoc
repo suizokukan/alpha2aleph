@@ -1,0 +1,20 @@
+[pimydoc]
+REGEX_SOURCE_FILTER : .+py$|.+ini$|pylintrc|README.md|project.txt$
+STARTSYMB_IN_DOC :ˮ
+PROFILE_PYTHON_SPACENBR_FOR_A_TAB : 4
+REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : True
+COMMENT_STARTSTRING:---
+
+[about forced parameters:]
+either None, either a list of strings (cfgfile, symbolsfile, inputdata, "console|html").
+if None, all the values (cfgfile, symbolsfile, ...) will be read from the command line
+---
+---
+---
+---
+[remark about logger and pipelinetrace():]
+no id number for messages given to logger.pipelinetrace(), e.g. no "[I01]"
+---
+---
+---
+---

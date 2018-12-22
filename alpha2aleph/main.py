@@ -78,7 +78,8 @@ def add_firstlast_markers(src):
     """
     logger = alpha2aleph.glob.LOGGER
 
-    # no id number for messages given to logger.pipelinetrace(), e.g. no "[I01]".
+    # remark about logger and pipelinetrace():
+    # ˮno id number for messages given to logger.pipelinetrace(), e.g. no "[I01]"
     logger.pipelinetrace("add_firstlast_markers",
                          "add markers for the first and last characters")
     return "$"+src+"$"
@@ -99,7 +100,8 @@ def remove_firstlast_markers(src):
     """
     logger = alpha2aleph.glob.LOGGER
 
-    # no id number for messages given to logger.pipelinetrace(), e.g. no "[I01]".
+    # remark about logger and pipelinetrace():
+    # ˮno id number for messages given to logger.pipelinetrace(), e.g. no "[I01]"
     logger.pipelinetrace("remove_firstlast_markers",
                          "remove markers for the first and last characters")
     return src[1:-1]
@@ -125,7 +127,8 @@ def replace_and_log(pipeline_part, comment, src, before_after):
     before, after = before_after
 
     if before in src:
-        # no id number for messages given to logger.pipelinetrace(), e.g. no "[I01]".
+        # remark about logger and pipelinetrace():
+        # ˮno id number for messages given to logger.pipelinetrace(), e.g. no "[I01]"
         logger.pipelinetrace(pipeline_part,
                              "%s : '%s' > '%s' in %s",
                              comment, before, after, extracts(before, src))
@@ -163,7 +166,8 @@ def sub_and_log(cfgini_flag, pipeline_part, comment, before_after, src):
                      src, comment, before, after, extracts(before, src))
 
     if before in src:
-        # no id number for messages given to logger.pipelinetrace(), e.g. no "[I01]".
+        # remark about logger and pipelinetrace():
+        # ˮno id number for messages given to logger.pipelinetrace(), e.g. no "[I01]"
         logger.pipelinetrace(pipeline_part,
                              "%s : '%s' > '%s' in '%s'",
                              comment, before, after, extracts(before, src))
@@ -260,7 +264,8 @@ def transf__text_alpha2alephrew(_src):
                               "[transf__text_alpha2alephrew]",
                               src, (alphachar, alpha2aleph.logger.ALPHA2HEBREW[alphachar]))
 
-    # no id number for messages given to logger.pipelinetrace(), e.g. no "[I01]".
+    # remark about logger and pipelinetrace():
+    # ˮno id number for messages given to logger.pipelinetrace(), e.g. no "[I01]"
     logger.pipelinetrace("transf__text_alpha2alephrew",
                          "Adding globals.RTL_SYMBOLS to '%s' : '%s' and '%s'",
                          src,
@@ -313,7 +318,8 @@ def transf__invert_rtltext(src):
     res = src.group("rtltext")[::-1]
     res = alpha2aleph.globalsrtl.RTL_SYMBOLS[0]+res+alpha2aleph.globalsrtl.RTL_SYMBOLS[1]
 
-    # no id number for messages given to logger.pipelinetrace(), e.g. no "[I01]".
+    # remark about logger and pipelinetrace():
+    # ˮno id number for messages given to logger.pipelinetrace(), e.g. no "[I01]"
     logger.pipelinetrace("transf__invert_rtltext",
                          "inverting the text : '%s' > '%s'",
                          match_repr(src), res)
@@ -351,7 +357,8 @@ def transf__use_fb1d_fb4f_chars(_src):
             src = replace_and_log(pipeline_part, comment, src, (before, after))
 
     # ---- 2/2 let's add the first/last chars removed by calling this function ----
-    # no id number for messages given to logger.pipelinetrace(), e.g. no "[I01]".
+    # remark about logger and pipelinetrace():
+    # ˮno id number for messages given to logger.pipelinetrace(), e.g. no "[I01]"
     logger.pipelinetrace("transf__use_fb1d_fb4f_chars",
                          "Adding alpha2aleph.globalsrtl.RTL_SYMBOLS to '%s' : '%s' and '%s'",
                          src,
@@ -608,7 +615,8 @@ def cmdline__downloadbasics():
                  open(filename, 'wb') as out_file:
                 shutil.copyfileobj(response, out_file)
 
-                # no id number (e.g. no [I01])
+                # remark about logger and pipelinetrace():
+                # ˮno id number for messages given to logger.pipelinetrace(), e.g. no "[I01]"
                 logger.info("Downloaded '%s' as '%s'", filename, normpath(filename))
 
         except urllib.error.URLError as exception:
@@ -629,10 +637,12 @@ def cmdline__check_symbols(forcedparameters, args):
         This function is what execute the --checksymbols command line option.
         ________________________________________________________________________
 
-        PARAMETER: - <forcedparameters> may be None or something else
-                     (see entrypoint() for more details.)
-                   - args : command line arguments
-                     (see entrypoint() for more details.)
+        PARAMETERS: - forcedparameters: see below
+                    - args : command line arguments
+
+        about forced parameters:
+        ˮeither None, either a list of strings (cfgfile, symbolsfile, inputdata, "console|html").
+        ˮif None, all the values (cfgfile, symbolsfile, ...) will be read from the command line
 
         RETURNED VALUE :
             (bool) success
@@ -650,10 +660,12 @@ def cmdline__read_cfg_file(forcedparameters, args):
         This function is what execute the --cfgfile command line option.
         ________________________________________________________________________
 
-        PARAMETER: - <forcedparameters> may be None or something else
-                     (see entrypoint() for more details.)
-                   - args : command line arguments
-                     (see entrypoint() for more details.)
+        PARAMETERS: - forcedparameters: see below
+                    - args : command line arguments
+
+        about forced parameters:
+        ˮeither None, either a list of strings (cfgfile, symbolsfile, inputdata, "console|html").
+        ˮif None, all the values (cfgfile, symbolsfile, ...) will be read from the command line
 
         RETURNED VALUE :
             (bool) success
@@ -690,10 +702,12 @@ def cmdline__misceallenous(forcedparameters, args):
         --version, --about, --downloadbasics, --checksymbols
         ________________________________________________________________________
 
-        PARAMETER: - <forcedparameters> may be None or something else
-                     (see entrypoint() for more details.)
-                   - args : command line arguments
-                     (see entrypoint() for more details.)
+        PARAMETERS: - forcedparameters: see below
+                    - args : command line arguments
+
+        about forced parameters:
+        ˮeither None, either a list of strings (cfgfile, symbolsfile, inputdata, "console|html").
+        ˮif None, all the values (cfgfile, symbolsfile, ...) will be read from the command line
 
         RETURNED VALUE : True if something has been done, False otherwise.
     """
@@ -732,10 +746,12 @@ def cmdline__read_symbols_file(forcedparameters, args):
         This function is what execute the --symbolsfile command line option.
         ________________________________________________________________________
 
-        PARAMETER: - <forcedparameters> may be None or something else
-                     (see entrypoint() for more details.)
-                   - args : command line arguments
-                     (see entrypoint() for more details.)
+        PARAMETERS: - forcedparameters: see below
+                    - args : command line arguments
+
+        about forced parameters:
+        ˮeither None, either a list of strings (cfgfile, symbolsfile, inputdata, "console|html").
+        ˮif None, all the values (cfgfile, symbolsfile, ...) will be read from the command line
 
         RETURNED VALUE :
             (bool) success
@@ -781,10 +797,12 @@ def cmdline__read_inputdata(forcedparameters, args):
         This function is what execute the --inputfile/--source command line options.
         ________________________________________________________________________
 
-        PARAMETER: - <forcedparameters> may be None or something else
-                     (see entrypoint() for more details.)
-                   - args : command line arguments
-                     (see entrypoint() for more details.)
+        PARAMETERS: - forcedparameters: see below
+                    - args : command line arguments
+
+        about forced parameters:
+        ˮeither None, either a list of strings (cfgfile, symbolsfile, inputdata, "console|html").
+        ˮif None, all the values (cfgfile, symbolsfile, ...) will be read from the command line
 
         RETURNED VALUE :
             (bool) success, (str)inputdata
@@ -832,8 +850,7 @@ def entrypoint(forcedparameters=None):
         main entry point into alpha2aleph.
         ________________________________________________________________________
 
-        forcedparameters : either None (cfgfile, ... will be read from the command line)
-                     either a list of strings (cfgfile, symbolsfile, inputdata, "console|html").
+        PARAMETER: forcedparameters: see above
 
         returned value : a str if no error occured, None otherwise
     """

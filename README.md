@@ -106,13 +106,10 @@ Either by using the fribidi library (see below), either by using a console like 
 # 7] todo & roadmap
 
 ## 7.1] todo
-- 0.2.7 utiliser pimydoc pour :
-  - no id number for messages given to LOGGER.pipelinetrace(), e.g. no "[I01]".
-  - paramaters, args
 - 0.2.8 : doc dans README.md sur format des 3 fichiers de départ : how to write...
 
 - vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.
-- implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt
+- implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt; https://en.wikipedia.org/wiki/ISO_259
 - dans les tests, bien vérifier source={file,stdin} + RTLSYMB ==/!= .
 - incorporer les caractères de U0590...
 - tests unitaires
@@ -120,6 +117,7 @@ Either by using the fribidi library (see below), either by using a console like 
 - todo : si hebrew2unicode[x] n'existe pas
 
 ## 7.2] roadmap
+- v. 0.2.7 : use pimydoc to control some part of documentation
 - v. 0.2.6 : improved README.md
 - v. 0.2.5
      - improved README.md
