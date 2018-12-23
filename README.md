@@ -54,10 +54,17 @@ see example1.sh:
 
 **Dealing with the RTL/LTR mess:**
 
+If ok(✓), the text "the word 'king' (‏מֶ֫לֶכְ‎) in Hebrew..." is correctly displayed with the Hebrew word in the expected sense.
+
+- GC [Gnome Terminal]
+- Fi [Firefox 64.0]
+- Yu [Yudit]
+- Li [Libreoffice]
+
 |                  | rtl symbols: empty string   | rtl symbols: 0x200F_0x200E |
 |------------------|-----------------------------|----------------------------|
-| freebidi : False | GnomeC(✗)Firef(✓)Yu(✓)Li(✓) | GnomeC(✗)Firef(✓)Yu(?)Li(✓)
-| freebidi : True  |
+| freebidi : False | GT(✗) Fi(✓) Yu(✓) Li(✓)     | GT(✗) Fi(✓) Yu(✗) Li(✓)    |
+| freebidi : True  | GT(✓) Fi(✗) Yu(✗) Li(✗)     | GT(✓) Fi(✗) Yu(✗) Li(✗)    |
 
 ### [3.2.2] you want to create an html output:
 
@@ -153,7 +160,6 @@ Either by using the fribidi library (see below), either by using a console like 
 
 ## [7.1] todo
 > 0.3 : doc
-  - --explicitoutput
   - dernier truc : utiliser fribi+ en même temps que 0x200F ?
     -> **Dealing with the RTL/LTR mess:**
 
