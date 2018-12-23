@@ -11,29 +11,29 @@
 A → א
 
 # ‫ב‬ HEBREW LETTER BET
-bb → בּ
-b → בּ
 β → ב
 ḇ → ב
 v → ב
+bb → בּ
 
 # ‫ג‬ HEBREW LETTER GIMEL
 ɣ → ג
 ġ → ג
 ḡ → ג
-g → גּ
+gg → גּ
 
 # ‫ד‬ HEBREW LETTER DALET
 ð → ד
 ḍ → ד
 ḏ → ד
-d → דּ
+dd → דּ
 
 # ‫ה‬ HEBREW LETTER HE
 h → ה
 
 # ‫ו‬ HEBREW LETTER VAV
 w → ו
+ww → וּ
 
 # ‫ז‬ HEBREW LETTER ZAYIN
 z → ז
@@ -47,6 +47,7 @@ H → ח
 
 # ‫ט‬ HEBREW LETTER TET
 ṭ → ט
+ṭṭ → טּ
 
 # ‫י‬ HEBREW LETTER YOD
 j → י
@@ -58,7 +59,7 @@ yy → יּ
 # 05DA ‫ך‬ HEBREW LETTER FINAL KAF
 ḵ → כ
 ḵ² → ‫ך‬
-k → כּ
+K → ‫ך‬
 kk → כּ
 
 # ‫05DC ‫ל‬ HEBREW LETTER LAMED‬
@@ -70,12 +71,14 @@ ll → לּ
 m → מ
 mm → מּ
 M → ם
+m² → ם
 
 # 05E0 ‫נ‬ HEBREW LETTER NUN
 # 05DF ‫ן‬ HEBREW LETTER FINAL NUN
 n → נ
 nn → נּ
 N → ‫ן‬
+n² → ‫ן‬
 
 # HEBREW LETTER SAMEKH
 s → ס
@@ -89,16 +92,19 @@ ss → סּ
 # 05E3 HEBREW LETTER FINAL PE
 ɸ → פ
 f → פ
-p → פּ
+pp → פּ
 P → ף
+p² → ף
 
 # 05E6 HEBREW LETTER FINAL TSADI
 # 05E5 HEBREW LETTER FINAL TSADI
 #t͡s → צ
 ṣ → צ
 ẓ → צ
-ṣṣ → ץ
-ẓẓ → ץ
+ṣ² → ץ
+ẓ² → ץ
+ṣṣ → צּ
+ẓẓ → צ
 
 # 05E7 ‫ק‬ HEBREW LETTER QOF
 q → ק
@@ -121,7 +127,6 @@ S → ש
 # 05EA ‫ת‬ HEBREW LETTER TAV
 θ → ת
 ṯ → ת
-t → תּ
 tt → תּ
 
 # see https://en.wikipedia.org/wiki/Hebrew_alphabetVowels

@@ -7,7 +7,7 @@
 **[[7] todo & roadmap](#7-todo-and-roadmap)**<br/>
 
 # [1] alpha2aleph
-A GPLv3/Python3/CLI project to convert something like 'mlḵ' into 'כלמ'.
+A GPLv3/Python3/CLI project to convert something like '... the word king (“mlḵ”).' into '... the word king (כלמ)'.
 
 * By default, symbols (list of definitions like m → מ) are stored in `symbols.txt` (see --symbolsfile command line option).
 * By default, options are stored in `config.ini` (see --cfgfile command line option).
@@ -30,7 +30,7 @@ You'll need `symbols.txt` and `config.ini`; just download them :
 ## [3.1] through a pipe :
 `$ echo "“m<éléḵ:”" | alpha2aleph --source=stdin --outputformat=console`
 
-or if `alpha2aleph` has not been installed through `pip`:
+or if `alpha2aleph` has not been installed through `pip` but if you downloaded the repository:
 
 `$ echo "“m<éléḵ:”" | bin/alpha2aleph_bin --source=stdin --outputformat=console`
 
@@ -130,17 +130,17 @@ Either by using the fribidi library (see below), either by using a console like 
 # [7] todo & roadmap
 
 ## [7.1] todo
-- 0.2.9 tests unitaires
+> 0.2.9 : incohérence dans symbols.txt: g → גּ mais pas gg → גּ
+- 0.3 : tests unitaires
 
-- incohérence dans symbols.txt: g → גּ mais pas gg → גּ
 - vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.
 - implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt; https://en.wikipedia.org/wiki/ISO_259
 - dans les tests, bien vérifier source={file,stdin} + RTLSYMB ==/!= .
 - incorporer les caractères de U0590...
-- todo : export vers .odt
-- todo : si hebrew2unicode[x] n'existe pas
+- export vers .odt
 
 ## [7.2] roadmap
+- v. 0.2.9 : completed examples/symbols.txt
 - v. 0.2.8 : table of content in README.md
 - v. 0.2.7 : use pimydoc to control some part of documentation
 - v. 0.2.6 : improved README.md
