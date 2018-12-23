@@ -492,6 +492,49 @@ def output_console(inputdata):
     return outputdata
 
 
+def transformation(forcedparameters, args, inputdata):
+    """
+        transformation()
+        ________________________________________________________________________
+
+        main function defining the transformation(s) between input data and the
+        output.
+        ________________________________________________________________________
+
+        PARAMETERS: - forcedparameters: see below
+                    - args : command line arguments
+                    - inputdata : (str)input data
+
+        about forced parameters:
+        ˮeither None, either a list of strings (cfgfile, symbolsfile, inputdata, "console|html").
+        ˮif None, all the values (cfgfile, symbolsfile, ...) will be read from the command line
+
+        RETURNED VALUE :
+        (str) output string
+    """
+    res = None
+
+    if forcedparameters is None:
+        if args.transform_alpha2alephrew == 'yes':
+            if args.outputformat == 'console':
+                res = output_console("".join(inputdata))
+                print(res)
+            if args.outputformat == 'html':
+                res = output_html("".join(inputdata))
+                print(res)
+    else:
+        if forcedparameters[3] == "console":
+            res = output_console("".join(inputdata))
+        elif forcedparameters[3] == "html":
+            res = output_html("".join(inputdata))
+
+    if forcedparameters is None and args.explicitoutput:
+        for key in res:
+            print("'"+key+"'", " >>> ", stranalyse(key))
+
+    return res
+
+
 def transf__maingroup(src):
     """
        output_html()
@@ -904,24 +947,7 @@ def entrypoint(forcedparameters=None):
     # ----------------------------------------
     # ---- (5/5) input data > output data ----
     # ----------------------------------------
-    res = None
-    if forcedparameters is None:
-        if args.transform_alpha2alephrew == 'yes':
-            if args.outputformat == 'console':
-                res = output_console("".join(inputdata))
-                print(res)
-            if args.outputformat == 'html':
-                res = output_html("".join(inputdata))
-                print(res)
-    else:
-        if forcedparameters[3] == "console":
-            res = output_console("".join(inputdata))
-        elif forcedparameters[3] == "html":
-            res = output_html("".join(inputdata))
-
-    if forcedparameters is None and args.explicitoutput:
-        for key in res:
-            print("'"+key+"'", " >>> ", stranalyse(key))
+    res = transformation(forcedparameters, args, inputdata)
 
     return res
 

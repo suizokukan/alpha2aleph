@@ -139,7 +139,7 @@ Modify `logger.py::LOGGING_LEVEL`
 ### [6.3.2] output: console
 
 How do I correctly display bidirectional text ?
-Either by using the fribidi library (see below), either by using a console like Konsole or mlterm (https://sourceforge.net/projects/mlterm/). Do NOT mix those solutions !
+Either by using the fribidi library (see below), either by using a console like Konsole or mlterm (https://sourceforge.net/projects/mlterm/). Do NOT mix those solutions ! See the **Dealing with the RTL/LTR mess:** section in this document.
 
 | transformation name                         | where is the code ?           | config.ini                      |
 |---------------------------------------------|-------------------------------|---------------------------------|
@@ -159,10 +159,6 @@ Either by using the fribidi library (see below), either by using a console like 
 # [7] todo & roadmap
 
 ## [7.1] todo
-> 0.3 : doc
-  - dernier truc : utiliser fribi+ en même temps que 0x200F ?
-    -> **Dealing with the RTL/LTR mess:**
-
 - 0.3.1 : tests unitaires
 
 - vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.
@@ -172,6 +168,7 @@ Either by using the fribidi library (see below), either by using a console like 
 - export vers .odt
 
 ## [7.2] roadmap
+- v. 0.3 : --showsymbols > --explicitsymbols; --explicitoutput
 - v. 0.2.9 : completed examples/symbols.txt
 - v. 0.2.8 : table of content in README.md
 - v. 0.2.7 : use pimydoc to control some part of documentation
