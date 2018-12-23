@@ -779,7 +779,7 @@ def cmdline__read_symbols_file(forcedparameters, args):
             return False
 
     if forcedparameters is None:
-        if args.showsymbols:
+        if args.explicitsymbols:
             for key in alpha2aleph.logger.ALPHA2HEBREW_KEYS:
                 print("'"+key+"'",
                       stranalyse(key),

@@ -96,8 +96,10 @@ or
 
 `$ python3 -m unittest tests/tests.py`
 
-## [5.2] test one symbol file:
+## [5.2] test/check one symbol file:
 `$ alpha2aleph --checksymbols --symbolsfile=examples/symbols.txt`
+
+`$ alpha2aleph --explicitsymbols --symbolsfile=examples/symbols.txt`
 
 # [6] to go further
 
@@ -154,8 +156,6 @@ Either by using the fribidi library (see below), either by using a console like 
   - --explicitoutput
   - dernier truc : utiliser fribi+ en même temps que 0x200F ?
     -> **Dealing with the RTL/LTR mess:**
-  - --showsymbols > --explicitsymbols; ajouter dans la doc qu'avec --checksymbols ce sont DEUX outils de contrôle
-  - passer en alpha
 
 - 0.3.1 : tests unitaires
 

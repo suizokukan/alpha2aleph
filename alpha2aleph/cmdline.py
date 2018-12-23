@@ -81,7 +81,7 @@ def read_command_line_arguments():
                         action="store_true",
                         help="check symbols coherency and exit")
 
-    parser.add_argument('--showsymbols',
+    parser.add_argument('--explicitsymbols',
                         action="store_true",
                         help="explicit symbols, displaying unicode analyse of each character")
 
