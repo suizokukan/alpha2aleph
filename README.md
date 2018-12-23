@@ -65,9 +65,9 @@ see example2.sh:
 * insert hebrew text between globalsrtl.py::RTL_SYMBOLS (e.g. '“' and '”').
 
 If you write something like:
-`(1) “m<éléḵ:, hamm<éléḵ:” (2)`
+`I know the Hebrew word for 'king', it's "“mlḵ”".`
 
-The expected output is `(1) מֶ֫לֶכְ, הַמֶּ֫לֶכְ (2)`
+The expected output is `I know the Hebrew word for 'king', it's "כלמ".`
 
 ## [4.2] symbols file
 * utf-8
