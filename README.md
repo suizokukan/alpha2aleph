@@ -37,13 +37,26 @@ or if `alpha2aleph` has not been installed through `pip` but if you downloaded t
 ## [3.2] examples
 
 ### [3.2.1] you want to use the project inside another .py file:
-`$ python3 example0.py`
+
+see example0.py:
+
+    from alpha2aleph.main import entrypoint
+    print(entrypoint((os.path.join("examples", "config.ini"),
+                  os.path.join("examples", "symbols.txt"),
+                  "“m<éléḵ:”",
+                  "console")))
 
 ### [3.2.2] you want to create a simple (console) output:
-`$ ./example1.sh` : console output
+
+see example1.sh:
+
+    echo "“m<éléḵ:”" | alpha2aleph --log=ERROR --cfgfile=examples/config.ini --symbolsfile=examples/symbols.txt --source=stdin --outputformat=console
 
 ### [3.2.2] you want to create an html output:
-`$ ./example2.sh` : html output
+
+see example2.sh:
+
+    alpha2aleph --log=ERROR --cfgfile=examples/config.ini --symbolsfile=examples/symbols.txt --source=inputfile --outputformat=html --inputfile=examples/input.txt
 
 # [4] how to write input text, symbols file and config file ?
 
