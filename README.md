@@ -7,7 +7,7 @@
 **[[7] todo & roadmap](#7-todo-and-roadmap)**<br/>
 
 # [1] alpha2aleph
-A GPLv3/Python3/CLI project to convert a string like '... the word king (“mlḵ”).' into '... the word king (כלמ)'.
+A GPLv3/Python3/CLI project to convert a string like '... the word king (“mlḵ”).' into '... the word king (‏מלכ‎).'.
 
 * By default, symbols (list of definitions like m → מ) are stored in `symbols.txt` (see --symbolsfile command line option).
 * By default, options are stored in `config.ini` (see --cfgfile command line option).
