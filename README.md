@@ -67,7 +67,7 @@ see example2.sh:
 If you write something like:
 `I know the Hebrew word for 'king', it's "“mlḵ”".`
 
-The expected output is `I know the Hebrew word for 'king', it's "כלמ".`
+The expected output is `I know the Hebrew word for 'king', it's "מלכ‎".`
 
 ## [4.2] symbols file
 * utf-8
