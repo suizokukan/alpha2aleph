@@ -83,7 +83,11 @@ def read_command_line_arguments():
 
     parser.add_argument('--showsymbols',
                         action="store_true",
-                        help="show symbols")
+                        help="explicit symbols, displaying unicode analyse of each character")
+
+    parser.add_argument('--explicitoutput',
+                        action="store_true",
+                        help="explicit output string, displaying unicode analyse of each character")
 
     parser.add_argument('--transform_alpha2alephrew',
                         choices=['yes', 'no'],

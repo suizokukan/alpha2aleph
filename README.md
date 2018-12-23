@@ -52,6 +52,13 @@ see example1.sh:
 
     echo "“m<éléḵ:”" | alpha2aleph --log=ERROR --cfgfile=examples/config.ini --symbolsfile=examples/symbols.txt --source=stdin --outputformat=console
 
+**Dealing with the RTL/LTR mess:**
+
+|                  | rtl symbols: empty string   | rtl symbols: 0x200F_0x200E |
+|------------------|-----------------------------|----------------------------|
+| freebidi : False | GnomeC(✗)Firef(✓)Yu(✓)Li(✓) | GnomeC(✗)Firef(✓)Yu(?)Li(✓)
+| freebidi : True  |
+
 ### [3.2.2] you want to create an html output:
 
 see example2.sh:
@@ -143,8 +150,14 @@ Either by using the fribidi library (see below), either by using a console like 
 # [7] todo & roadmap
 
 ## [7.1] todo
-> 0.2.9 : incohérence dans symbols.txt: g → גּ mais pas gg → גּ
-- 0.3 : tests unitaires
+> 0.3 : doc
+  - --explicitoutput
+  - dernier truc : utiliser fribi+ en même temps que 0x200F ?
+    -> **Dealing with the RTL/LTR mess:**
+  - --showsymbols > --explicitsymbols; ajouter dans la doc qu'avec --checksymbols ce sont DEUX outils de contrôle
+  - passer en alpha
+
+- 0.3.1 : tests unitaires
 
 - vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.
 - implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt; https://en.wikipedia.org/wiki/ISO_259

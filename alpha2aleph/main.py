@@ -781,7 +781,9 @@ def cmdline__read_symbols_file(forcedparameters, args):
     if forcedparameters is None:
         if args.showsymbols:
             for key in alpha2aleph.logger.ALPHA2HEBREW_KEYS:
-                print(stranalyse(key), "---→", stranalyse(alpha2aleph.logger.ALPHA2HEBREW[key]))
+                print("'"+key+"'",
+                      stranalyse(key),
+                      " >>> ", stranalyse(alpha2aleph.logger.ALPHA2HEBREW[key]))
 
     return True
 
@@ -916,6 +918,10 @@ def entrypoint(forcedparameters=None):
             res = output_console("".join(inputdata))
         elif forcedparameters[3] == "html":
             res = output_html("".join(inputdata))
+
+    if forcedparameters is None and args.explicitoutput:
+        for key in res:
+            print("'"+key+"'", " >>> ", stranalyse(key))
 
     return res
 
