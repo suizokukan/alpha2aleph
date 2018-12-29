@@ -14,18 +14,21 @@ A → א
 β → ב
 ḇ → ב
 v → ב
+b → בּ
 bb → בּ
 
 # ‫ג‬ HEBREW LETTER GIMEL
 ɣ → ג
 ġ → ג
 ḡ → ג
+g → גּ
 gg → גּ
 
 # ‫ד‬ HEBREW LETTER DALET
 ð → ד
 ḍ → ד
 ḏ → ד
+d → דּ
 dd → דּ
 
 # ‫ה‬ HEBREW LETTER HE
@@ -60,6 +63,7 @@ yy → יּ
 ḵ → כ
 ḵ² → ‫ך‬
 K → ‫ך‬
+k → כּ
 kk → כּ
 
 # ‫05DC ‫ל‬ HEBREW LETTER LAMED‬
@@ -92,6 +96,7 @@ ss → סּ
 # 05E3 HEBREW LETTER FINAL PE
 ɸ → פ
 f → פ
+p → פּ
 pp → פּ
 P → ף
 p² → ף
@@ -136,6 +141,7 @@ i → ִ
 
 # 05D9+05B4
 I → ִי
+î → ִי
 
 # 05B5
 è → ֵ
@@ -191,3 +197,6 @@ U → וּ
 
 # 05BD HEBREW POINT METEG
 | → ֽ
+
+# HEBREW PUNCTUATION MAQAF (0x05BE)
+- → ־

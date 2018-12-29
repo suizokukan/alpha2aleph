@@ -161,6 +161,7 @@ Either by using the fribidi library (see below), either by using a console like 
 ## [7.1] todo
 - 0.3.1 : tests unitaires
 
+- il manque les lettres finales automatiquement ajoutées
 - vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.
 - implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt; https://en.wikipedia.org/wiki/ISO_259
 - dans les tests, bien vérifier source={file,stdin} + RTLSYMB ==/!= .
