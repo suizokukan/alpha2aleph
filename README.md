@@ -166,13 +166,12 @@ Either by using the fribidi library (see below), either by using a console like 
 # [7] todo & roadmap
 
 ## [7.1] todo
-> 0.3.1 : régler les nombreux bugs apparaissant dans privateweingreen
-    --explicitinput
-    phrase11 : holem
-    k en position finale > k final pour éviter d'employer ²
-- 0.3.2 : tests unitaires
+- 0.3.2 : améliorer structure de IMPROVE_RTLALPHATEXT : qqc est répété
+- 0.3.3 : logfile
+- 0.3.4 : - k en position finale > k final pour éviter d'employer ² (- il manque les lettres finales automatiquement ajoutées) +++ modifier input.txt en conséquence +++ config.ini : improvements :: detect_final_letters
+- 0.3.5 : tests unitaires
 
-- il manque les lettres finales automatiquement ajoutées
+
 - vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.
 - implémenter la norme ISO-machin; renommer symbols.txt en xf_symbols.txt; https://en.wikipedia.org/wiki/ISO_259
 - dans les tests, bien vérifier source={file,stdin} + RTLSYMB ==/!= .
@@ -180,7 +179,8 @@ Either by using the fribidi library (see below), either by using a console like 
 - export vers .odt
 
 ## [7.2] roadmap
-- v. 0.3 : --showsymbols > --explicitsymbols; --explicitoutput
+- v. 0.3.1 : --explicitinput, example_fulldetails.sh, various improvements
+- v. 0.3   : --showsymbols > --explicitsymbols; --explicitoutput
 - v. 0.2.9 : completed examples/symbols.txt
 - v. 0.2.8 : table of content in README.md
 - v. 0.2.7 : use pimydoc to control some part of documentation

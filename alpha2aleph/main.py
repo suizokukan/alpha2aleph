@@ -162,18 +162,22 @@ def sub_and_log(cfgini_flag, pipeline_part, comment, before_after, src):
     before, after = before_after
 
     if cfgini_flag.lower() != "true":
-        logger.debug("[D03] Nothing to do in '%s' for %s : '%s' > '%s' in %s",
+        logger.debug("[D03] (disabled improvement) "
+                     "Nothing to do in '%s' for %s : '%s' > '%s' in %s",
                      src, comment, before, after, extracts(before, src))
 
-    if before in src:
+    res = re.sub(before, after, src)
+    if src != res:
         # remark about logger and pipelinetrace():
         # ˮno id number for messages given to logger.pipelinetrace(), e.g. no "[I01]"
         logger.pipelinetrace(pipeline_part,
                              "%s : '%s' > '%s' in '%s'",
                              comment, before, after, extracts(before, src))
-        return re.sub(before, after, src)
+        logger.debug("[D04] (applied improvement) '%s' > '%s' thanks to %s : '%s' > '%s' in %s",
+                     src, res, comment, before, after, extracts(before, src))
+        return res
 
-    logger.debug("[D04] Nothing to do in '%s' for %s : '%s' > '%s' in %s",
+    logger.debug("[D05] (no match) Nothing to do in '%s' for %s : '%s' > '%s' in %s",
                  src, comment, before, after, extracts(before, src))
 
     return src
@@ -196,7 +200,7 @@ def read_symbols(filename):
     """
     logger = alpha2aleph.glob.LOGGER
 
-    logger.debug("[D05] read_symbols : '%s'", filename)
+    logger.debug("[D06] read_symbols : '%s'", filename)
 
     if not os.path.exists(filename):
         return (False,
@@ -382,7 +386,7 @@ def output_html(inputdata):
     """
     logger = alpha2aleph.glob.LOGGER
 
-    logger.debug("[D06] [output_html] : data to be read=%s", inputdata)
+    logger.debug("[D07] [output_html] : data to be read=%s", inputdata)
 
     rtl_start = '<span class="rtltext" dir="rtl">'
     rtl_end = '</span>'
@@ -453,7 +457,7 @@ def output_console(inputdata):
     """
     logger = alpha2aleph.glob.LOGGER
 
-    logger.debug("[D07] [output_console] : data to be read=%s", inputdata)
+    logger.debug("[D08] [output_console] : data to be read=%s", inputdata)
 
     # transformation console.1::text_delimiters
     #    let's add a char at the very beginning and at the very end of the
@@ -550,7 +554,7 @@ def transf__maingroup(src):
     """
     logger = alpha2aleph.glob.LOGGER
 
-    logger.debug("[D08] transf__maingroup()")
+    logger.debug("[D09] transf__maingroup()")
 
     # transformation maingroup.1::improve_rtlalphatext
     src = transf__improve_rtlalphatext(src)
@@ -578,7 +582,7 @@ def check_inputdata(inputdata):
     """
     logger = alpha2aleph.glob.LOGGER
 
-    logger.debug("[D09] check_inputdata()")
+    logger.debug("[D10] check_inputdata()")
 
     rtl_start, rtl_end = alpha2aleph.globalsrtl.RTL_SYMBOLS
 
@@ -903,7 +907,7 @@ def cmdline__read_inputdata(forcedparameters, args):
 
         if args.explicitinput:
             print("|")
-            print("| Inputdata:")
+            print("| Input data:")
             print("| ")
             for index_char, char in enumerate(inputdata):
                 print("| * (character #{0})".format(index_char),
