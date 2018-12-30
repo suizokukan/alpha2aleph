@@ -171,9 +171,14 @@ entrypoint() > transformation > output_console() > transf__maingroup()
 # [7] todo & roadmap
 
 ## [7.1] todo
-> 0.3.2 : trier fund in transformations.py
 - 0.3.3 : logfile
+
+  read https://docs.python.org/3/howto/logging-cookbook.html
+  read https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/
+
 - 0.3.4 : - k en position finale > k final pour éviter d'employer ² (- il manque les lettres finales automatiquement ajoutées) +++ modifier input.txt en conséquence +++ config.ini : improvements :: detect_final_letters
+
+    quand ce sera fait, modifier à différents endroits (github, README.md, example1.sh) la phrase  '... the word king (“mlḵ”).' into '... the word king (‏מלכ‎).'.
 - 0.3.5 : tests unitaires
 
 
