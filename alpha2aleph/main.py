@@ -838,6 +838,7 @@ def cmdline__explicitsymbols():
         no PARAMETER
         no RETURNED VALUE :
     """
+    print("| ")
     print("| Symbols:")
     print("|")
     for index_key, key in enumerate(alpha2aleph.logger.ALPHA2HEBREW_KEYS):
@@ -899,6 +900,15 @@ def cmdline__read_inputdata(forcedparameters, args):
                 logger.error("[E11] === program stops ===")
                 sys.exit(-2)
             success = success and check_success
+
+        if args.explicitinput:
+            print("|")
+            print("| Inputdata:")
+            print("| ")
+            for index_char, char in enumerate(inputdata):
+                print("| * (character #{0})".format(index_char),
+                      "'"+char+"'",
+                      " >>> ", stranalyse(char))
 
     return success, inputdata
 
