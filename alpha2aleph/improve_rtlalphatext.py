@@ -31,6 +31,22 @@
 
         improve_rtlalphatext.py : definition of the IMPROVE_RTLALPHATEXT.
 """
+
+# IMPROVE_RTLALPHATEXT format:
+# ˮ
+# ˮIMPROVE_RTLALPHATEXT describes various improvements available to improve the alpha-text.
+# ˮThe regex <before> is searched and replaced by the regex <after>.
+# ˮ
+# ˮ* (str) <flag> in config file::["pipeline.improve rtlalphatext"]
+# ˮ  expected value : 'True' or 'False'
+# ˮ
+# ˮ* (str) <pipeline_part> : e.g. 'transf__improve_rtlalphatext'
+# ˮ
+# ˮ* (str) <comment> : e.g. 'alef + holam > alef + point_on_right'
+# ˮ
+# ˮ* (str, a regex) <before> : e.g. "[H|ḥ|ħ|ẖ](?P<accent>[<])?ôš"
+# ˮ
+# ˮ* (str, a regex) <after> : e.g. "ḥ\\g<accent>š"
 IMPROVE_RTLALPHATEXT = (("final kaf",
                          "transf__improve_rtlalphatext",
                          "final kaf",
