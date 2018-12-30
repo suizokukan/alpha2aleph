@@ -260,3 +260,32 @@ def transf__use_fb1d_fb4f_chars(_src):
                          alpha2aleph.globalsrtl.RTL_SYMBOLS[1])
 
     return alpha2aleph.globalsrtl.RTL_SYMBOLS[0]+src+alpha2aleph.globalsrtl.RTL_SYMBOLS[1]
+
+
+def transf__maingroup(src):
+    """
+       transf__maingroup()
+       ________________________________________________________________________
+
+       Modify the source string <src> using different calls to various
+       functions.
+       ________________________________________________________________________
+
+       PARAMETERS     : (str)src, the source string.
+
+       RETURNED VALUE : (str)the result string.
+    """
+    logger = alpha2aleph.glob.LOGGER
+
+    logger.debug("[D09] transf__maingroup()")
+
+    # transformation maingroup.1::improve_rtlalphatext
+    src = transf__improve_rtlalphatext(src)
+
+    # transformation maingroup.2::transf__text_alpha2alephsymbs
+    src = re.sub(alpha2aleph.globalsrtl.RTLREADER_REGEX, transf__text_alpha2alephsymbs, src)
+
+    # transformation maingroup.3::transf__use_fb1d_fb4f_chars
+    src = re.sub(alpha2aleph.globalsrtl.RTLREADER_REGEX, transf__use_fb1d_fb4f_chars, src)
+
+    return src

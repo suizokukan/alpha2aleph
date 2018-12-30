@@ -46,10 +46,8 @@ from alpha2aleph.regex import get_rtlreader_regex
 
 from alpha2aleph.utils import stranalyse, extract_around_index, normpath
 from alpha2aleph.cmdline import read_command_line_arguments
-from alpha2aleph.transformations import transf__text_alpha2alephsymbs, \
-                                        transf__improve_rtlalphatext, \
-                                        transf__invert_rtltext, \
-                                        transf__use_fb1d_fb4f_chars
+from alpha2aleph.transformations import transf__invert_rtltext, \
+                                        transf__maingroup
 
 from .glob import __projectname__, __version__, __license__, __author__, __location__, LOGGING_LEVEL
 
@@ -291,78 +289,6 @@ def output_console(inputdata):
             logger.error("[E01] You can't use fribidi : this library seems not to be installed.")
 
     return outputdata
-
-
-def transformation(forcedparameters, args, inputdata):
-    """
-        transformation()
-        ________________________________________________________________________
-
-        main function defining the transformation(s) between input data and the
-        output.
-        ________________________________________________________________________
-
-        PARAMETERS: - forcedparameters: see below
-                    - args : command line arguments
-                    - inputdata : (str)input data
-
-        about forced parameters:
-        ˮeither None, either a list of strings (cfgfile, symbolsfile, inputdata, "console|html").
-        ˮif None, all the values (cfgfile, symbolsfile, ...) will be read from the command line
-
-        RETURNED VALUE :
-        (str) output string
-    """
-    res = None
-
-    if forcedparameters is None:
-        if args.transform_alpha2alephsymbs == 'yes':
-            if args.outputformat == 'console':
-                res = output_console("".join(inputdata))
-                print(res)
-            if args.outputformat == 'html':
-                res = output_html("".join(inputdata))
-                print(res)
-    else:
-        if forcedparameters[3] == "console":
-            res = output_console("".join(inputdata))
-        elif forcedparameters[3] == "html":
-            res = output_html("".join(inputdata))
-
-    if forcedparameters is None and args.explicitoutput:
-        for key in res:
-            print("'"+key+"'", " >>> ", stranalyse(key))
-
-    return res
-
-
-def transf__maingroup(src):
-    """
-       output_html()
-       ________________________________________________________________________
-
-       Modify the source string <src> using different calls to various
-       functions.
-       ________________________________________________________________________
-
-       PARAMETERS     : (str)src, the source string.
-
-       RETURNED VALUE : (str)the result string.
-    """
-    logger = alpha2aleph.glob.LOGGER
-
-    logger.debug("[D09] transf__maingroup()")
-
-    # transformation maingroup.1::improve_rtlalphatext
-    src = transf__improve_rtlalphatext(src)
-
-    # transformation maingroup.2::transf__text_alpha2alephsymbs
-    src = re.sub(alpha2aleph.globalsrtl.RTLREADER_REGEX, transf__text_alpha2alephsymbs, src)
-
-    # transformation maingroup.3::transf__use_fb1d_fb4f_chars
-    src = re.sub(alpha2aleph.globalsrtl.RTLREADER_REGEX, transf__use_fb1d_fb4f_chars, src)
-
-    return src
 
 
 def check_inputdata(inputdata):
@@ -712,6 +638,49 @@ def cmdline__read_inputdata(forcedparameters, args):
                       " >>> ", stranalyse(char))
 
     return success, inputdata
+
+
+def transformation(forcedparameters, args, inputdata):
+    """
+        transformation()
+        ________________________________________________________________________
+
+        main function defining the transformation(s) between input data and the
+        output.
+        ________________________________________________________________________
+
+        PARAMETERS: - forcedparameters: see below
+                    - args : command line arguments
+                    - inputdata : (str)input data
+
+        about forced parameters:
+        ˮeither None, either a list of strings (cfgfile, symbolsfile, inputdata, "console|html").
+        ˮif None, all the values (cfgfile, symbolsfile, ...) will be read from the command line
+
+        RETURNED VALUE :
+        (str) output string
+    """
+    res = None
+
+    if forcedparameters is None:
+        if args.transform_alpha2alephsymbs == 'yes':
+            if args.outputformat == 'console':
+                res = output_console("".join(inputdata))
+                print(res)
+            if args.outputformat == 'html':
+                res = output_html("".join(inputdata))
+                print(res)
+    else:
+        if forcedparameters[3] == "console":
+            res = output_console("".join(inputdata))
+        elif forcedparameters[3] == "html":
+            res = output_html("".join(inputdata))
+
+    if forcedparameters is None and args.explicitoutput:
+        for key in res:
+            print("'"+key+"'", " >>> ", stranalyse(key))
+
+    return res
 
 
 def entrypoint(forcedparameters=None):
