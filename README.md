@@ -72,6 +72,13 @@ see example2.sh:
 
     alpha2aleph --log=ERROR --cfgfile=examples/config.ini --symbolsfile=examples/symbols.txt --source=inputfile --outputformat=html --inputfile=examples/input.txt
 
+### [3.2.3] you want to test the console output of a short string:
+
+see example_fulldetails.sh
+
+    echo "“m<éléḵ²:”" | bin/alpha2aleph_bin --log=DEBUG --cfgfile=examples/config.ini --symbolsfile=examples/symbols.txt --source=stdin --outputformat=console --explicitoutput
+
+
 # [4] how to write input text, symbols file and config file ?
 
 ## [4.1] input file format

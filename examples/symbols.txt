@@ -6,94 +6,94 @@
 
 # https://fr.wikipedia.org/wiki/Alphabet_h%C3%A9breu
 
-# ‫א‬ HEBREW LETTER ALEF
+# א HEBREW LETTER ALEF
 ʔ → א
 A → א
 
-# ‫ב‬ HEBREW LETTER BET
+# ב HEBREW LETTER BET
 β → ב
 ḇ → ב
 v → ב
 b → בּ
 bb → בּ
 
-# ‫ג‬ HEBREW LETTER GIMEL
+# ג HEBREW LETTER GIMEL
 ɣ → ג
 ġ → ג
 ḡ → ג
 g → גּ
 gg → גּ
 
-# ‫ד‬ HEBREW LETTER DALET
+# ד HEBREW LETTER DALET
 ð → ד
 ḍ → ד
 ḏ → ד
 d → דּ
 dd → דּ
 
-# ‫ה‬ HEBREW LETTER HE
+# ה HEBREW LETTER HE
 h → ה
 
-# ‫ו‬ HEBREW LETTER VAV
+# ו HEBREW LETTER VAV
 w → ו
 ww → וּ
 
-# ‫ז‬ HEBREW LETTER ZAYIN
+# ז HEBREW LETTER ZAYIN
 z → ז
 zz → זּ
 
-# ‫ח‬ HEBREW LETTER HET
+# ח HEBREW LETTER HET
 H → ח
 ħ → ח
 ḥ → ח
 ẖ → ח
 
-# ‫ט‬ HEBREW LETTER TET
+# ט HEBREW LETTER TET
 ṭ → ט
 ṭṭ → טּ
 
-# ‫י‬ HEBREW LETTER YOD
+# י HEBREW LETTER YOD
 j → י
 jj → יּ
 y → י
 yy → יּ
 
-# ‫ך‬ HEBREW LETTER FINAL KAF
-# 05DA ‫ך‬ HEBREW LETTER FINAL KAF
+# כ HEBREW LETTER KAF
+# ך HEBREW LETTER FINAL KAF
 ḵ → כ
-ḵ² → ‫ך‬
-K → ‫ך‬
+ḵ² → ך
+K → ך
 k → כּ
 kk → כּ
 
-# ‫05DC ‫ל‬ HEBREW LETTER LAMED‬
+# HEBREW LETTER LAMED ל
 l → ל
 ll → לּ
 
-# 05DE ‫מ‬ HEBREW LETTER MEM
-# 05DD ‫ם‬ HEBREW LETTER FINAL MEM
+# מ HEBREW LETTER MEM
+# ם HEBREW LETTER FINAL MEM
 m → מ
 mm → מּ
 M → ם
 m² → ם
 
-# 05E0 ‫נ‬ HEBREW LETTER NUN
-# 05DF ‫ן‬ HEBREW LETTER FINAL NUN
+# נ HEBREW LETTER NUN
+# ן HEBREW LETTER FINAL NUN
 n → נ
 nn → נּ
-N → ‫ן‬
-n² → ‫ן‬
+N → ן
+n² → ן
 
-# HEBREW LETTER SAMEKH
+# ס HEBREW LETTER SAMEKH
 s → ס
 ss → סּ
 
-# HEBREW LETTER AYIN
+# ע HEBREW LETTER AYIN
 ʕ → ע
 ʿ → ע
 
-# 05E4 HEBREW LETTER PE
-# 05E3 HEBREW LETTER FINAL PE
+# פ  HEBREW LETTER PE
+# ף HEBREW LETTER FINAL PE
 ɸ → פ
 f → פ
 p → פּ
@@ -101,8 +101,8 @@ pp → פּ
 P → ף
 p² → ף
 
-# 05E6 HEBREW LETTER FINAL TSADI
-# 05E5 HEBREW LETTER FINAL TSADI
+# צ HEBREW LETTER TSADI
+# ץ HEBREW LETTER FINAL TSADI
 #t͡s → צ
 ṣ → צ
 ẓ → צ
@@ -111,25 +111,25 @@ p² → ף
 ṣṣ → צּ
 ẓẓ → צ
 
-# 05E7 ‫ק‬ HEBREW LETTER QOF
+# ק HEBREW LETTER QOF
 q → ק
 qq → קּ
 
-# 05E8 ‫ר‬ HEBREW LETTER RESH
+# ר HEBREW LETTER RESH
 ʁ → ר
 r → ר
 
-# 05E9 ‫ש‬ HEBREW LETTER SHIN
+# ש HEBREW LETTER SHIN
 S → ש
 
 ʃ → שׁ
-ʃʃ → ‫שּׁ‬
+ʃʃ → שּׁ
 š → שׁ
 
 ś → שׂ
-śś → ‫שּׂ‬
+śś → שּׂ
 
-# 05EA ‫ת‬ HEBREW LETTER TAV
+# ת HEBREW LETTER TAV
 θ → ת
 ṯ → ת
 tt → תּ
