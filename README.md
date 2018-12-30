@@ -130,34 +130,39 @@ Modify `logger.py::LOGGING_LEVEL`
 * a runtimeerror may be raised : see raise RuntimeError in the source code.
 
 ## [6.3] transformations' pipeline
+
 ### [6.3.1] output: html
 
-|transformation name                         | where is the code ?           | config.ini                      |
-|--------------------------------------------|-------------------------------|---------------------------------|
-| html.1::text_delimiters                    | add_firstlast_marker()        | -                               |
-| html.2::main                               |                               |                                 |
-|  * maingroup.1::improve_rtlalphatext       | transf__improve_rtlalphatext()| [pipeline.improve rtlalphatext] |
-|  * maingroup.2::transf__text_alpha2alephrew| transf__text_alpha2alephrew() | - (modify symbols.txt)          |
-|  * maingroup.3::transf__use_FB1D_FB4F_chars| transf__use_FB1D_FB4F_chars() | [pipeline.use FB1D-FB4F chars]  |
-| html.3::br                                 | output_html()                 | -                               |
-| html.4::RTL_SYMBOLS                        | output_html()                 | -                               |
-| html.5::undo_text_delimiters               | output_html()                 | -                               |
+entrypoint() > transformation > output_html() > transf__maingroup()
+
+|transformation name                           | where is the code ?             | config.ini                      |
+|----------------------------------------------|---------------------------------|---------------------------------|
+| html.1::text_delimiters                      | add_firstlast_marker()          | -                               |
+| html.2::main                                 |                                 |                                 |
+|  * maingroup.1::improve_rtlalphatext         | transf__improve_rtlalphatext()  | [pipeline.improve rtlalphatext] |
+|  * maingroup.2::transf__text_alpha2alephsymbs| transf__text_alpha2alephsymbs() | - (modify symbols.txt)          |
+|  * maingroup.3::transf__use_FB1D_FB4F_chars  | transf__use_FB1D_FB4F_chars()   | [pipeline.use FB1D-FB4F chars]  |
+| html.3::br                                   | output_html()                   | -                               |
+| html.4::RTL_SYMBOLS                          | output_html()                   | -                               |
+| html.5::undo_text_delimiters                 | output_html()                   | -                               |
 
 ### [6.3.2] output: console
 
 How do I correctly display bidirectional text ?
 Either by using the fribidi library (see below), either by using a console like Konsole or mlterm (https://sourceforge.net/projects/mlterm/). Do NOT mix those solutions ! See the **Dealing with the RTL/LTR mess:** section in this document.
 
-| transformation name                         | where is the code ?           | config.ini                      |
-|---------------------------------------------|-------------------------------|---------------------------------|
-| console.1::text_delimiters                  | add_firstlast_marker()        |                                 |
-| console.2::maingroup                        |                               |                                 |
-|  * maingroup.1::improve_rtlalphatext        | transf__improve_rtlalphatext()| [pipeline.improve rtlalphatext] |
-|  * maingroup.2::transf__text_alpha2alephrew | transf__text_alpha2alephrew() | - (modify symbols.txt)          |
-|  * maingroup.3::transf__use_FB1D_FB4F_chars | transf__use_FB1D_FB4F_chars() | [pipeline.use FB1D-FB4F chars]  |
-| console.4::remove_RTL_SYMBOLS               | output_console()              | [output.console][rtl symbols]   |
-| console.5::undo_text_delimiters             | remove_firstlast_marker()     | -                               |
-| console.6::use fribidi                      | output_console()              | [output.console][use fribidi]   |
+entrypoint() > transformation > output_console() > transf__maingroup()
+
+| transformation name                           | where is the code ?             | config.ini                      |
+|-----------------------------------------------|---------------------------------|---------------------------------|
+| console.1::text_delimiters                    | add_firstlast_marker()          |                                 |
+| console.2::maingroup                          |                                 |                                 |
+|  * maingroup.1::improve_rtlalphatext          | transf__improve_rtlalphatext()  | [pipeline.improve rtlalphatext] |
+|  * maingroup.2::transf__text_alpha2alephsymbs | transf__text_alpha2alephsymbs() | - (modify symbols.txt)          |
+|  * maingroup.3::transf__use_FB1D_FB4F_chars   | transf__use_FB1D_FB4F_chars()   | [pipeline.use FB1D-FB4F chars]  |
+| console.4::remove_RTL_SYMBOLS                 | output_console()                | [output.console][rtl symbols]   |
+| console.5::undo_text_delimiters               | remove_firstlast_marker()       | -                               |
+| console.6::use fribidi                        | output_console()                | [output.console][use fribidi]   |
 
 #### [6.3.2.1] about fribidi:
 * about fribidi : http://fribidi.org/

@@ -117,42 +117,6 @@ def sub_and_log(cfgini_flag, pipeline_part, comment, before_after, src):
     return src
 
 
-def transf__text_alpha2alephsymbs(_src):
-    """
-       transf__text_alpha2alephsymbs()
-       ________________________________________________________________________
-
-       Convert the text <_src>, written using some alphabetic symbols, in
-       a translitterated text written in hebrew.
-       ________________________________________________________________________
-
-       PARAMETERS     : (str)_src, the text to be translitterated.
-                        _src is a string so that rtl_begin+_src+rtl_end
-                        is the original string.
-
-       RETURNED VALUE : (str)the translitterated text with RTL symbols added
-                        at the beginning and at the end.
-    """
-    logger = alpha2aleph.glob.LOGGER
-
-    src = _src.group("rtltext")
-
-    for alphachar in alpha2aleph.glob.ALPHA2HEBREW_KEYS:
-        src = replace_and_log("transf__text_alpha2alephsymbs",
-                              "[transf__text_alpha2alephsymbs]",
-                              src, (alphachar, alpha2aleph.glob.ALPHA2HEBREW[alphachar]))
-
-    # remark about logger and pipelinetrace():
-    # ˮno id number for messages given to logger.pipelinetrace(), e.g. no "[I01]"
-    logger.pipelinetrace("transf__text_alpha2alephsymbs",
-                         "Adding globals.RTL_SYMBOLS to '%s' : '%s' and '%s'",
-                         src,
-                         alpha2aleph.globalsrtl.RTL_SYMBOLS[0],
-                         alpha2aleph.globalsrtl.RTL_SYMBOLS[1])
-
-    return alpha2aleph.globalsrtl.RTL_SYMBOLS[0]+src+alpha2aleph.globalsrtl.RTL_SYMBOLS[1]
-
-
 def transf__improve_rtlalphatext(src):
     """
        transf__improve_rtlalphatext()
@@ -221,6 +185,71 @@ def transf__invert_rtltext(src):
     return res
 
 
+def transf__maingroup(src):
+    """
+       transf__maingroup()
+       ________________________________________________________________________
+
+       Modify the source string <src> using different calls to various
+       functions.
+       ________________________________________________________________________
+
+       PARAMETERS     : (str)src, the source string.
+
+       RETURNED VALUE : (str)the result string.
+    """
+    logger = alpha2aleph.glob.LOGGER
+
+    logger.debug("[D09] transf__maingroup()")
+
+    # transformation maingroup.1::improve_rtlalphatext
+    src = transf__improve_rtlalphatext(src)
+
+    # transformation maingroup.2::transf__text_alpha2alephsymbs
+    src = re.sub(alpha2aleph.globalsrtl.RTLREADER_REGEX, transf__text_alpha2alephsymbs, src)
+
+    # transformation maingroup.3::transf__use_fb1d_fb4f_chars
+    src = re.sub(alpha2aleph.globalsrtl.RTLREADER_REGEX, transf__use_fb1d_fb4f_chars, src)
+
+    return src
+
+
+def transf__text_alpha2alephsymbs(_src):
+    """
+       transf__text_alpha2alephsymbs()
+       ________________________________________________________________________
+
+       Convert the text <_src>, written using some alphabetic symbols, in
+       a translitterated text written in hebrew.
+       ________________________________________________________________________
+
+       PARAMETERS     : (str)_src, the text to be translitterated.
+                        _src is a string so that rtl_begin+_src+rtl_end
+                        is the original string.
+
+       RETURNED VALUE : (str)the translitterated text with RTL symbols added
+                        at the beginning and at the end.
+    """
+    logger = alpha2aleph.glob.LOGGER
+
+    src = _src.group("rtltext")
+
+    for alphachar in alpha2aleph.glob.ALPHA2HEBREW_KEYS:
+        src = replace_and_log("transf__text_alpha2alephsymbs",
+                              "[transf__text_alpha2alephsymbs]",
+                              src, (alphachar, alpha2aleph.glob.ALPHA2HEBREW[alphachar]))
+
+    # remark about logger and pipelinetrace():
+    # ˮno id number for messages given to logger.pipelinetrace(), e.g. no "[I01]"
+    logger.pipelinetrace("transf__text_alpha2alephsymbs",
+                         "Adding globals.RTL_SYMBOLS to '%s' : '%s' and '%s'",
+                         src,
+                         alpha2aleph.globalsrtl.RTL_SYMBOLS[0],
+                         alpha2aleph.globalsrtl.RTL_SYMBOLS[1])
+
+    return alpha2aleph.globalsrtl.RTL_SYMBOLS[0]+src+alpha2aleph.globalsrtl.RTL_SYMBOLS[1]
+
+
 def transf__use_fb1d_fb4f_chars(_src):
     """
        transf__use_fb1d_fb4f_chars()
@@ -260,32 +289,3 @@ def transf__use_fb1d_fb4f_chars(_src):
                          alpha2aleph.globalsrtl.RTL_SYMBOLS[1])
 
     return alpha2aleph.globalsrtl.RTL_SYMBOLS[0]+src+alpha2aleph.globalsrtl.RTL_SYMBOLS[1]
-
-
-def transf__maingroup(src):
-    """
-       transf__maingroup()
-       ________________________________________________________________________
-
-       Modify the source string <src> using different calls to various
-       functions.
-       ________________________________________________________________________
-
-       PARAMETERS     : (str)src, the source string.
-
-       RETURNED VALUE : (str)the result string.
-    """
-    logger = alpha2aleph.glob.LOGGER
-
-    logger.debug("[D09] transf__maingroup()")
-
-    # transformation maingroup.1::improve_rtlalphatext
-    src = transf__improve_rtlalphatext(src)
-
-    # transformation maingroup.2::transf__text_alpha2alephsymbs
-    src = re.sub(alpha2aleph.globalsrtl.RTLREADER_REGEX, transf__text_alpha2alephsymbs, src)
-
-    # transformation maingroup.3::transf__use_fb1d_fb4f_chars
-    src = re.sub(alpha2aleph.globalsrtl.RTLREADER_REGEX, transf__use_fb1d_fb4f_chars, src)
-
-    return src
