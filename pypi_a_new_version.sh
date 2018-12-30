@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # alpha2aleph project
 
 echo "=== alpha2aleph ==="

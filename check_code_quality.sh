@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 echo "=== alpha2aleph project : code quality ==="
 echo "... this script requires pep8 AND pylint."
 

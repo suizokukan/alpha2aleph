@@ -159,7 +159,8 @@ Either by using the fribidi library (see below), either by using a console like 
 # [7] todo & roadmap
 
 ## [7.1] todo
-- 0.3.1 : tests unitaires
+- 0.3.1 : régler les nombreux bugs apparaissant dans privateweingreen
+- 0.3.2 : tests unitaires
 
 - il manque les lettres finales automatiquement ajoutées
 - vérifier la conformité de read_cfg_file() avec ce qui est attendu dans un fichier de configuration.
