@@ -821,14 +821,30 @@ def cmdline__read_symbols_file(forcedparameters, args):
         if not readsymbols_success:
             return False
 
-    if forcedparameters is None:
-        if args.explicitsymbols:
-            for key in alpha2aleph.logger.ALPHA2HEBREW_KEYS:
-                print("'"+key+"'",
-                      stranalyse(key),
-                      " >>> ", stranalyse(alpha2aleph.logger.ALPHA2HEBREW[key]))
+    if forcedparameters is None and args.explicitsymbols:
+        cmdline__explicitsymbols()
 
     return True
+
+
+def cmdline__explicitsymbols():
+    """
+        cmdline__explicitsymbols()
+        ________________________________________________________________________
+
+        Print a nice message describing alpha2aleph.logger.ALPHA2HEBREW* .
+        ________________________________________________________________________
+
+        no PARAMETER
+        no RETURNED VALUE :
+    """
+    print("| Symbols:")
+    print("|")
+    for index_key, key in enumerate(alpha2aleph.logger.ALPHA2HEBREW_KEYS):
+        print("| * (key #{0:02})".format(index_key),
+              "'"+key+"'",
+              stranalyse(key),
+              " >>> ", stranalyse(alpha2aleph.logger.ALPHA2HEBREW[key]))
 
 
 def cmdline__read_inputdata(forcedparameters, args):
