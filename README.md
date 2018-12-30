@@ -184,6 +184,7 @@ entrypoint() > transformation > output_console() > transf__maingroup()
 - export vers .odt
 
 ## [7.2] roadmap
+- v. 0.3.2 : doc about IMPROVE_RTLALPHATEXT format, new file: transformations.py
 - v. 0.3.1 : --explicitinput, example_fulldetails.sh, various improvements
 - v. 0.3   : --showsymbols > --explicitsymbols; --explicitoutput
 - v. 0.2.9 : completed examples/symbols.txt
