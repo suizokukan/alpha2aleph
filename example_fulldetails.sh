@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+echo "“m<éléḵ²:”" | bin/alpha2aleph_bin --log=INFO --cfgfile=examples/config.ini --symbolsfile=examples/symbols.txt --source=stdin --outputformat=console --explicitoutput --explicitsymbols
