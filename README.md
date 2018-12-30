@@ -166,7 +166,7 @@ Either by using the fribidi library (see below), either by using a console like 
 # [7] todo & roadmap
 
 ## [7.1] todo
-- 0.3.2 : améliorer structure de IMPROVE_RTLALPHATEXT : qqc est répété
+> 0.3.2 : trier fund in transformations.py
 - 0.3.3 : logfile
 - 0.3.4 : - k en position finale > k final pour éviter d'employer ² (- il manque les lettres finales automatiquement ajoutées) +++ modifier input.txt en conséquence +++ config.ini : improvements :: detect_final_letters
 - 0.3.5 : tests unitaires

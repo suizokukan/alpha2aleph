@@ -44,20 +44,24 @@
 # ˮ
 # ˮ* (str) <comment> : e.g. 'alef + holam > alef + point_on_right'
 # ˮ
-# ˮ* (str, a regex) <before> : e.g. "[H|ḥ|ħ|ẖ](?P<accent>[<])?ôš"
+# ˮ* (str, a regex) <before> :
+# ˮ  e.g. "(?P<het>[H|ḥ|ħ|ẖ])(?P<accent>[<])?(?P<holam>[ô])(?P<shin>[š|ʃ])"
 # ˮ
-# ˮ* (str, a regex) <after> : e.g. "ḥ\\g<accent>š"
+# ˮ* (str, a regex) <after> : e.g. "\\g<het>\\g<accent>\\g<shin>"
 IMPROVE_RTLALPHATEXT = (("final kaf",
                          "transf__improve_rtlalphatext",
                          "final kaf",
-                         "ḵ[:|ə](?P<ponctuation>)", "ḵ²:\\g<ponctuation>"),
+                         "ḵ[:|ə](?P<ponctuation>)",
+                         "ḵ²:\\g<ponctuation>"),
 
                         ("alef + holam > alef + point_on_right",
                          "transf__improve_rtlalphatext",
                          "alef + holam > alef + point_on_right",
-                         "Aô", "A°"),
+                         "Aô",
+                         "A°"),
 
                         ("ḥe + holam + shin > ḥe + shin",
                          "transf__improve_rtlalphatext",
                          "ḥe + holam + shin > ḥe + shin",
-                         "[H|ḥ|ħ|ẖ](?P<accent>[<])?ôš", "ḥ\\g<accent>š"),)
+                         "(?P<het>[H|ḥ|ħ|ẖ])(?P<accent>[<])?(?P<holam>[ô])(?P<shin>[š|ʃ])",
+                         "\\g<het>\\g<accent>\\g<shin>"),)

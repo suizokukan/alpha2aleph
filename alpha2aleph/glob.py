@@ -49,5 +49,5 @@ __location__ = "github.com/suizokukan/alpha2aleph"
 LOGGER = None
 LOGGING_LEVEL = logging.INFO
 
-ALPHA2HEBREW = None
-ALPHA2HEBREW_KEYS = None
+ALPHA2HEBREW = dict()
+ALPHA2HEBREW_KEYS = []

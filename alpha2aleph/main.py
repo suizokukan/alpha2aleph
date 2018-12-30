@@ -44,10 +44,12 @@ import alpha2aleph.logger
 import alpha2aleph.globalsrtl
 from alpha2aleph.regex import get_rtlreader_regex
 
-from alpha2aleph.fb1d_fb4f import TRANSF_FB1D_FB4F
-from alpha2aleph.utils import stranalyse, match_repr, extracts, extract_around_index, normpath
+from alpha2aleph.utils import stranalyse, extract_around_index, normpath
 from alpha2aleph.cmdline import read_command_line_arguments
-from alpha2aleph.improve_rtlalphatext import IMPROVE_RTLALPHATEXT
+from alpha2aleph.transformations import transf__text_alpha2alephsymbs, \
+                                        transf__improve_rtlalphatext, \
+                                        transf__invert_rtltext, \
+                                        transf__use_fb1d_fb4f_chars
 
 from .glob import __projectname__, __version__, __license__, __author__, __location__, LOGGING_LEVEL
 
@@ -107,82 +109,6 @@ def remove_firstlast_markers(src):
     return src[1:-1]
 
 
-def replace_and_log(pipeline_part, comment, src, before_after):
-    """
-       replace_and_log()
-       ________________________________________________________________________
-
-       simply return src.replace(before, after) but with a log message
-       ________________________________________________________________________
-
-       PARAMETERS     : (str)pipeline_part
-                        (str)comment
-                        (str)src
-                        (str, str)before_after
-
-       RETURNED VALUE : (str)the resulting string, namely src.replace(before, after)
-    """
-    logger = alpha2aleph.glob.LOGGER
-
-    before, after = before_after
-
-    if before in src:
-        # remark about logger and pipelinetrace():
-        # ˮno id number for messages given to logger.pipelinetrace(), e.g. no "[I01]"
-        logger.pipelinetrace(pipeline_part,
-                             "%s : '%s' > '%s' in %s",
-                             comment, before, after, extracts(before, src))
-        return src.replace(before, after)
-
-    logger.debug("[D02] Nothing to do in '%s' for %s : '%s' > '%s' in \"%s\"",
-                 src, comment, before, after, extracts(before, src))
-    return src
-
-
-def sub_and_log(cfgini_flag, pipeline_part, comment, before_after, src):
-    """
-       sub_and_log()
-       ________________________________________________________________________
-
-       simply return re.sub(before, after, src) with a log message if
-       cfgini_flag.lower() == "true".
-       ________________________________________________________________________
-
-       PARAMETERS     : (str)cfgini_flag
-                        (str)pipeline_part
-                        (str)comment
-                        (str)src
-                        (str, str)before_after
-                        (str)src
-
-       RETURNED VALUE : (str)the resulting string, namely src.replace(before, after)
-    """
-    logger = alpha2aleph.glob.LOGGER
-
-    before, after = before_after
-
-    if cfgini_flag.lower() != "true":
-        logger.debug("[D03] (disabled improvement) "
-                     "Nothing to do in '%s' for %s : '%s' > '%s' in %s",
-                     src, comment, before, after, extracts(before, src))
-
-    res = re.sub(before, after, src)
-    if src != res:
-        # remark about logger and pipelinetrace():
-        # ˮno id number for messages given to logger.pipelinetrace(), e.g. no "[I01]"
-        logger.pipelinetrace(pipeline_part,
-                             "%s : '%s' > '%s' in '%s'",
-                             comment, before, after, extracts(before, src))
-        logger.debug("[D04] (applied improvement) '%s' > '%s' thanks to %s : '%s' > '%s' in %s",
-                     src, res, comment, before, after, extracts(before, src))
-        return res
-
-    logger.debug("[D05] (no match) Nothing to do in '%s' for %s : '%s' > '%s' in %s",
-                 src, comment, before, after, extracts(before, src))
-
-    return src
-
-
 def read_symbols(filename):
     """
        read_symbols()
@@ -195,8 +121,8 @@ def read_symbols(filename):
 
        RETURNED VALUE : (success,
                          errors,
-                         alpha2alephrew,
-                         sorted(keys_in_alpha2alephrew))
+                         alpha2alephsymbs,
+                         sorted(keys_in_alpha2alephsymbs))
     """
     logger = alpha2aleph.glob.LOGGER
 
@@ -212,7 +138,7 @@ def read_symbols(filename):
     success = True
     errors = []
 
-    alpha2alephrew = dict()
+    alpha2alephsymbs = dict()
     with open(filename) as symbols:
         for line_index, _line in enumerate(symbols.readlines()):
             line = _line.strip()
@@ -226,165 +152,21 @@ def read_symbols(filename):
                     alpha, hebrew = line.split("→")
                     alpha = alpha.strip()
                     hebrew = hebrew.strip()
-                    if alpha in alpha2alephrew:
+                    if alpha in alpha2alephsymbs:
                         errors.append("key '{0}' has alread been defined; "
                                       "new definition in line {1} (line #{2})".format(alpha,
                                                                                       line,
                                                                                       line_index))
                         success = False
-                    alpha2alephrew[alpha] = hebrew
+                    alpha2alephsymbs[alpha] = hebrew
 
-    keys = sorted(alpha2alephrew.keys(), key=len, reverse=True)
+    keys = sorted(alpha2alephsymbs.keys(), key=len, reverse=True)
 
     if not keys:
         success = False
-        errors.append("empty alpha2alephrew dict")
+        errors.append("empty alpha2alephsymbs dict")
 
-    return success, errors, alpha2alephrew, keys
-
-
-def transf__text_alpha2alephrew(_src):
-    """
-       transf__text_alpha2alephrew()
-       ________________________________________________________________________
-
-       Convert the text <_src>, written using some alphabetic symbols, in
-       a translitterated text written in hebrew.
-       ________________________________________________________________________
-
-       PARAMETERS     : (str)_src, the text to be translitterated.
-                        _src is a string so that rtl_begin+_src+rtl_end
-                        is the original string.
-
-       RETURNED VALUE : (str)the translitterated text with RTL symbols added
-                        at the beginning and at the end.
-    """
-    logger = alpha2aleph.glob.LOGGER
-
-    src = _src.group("rtltext")
-
-    for alphachar in alpha2aleph.logger.ALPHA2HEBREW_KEYS:
-        src = replace_and_log("transf__text_alpha2alephrew",
-                              "[transf__text_alpha2alephrew]",
-                              src, (alphachar, alpha2aleph.logger.ALPHA2HEBREW[alphachar]))
-
-    # remark about logger and pipelinetrace():
-    # ˮno id number for messages given to logger.pipelinetrace(), e.g. no "[I01]"
-    logger.pipelinetrace("transf__text_alpha2alephrew",
-                         "Adding globals.RTL_SYMBOLS to '%s' : '%s' and '%s'",
-                         src,
-                         alpha2aleph.globalsrtl.RTL_SYMBOLS[0],
-                         alpha2aleph.globalsrtl.RTL_SYMBOLS[1])
-
-    return alpha2aleph.globalsrtl.RTL_SYMBOLS[0]+src+alpha2aleph.globalsrtl.RTL_SYMBOLS[1]
-
-
-def transf__improve_rtlalphatext(src):
-    """
-       transf__improve_rtlalphatext()
-       ________________________________________________________________________
-
-       Modify the source string <src> using different calls to sub_and_log().
-       The calls are defined by IMPROVE_RTLALPHATEXT.
-       ________________________________________________________________________
-
-       PARAMETERS     : (str)_src
-
-       RETURNED VALUE : (str) _src through several calls to sub_and_log().
-    """
-    # IMPROVE_RTLALPHATEXT format:
-    # ˮ
-    # ˮIMPROVE_RTLALPHATEXT describes various improvements available to improve the alpha-text.
-    # ˮThe regex <before> is searched and replaced by the regex <after>.
-    # ˮ
-    # ˮ* (str) <flag> in config file::["pipeline.improve rtlalphatext"]
-    # ˮ  expected value : 'True' or 'False'
-    # ˮ
-    # ˮ* (str) <pipeline_part> : e.g. 'transf__improve_rtlalphatext'
-    # ˮ
-    # ˮ* (str) <comment> : e.g. 'alef + holam > alef + point_on_right'
-    # ˮ
-    # ˮ* (str, a regex) <before> : e.g. "[H|ḥ|ħ|ẖ](?P<accent>[<])?ôš"
-    # ˮ
-    # ˮ* (str, a regex) <after> : e.g. "ḥ\\g<accent>š"
-    for (_cfgini_flag,
-         pipeline_part,
-         comment,
-         before,
-         after) in IMPROVE_RTLALPHATEXT:
-
-        cfgini_flag = alpha2aleph.cfgini.CFGINI["pipeline.improve rtlalphatext"][_cfgini_flag]
-        src = sub_and_log(cfgini_flag, pipeline_part, comment, (before, after), src)
-
-    return src
-
-
-def transf__invert_rtltext(src):
-    """
-       transf__invert_rtltext()
-       ________________________________________________________________________
-
-       Invert src : "abc" becoming "cba"
-       ________________________________________________________________________
-
-       PARAMETERS     : (_sre.SRE_Match)src, the source match object.
-
-       RETURNED VALUE : (str)_src.group("rtltext")[::-1] with RTL symbols
-                        before/after.
-    """
-    logger = alpha2aleph.glob.LOGGER
-
-    res = src.group("rtltext")[::-1]
-    res = alpha2aleph.globalsrtl.RTL_SYMBOLS[0]+res+alpha2aleph.globalsrtl.RTL_SYMBOLS[1]
-
-    # remark about logger and pipelinetrace():
-    # ˮno id number for messages given to logger.pipelinetrace(), e.g. no "[I01]"
-    logger.pipelinetrace("transf__invert_rtltext",
-                         "inverting the text : '%s' > '%s'",
-                         match_repr(src), res)
-
-    return res
-
-
-def transf__use_fb1d_fb4f_chars(_src):
-    """
-       transf__use_fb1d_fb4f_chars()
-       ________________________________________________________________________
-
-       Modify the source string <_src> using different calls to replace_and_log()
-       in order to replace some characters by those defined in the Unicode range
-       0xFB1D to 0xFB4F.
-       The calls are defined by fb1d_fb4f.TRANSF_FB1D_FB4F .
-       The calls are controlled by the configuration file, section "pipeline.use FB1D-FB4F chars".
-       ________________________________________________________________________
-
-       PARAMETERS     : (str)_src, the source string
-
-       RETURNED VALUE : (str)the resulting string.
-    """
-    logger = alpha2aleph.glob.LOGGER
-
-    src = _src.group("rtltext")
-
-    # ---- 1/2 FB1D-FB4F characters : ----
-    for _, (fullname, before, after) in TRANSF_FB1D_FB4F:
-
-        if alpha2aleph.cfgini.CFGINI["pipeline.use FB1D-FB4F chars"][fullname].lower() == "true":
-            pipeline_part = "transf__use_fb1d_fb4f_chars"
-            comment = "{0}::{1}".format("transf__use_fb1d_fb4f_chars",
-                                        fullname)
-            src = replace_and_log(pipeline_part, comment, src, (before, after))
-
-    # ---- 2/2 let's add the first/last chars removed by calling this function ----
-    # remark about logger and pipelinetrace():
-    # ˮno id number for messages given to logger.pipelinetrace(), e.g. no "[I01]"
-    logger.pipelinetrace("transf__use_fb1d_fb4f_chars",
-                         "Adding alpha2aleph.globalsrtl.RTL_SYMBOLS to '%s' : '%s' and '%s'",
-                         src,
-                         alpha2aleph.globalsrtl.RTL_SYMBOLS[0],
-                         alpha2aleph.globalsrtl.RTL_SYMBOLS[1])
-
-    return alpha2aleph.globalsrtl.RTL_SYMBOLS[0]+src+alpha2aleph.globalsrtl.RTL_SYMBOLS[1]
+    return success, errors, alpha2alephsymbs, keys
 
 
 def output_html(inputdata):
@@ -534,7 +316,7 @@ def transformation(forcedparameters, args, inputdata):
     res = None
 
     if forcedparameters is None:
-        if args.transform_alpha2alephrew == 'yes':
+        if args.transform_alpha2alephsymbs == 'yes':
             if args.outputformat == 'console':
                 res = output_console("".join(inputdata))
                 print(res)
@@ -574,8 +356,8 @@ def transf__maingroup(src):
     # transformation maingroup.1::improve_rtlalphatext
     src = transf__improve_rtlalphatext(src)
 
-    # transformation maingroup.2::transf__text_alpha2alephrew
-    src = re.sub(alpha2aleph.globalsrtl.RTLREADER_REGEX, transf__text_alpha2alephrew, src)
+    # transformation maingroup.2::transf__text_alpha2alephsymbs
+    src = re.sub(alpha2aleph.globalsrtl.RTLREADER_REGEX, transf__text_alpha2alephsymbs, src)
 
     # transformation maingroup.3::transf__use_fb1d_fb4f_chars
     src = re.sub(alpha2aleph.globalsrtl.RTLREADER_REGEX, transf__use_fb1d_fb4f_chars, src)
@@ -802,8 +584,8 @@ def cmdline__read_symbols_file(forcedparameters, args):
         cmdline__read_symbols_file()
         ________________________________________________________________________
 
-        Read the symbols file and initialize alpha2aleph.logger.ALPHA2HEBREW and
-        alpha2aleph.logger.ALPHA2HEBREW_KEYS .
+        Read the symbols file and initialize alpha2aleph.glob.ALPHA2HEBREW and
+        alpha2aleph.glob.ALPHA2HEBREW_KEYS .
 
         This function is what execute the --symbolsfile command line option.
         ________________________________________________________________________
@@ -823,8 +605,8 @@ def cmdline__read_symbols_file(forcedparameters, args):
     if forcedparameters is None:
         (readsymbols_success,
          readsymbols_errors,
-         alpha2aleph.logger.ALPHA2HEBREW,
-         alpha2aleph.logger.ALPHA2HEBREW_KEYS) = read_symbols(args.symbolsfile)
+         alpha2aleph.glob.ALPHA2HEBREW,
+         alpha2aleph.glob.ALPHA2HEBREW_KEYS) = read_symbols(args.symbolsfile)
 
         if not readsymbols_success:
             logger.error("[E06] problem with the symbols file '%s' : %s",
@@ -835,8 +617,8 @@ def cmdline__read_symbols_file(forcedparameters, args):
     else:
         (readsymbols_success,
          readsymbols_errors,
-         alpha2aleph.logger.ALPHA2HEBREW,
-         alpha2aleph.logger.ALPHA2HEBREW_KEYS) = read_symbols(forcedparameters[1])
+         alpha2aleph.glob.ALPHA2HEBREW,
+         alpha2aleph.glob.ALPHA2HEBREW_KEYS) = read_symbols(forcedparameters[1])
         if not readsymbols_success:
             return False
 
@@ -851,7 +633,7 @@ def cmdline__explicitsymbols():
         cmdline__explicitsymbols()
         ________________________________________________________________________
 
-        Print a nice message describing alpha2aleph.logger.ALPHA2HEBREW* .
+        Print a nice message describing alpha2aleph.glob.ALPHA2HEBREW* .
         ________________________________________________________________________
 
         no PARAMETER
@@ -860,11 +642,11 @@ def cmdline__explicitsymbols():
     print("| ")
     print("| Symbols:")
     print("|")
-    for index_key, key in enumerate(alpha2aleph.logger.ALPHA2HEBREW_KEYS):
+    for index_key, key in enumerate(alpha2aleph.glob.ALPHA2HEBREW_KEYS):
         print("| * (key #{0:02})".format(index_key),
               "'"+key+"'",
               stranalyse(key),
-              " >>> ", stranalyse(alpha2aleph.logger.ALPHA2HEBREW[key]))
+              " >>> ", stranalyse(alpha2aleph.glob.ALPHA2HEBREW[key]))
 
 
 def cmdline__read_inputdata(forcedparameters, args):

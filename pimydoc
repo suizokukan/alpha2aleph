@@ -30,9 +30,10 @@ The regex <before> is searched and replaced by the regex <after>.
 
 * (str) <comment> : e.g. 'alef + holam > alef + point_on_right'
 
-* (str, a regex) <before> : e.g. "[H|ḥ|ħ|ẖ](?P<accent>[<])?ôš"
+* (str, a regex) <before> :
+  e.g. "(?P<het>[H|ḥ|ħ|ẖ])(?P<accent>[<])?(?P<holam>[ô])(?P<shin>[š|ʃ])"
 
-* (str, a regex) <after> : e.g. "ḥ\\g<accent>š"
+* (str, a regex) <after> : e.g. "\\g<het>\\g<accent>\\g<shin>"
 ---
 ---
 ---

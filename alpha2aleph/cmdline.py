@@ -93,7 +93,7 @@ def read_command_line_arguments():
                         action="store_true",
                         help="explicit output string, displaying unicode analyse of each character")
 
-    parser.add_argument('--transform_alpha2alephrew',
+    parser.add_argument('--transform_alpha2alephsymbs',
                         choices=['yes', 'no'],
                         default="yes",
                         help="if 'no', do not read the input file, do not transform it")
