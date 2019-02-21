@@ -60,7 +60,7 @@ def read_command_line_arguments():
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('--log',
-                        choices=['DEBUG', 'INFO', 'ERROR', 'CRITICAL'],
+                        choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
                         default="INFO",
                         help="set log level")
 
