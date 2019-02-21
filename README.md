@@ -122,10 +122,10 @@ see `--log` command line option.
 Modify `logger.py::LOGGING_LEVEL`
 
 ## [6.2] exit codes, exceptions
--1 : an error occured : can't read config file
--2 : an error occured : ill-formed input file
--3 : an error occured : can't read symbols file
--4 : an error occured : missing input file
+* -1 : an error occured : can't read config file
+* -2 : an error occured : ill-formed input file
+* -3 : an error occured : can't read symbols file
+* -4 : an error occured : missing input file
 
 * a runtimeerror may be raised : see raise RuntimeError in the source code.
 
