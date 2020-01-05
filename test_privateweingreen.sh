@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+bin/alpha2aleph_bin --log=INFO --cfgfile=../privateweingreen/config.ini  --symbolsfile=../privateweingreen/symbols.txt --source=inputfile --outputformat=html --inputfile=../privateweingreen/input.txt > privateweingreen_output.html
