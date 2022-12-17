@@ -132,7 +132,8 @@ S → ש
 # ת HEBREW LETTER TAV
 θ → ת
 ṯ → ת
-tt → תּ
+#tt → תּ
+t → תּ
 
 # see https://en.wikipedia.org/wiki/Hebrew_alphabetVowels
 
